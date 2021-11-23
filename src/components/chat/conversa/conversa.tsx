@@ -1,28 +1,32 @@
 import React from 'react'
 import MensagemRecebida from '../mensagem/MensagemRecebida'
 import MensagemEnviada from '../mensagem/mensagemEnviada'
+import { conversaDummy } from '../dummy/conversa'
 
 interface ConversaProps{
-  conversa: any
+  chat: any
 }
 
 interface ConversaState{
-  conversa: any
+  chat: any
 }
 
 export default class Conversa extends React.Component<ConversaProps, ConversaState>{
-  constructor(props: ConversaState){
+  constructor(props: ConversaProps){
     super(props)
+    this.state = {
+      chat: this.props.chat
+    }
   }
 
   componentDidMount(){
-    this.setState({conversa: this.props.conversa})
+    this.setState({chat: [...this.props.chat]})
   }
 
   render(){
     return(
-      < >
-        {this.state.conversa.map(
+      <div>
+        {this.state.chat.map(
           (mensagem: any) => {
               if (mensagem.nome) {
                   return <MensagemRecebida nome={mensagem.nome} texto={mensagem.texto} horario={mensagem.horario} />
@@ -32,7 +36,7 @@ export default class Conversa extends React.Component<ConversaProps, ConversaSta
               }
           }
       )}
-      </ >
+      </div>
     )
   }
 }
