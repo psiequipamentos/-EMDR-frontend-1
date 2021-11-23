@@ -41,14 +41,14 @@ const buttonStyle =
 let playInterval: any;
 let sacadicTimeOut: any;
 
-const MovementNumber = [8, 16, 30, 44, 62, "infinito"];
+const MovementNumber = [ "infinito", 8, 16, 30, 44, 62,];
 const SelectNumber = [
+  { name: "infinito", value: "infinito" },
   { name: "8", value: 8 },
   { name: "16", value: 16 },
   { name: "30", value: 30 },
   { name: "44", value: 44 },
   { name: "62", value: 62 },
-  { name: "infinito", value: "infinito" },
 ];
 
 const MovementTypes = [
