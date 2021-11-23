@@ -3,8 +3,8 @@ import '../styles/App.css';
 import buttonCustom from './buttons/button';
 import InputCustom from './inputs/input-custom';
 import Modal from './modals/modal';
-import Dashboard from './sidebar/dashboard';
-import { Admin, Usuario } from './sidebar/dummySidebar/dummySidebar';
+// import Dashboard from './sidebar/dashboard';
+// import { Admin, Usuario } from './sidebar/dummySidebar/dummySidebar';
 
 
 export default class App extends React.Component<any, any> {
