@@ -9,6 +9,7 @@ import { Usuario } from './components/sidebar/dummySidebar/dummySidebar';
 import Emdr from './pages/emdr/emdr';
 import EmdrSounds from './pages/emdr/emdrSounds';
 import Modal from './components/modals/modal';
+import DragDropModal from './components/modals/DragDropModal';
 
 
 function RouterComponent() {
@@ -19,6 +20,7 @@ function RouterComponent() {
             <Route path='dashboard' element={<Dashboard currentComponent={buttonCustom} menuItemGroup={Usuario} />}></Route>
             <Route path='input' element={<Dashboard currentComponent={InputCustom} menuItemGroup={Usuario} />}></Route>
             <Route path='chat' element={<Modal content={Chat} openModalComponent={buttonCustom} /> }></Route>
+            <Route path='drag/chat' element={<DragDropModal content={Chat} openModalComponent={buttonCustom} /> }></Route>
             <Route path='home' element={<Dashboard currentComponent={App} menuItemGroup={Usuario} />}></Route>
             <Route path="emdr/psicologo" element={<Emdr ControlsVisibility={true} />}></Route>
             <Route path="emdr/paciente" element={<Emdr ControlsVisibility={false} />}></Route>
