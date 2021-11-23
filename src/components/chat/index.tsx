@@ -46,7 +46,7 @@ export default class Chat extends React.Component<any, IChatState>{
     render() {
         return (
             <section className="">
-                <div className="h-screen pb-10 overflow-y-auto bg-gray-100">
+                <div className="pb-10 overflow-y-auto bg-gray-100 h-96">
 
 
                     {this.state.conversa.map(
