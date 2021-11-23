@@ -673,58 +673,6 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               <button className={buttonStyle + ' mb-1'} onClick={this.play}> Play </button>
               <button className={buttonStyle} onClick={this.pause}> Stop </button>
             </div>
-              <div className="z-30 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
-                <span>
-                  Movimentos restantes <br /> {this.state.countMovements}
-                </span>
-              </div>
-              <div className="z-30 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
-                <label>
-                  {" "}
-                  Movimentos <br />
-                  <SelectCustom
-                    options={SelectNumber}
-                    handleChange={(event: any) =>
-                      this.setCounter(event.target.value)
-                    }
-                  />
-                </label>
-              </div>
-
-              <div className="z-30 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
-                <label>
-                  {" "}
-                  Tipos <br />
-                  <SelectCustom
-                    options={SelectMovement}
-                    handleChange={(event: any) =>
-                      this.setDirection(event.target.value)
-                    }
-                  />
-                </label>
-              </div>
-
-              <div className="z-30 grid grid-cols-1 col-span-6 ml-10 text-center lg:col-span-1 lg:grid-cols-1">
-                <button className={buttonStyle + " mb-1"} onClick={this.hide}>
-                  {" "}
-                  Hide{" "}
-                </button>
-                <button className={buttonStyle} onClick={this.show}>
-                  {" "}
-                  Show{" "}
-                </button>
-              </div>
-
-              <div className="z-30 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
-                <button className={buttonStyle + " mb-1"} onClick={this.play}>
-                  {" "}
-                  Play{" "}
-                </button>
-                <button className={buttonStyle} onClick={this.pause}>
-                  {" "}
-                  Stop{" "}
-                </button>
-              </div>
 
               <div className="grid grid-cols-1 col-span-6 lg:col-span-1">
                 <input
@@ -735,7 +683,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 />
               </div>
             </div>
-          ) : null}
+          : null}
           <canvas
             ref={this.state.canvas}
             className={`mx-auto border-2 absolute top-0 z-20 bg-gray-900`}
