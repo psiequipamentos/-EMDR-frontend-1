@@ -6,9 +6,9 @@ import DragDropModal from "../../components/modals/DragDropModal";
 import Chat from "../../components/chat";
 import buttonCustom from "../../components/buttons/button";
 
-interface IEmdrProps{
-  ControlsVisibility: boolean
-  }
+interface IEmdrProps {
+  ControlsVisibility: boolean;
+}
 
 interface IEmdrState {
   canvas: any;
@@ -36,6 +36,8 @@ interface IEmdrState {
   auxCount: any;
 
   balanceSound: number;
+
+  messages: any;
 }
 
 const buttonStyle =
@@ -44,7 +46,7 @@ const buttonStyle =
 let playInterval: any;
 let sacadicTimeOut: any;
 
-const MovementNumber = [ "infinito", 8, 16, 30, 44, 62,];
+const MovementNumber = ["infinito", 8, 16, 30, 44, 62];
 const SelectNumber = [
   { name: "infinito", value: "infinito" },
   { name: "8", value: 8 },
@@ -77,11 +79,11 @@ const user_type = url.split("/").reverse()[0];
 init_ws.run(user_type);
 const socket = init_ws.socket;
 
-
 export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   constructor(props: IEmdrProps) {
     super(props);
     this.state = {
+      messages: [],
       canvas: React.createRef(),
       canvasWidth: document.documentElement.clientWidth - 5,
       canvasHeight: document.documentElement.clientHeight - 5,
@@ -100,9 +102,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
       intervalo: 10,
 
-
-      directionStatus: 'stop',
-      directionAux: 'horizontal',
+      directionStatus: "stop",
+      directionAux: "horizontal",
 
       countMovements: MovementNumber[0],
       auxCount: MovementNumber[0],
@@ -113,7 +114,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.moveBalls = this.moveBalls.bind(this);
     this.drawBalls = this.drawBalls.bind(this);
     this.setDirection = this.setDirection.bind(this);
-    this.changeMovement = this.changeMovement.bind(this)
+    this.changeMovement = this.changeMovement.bind(this);
     this.setAuxDirection = this.setAuxDirection.bind(this);
     this.horizontalMovement = this.horizontalMovement.bind(this);
     this.verticalMovement = this.verticalMovement.bind(this);
@@ -146,23 +147,22 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     const ctx = this.state.canvas.current.getContext("2d");
     playInterval = setInterval(() => this.moveBalls(ctx), this.state.intervalo);
 
-     //**SOCKET
-    socket.on("ball-handler", (data) => this.setState({[data.property]:data.value} as any));
-   
-
+    //**SOCKET
+    socket.on("ball-handler", (data) =>
+      this.setState({ [data.property]: data.value } as any)
+    );
   }
 
   setColor(event: any) {
     this.setState({ circleColor: event.target.value });
 
-     //**SOCKET
-      const data_to_send = {
-        property: "circleColor",
-        value: event.target.value,
-      };
-      socket.emit("ball-handler", data_to_send);
-      
-    
+    //**SOCKET
+    const data_to_send = {
+      property: "circleColor",
+      value: event.target.value,
+    };
+    socket.emit("ball-handler", data_to_send);
+
   }
 
   drawBalls(ctx: any, clear: any) {
@@ -239,20 +239,20 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
     //**SOCKET
     const data_to_send = {
-      property:'visibility',
-      value:true
-    }
-    socket.emit('ball-handler', data_to_send)
+      property: "visibility",
+      value: true,
+    };
+    socket.emit("ball-handler", data_to_send);
   }
   hide() {
     this.setState({ visibility: false });
 
     //**SOCKET
-      const data_to_send = {
-        property:'visibility',
-        value:false
-      }
-      socket.emit('ball-handler', data_to_send)
+    const data_to_send = {
+      property: "visibility",
+      value: false,
+    };
+    socket.emit("ball-handler", data_to_send);
   }
 
   setVelocity(variable: any, velocity: any) {
@@ -261,32 +261,32 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
       //**SOCKET
       const data_to_send = {
-        property:'direction',
-        value: { [variable]: velocity }
-      }
-      socket.emit('ball-handler', data_to_send)
+        property: "direction",
+        value: { [variable]: velocity },
+      };
+      socket.emit("ball-handler", data_to_send);
     } else {
       this.setState({ direction: { [variable]: -velocity } });
 
       //**SOCKET
       const data_to_send = {
-        property:'direction',
-        value: { [variable]: -velocity }
-      }
-      socket.emit('ball-handler', data_to_send)
+        property: "direction",
+        value: { [variable]: -velocity },
+      };
+      socket.emit("ball-handler", data_to_send);
     }
   }
 
   chageVelocity(velocity: number) {
     this.setState({ velocity: velocity });
 
-     //**SOCKET
+    //**SOCKET
     const data_to_send = {
-      property:'velocity',
-      value: velocity 
-    }
-    socket.emit('ball-handler', data_to_send)
-    
+      property: "velocity",
+      value: velocity,
+    };
+    socket.emit("ball-handler", data_to_send);
+
     if (this.state.direction.x && !this.state.direction.y) {
       this.setVelocity("x", velocity);
     }
@@ -304,12 +304,12 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           },
         });
 
-         //**SOCKET
+        //**SOCKET
         const data_to_send = {
-          property:'direction',
-          value: this.state.direction
-        }
-        socket.emit('ball-handler', data_to_send)
+          property: "direction",
+          value: this.state.direction,
+        };
+        socket.emit("ball-handler", data_to_send);
       } else if (this.state.direction.x < 0 && this.state.direction.y < 0) {
         this.setState({
           direction: {
@@ -319,12 +319,12 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           },
         });
 
-         //**SOCKET
+        //**SOCKET
         const data_to_send = {
-          property:'direction',
-          value: this.state.direction
-        }
-        socket.emit('ball-handler', data_to_send)
+          property: "direction",
+          value: this.state.direction,
+        };
+        socket.emit("ball-handler", data_to_send);
       }
     }
   }
@@ -372,9 +372,9 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     }
   }
 
-  changeMovement(){
-    if(this.state.directionAux !== this.state.directionStatus){
-      this.setState({stop: true}, () => setTimeout( ()=> this.play(), 700 ))
+  changeMovement() {
+    if (this.state.directionAux !== this.state.directionStatus) {
+      this.setState({ stop: true }, () => setTimeout(() => this.play(), 700));
       //this.setState({stop: true}, () => this.setDirection(this.state.directionAux))
     }
   }
@@ -383,9 +383,14 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (this.state.direction.x === 0) {
       this.startMovement(this.state.velocity, 0, "right");
     }
-    if (this.isInCenterX()) { 
-      if(!this.state.stop) { this.changeMovement() }
-      if (this.state.stop) { this.stop(); this.setPlaySound(false) } 
+    if (this.isInCenterX()) {
+      if (!this.state.stop) {
+        this.changeMovement();
+      }
+      if (this.state.stop) {
+        this.stop();
+        this.setPlaySound(false);
+      }
     }
 
     if (this.isInLeft() && this.state.countMovements !== "infinito") {
@@ -405,13 +410,16 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (this.state.direction.y === 0) {
       this.startMovement(0, this.state.velocity, "right");
     }
-    if (this.isInCenterY()) { 
-      if (this.state.stop) { this.stop() }
-      else{ this.changeMovement() } 
+    if (this.isInCenterY()) {
+      if (this.state.stop) {
+        this.stop();
+      } else {
+        this.changeMovement();
+      }
     }
 
-    if (this.isOnTop() && this.state.countMovements !== 'infinito') {
-      this.setState({ countMovements: this.state.countMovements - 1 })
+    if (this.isOnTop() && this.state.countMovements !== "infinito") {
+      this.setState({ countMovements: this.state.countMovements - 1 });
     }
 
     if (this.isOnTop() && this.state.countMovements !== "infinito") {
@@ -431,9 +439,13 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       this.startMovement(this.state.velocity, this.state.velocity, "right");
     }
 
-    if (this.isInCenterX() && this.isInCenterY()) { 
-      if (this.state.stop) { this.stop(); this.setPlaySound(false) } 
-      else{ this.changeMovement() } 
+    if (this.isInCenterX() && this.isInCenterY()) {
+      if (this.state.stop) {
+        this.stop();
+        this.setPlaySound(false);
+      } else {
+        this.changeMovement();
+      }
     }
 
     if (this.isOnTop() && this.state.countMovements !== "infinito") {
@@ -487,8 +499,13 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       }
     }
 
-    if(this.state.sacadicPosition.x > centerX - 10 && this.state.sacadicPosition.x < centerX + 10){
-      if(!this.state.stop){ this.changeMovement() } 
+    if (
+      this.state.sacadicPosition.x > centerX - 10 &&
+      this.state.sacadicPosition.x < centerX + 10
+    ) {
+      if (!this.state.stop) {
+        this.changeMovement();
+      }
     }
 
     if (
@@ -513,9 +530,9 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   }
 
   play() {
-    if(this.isNotMoving()){
-      this.setState({stop: false}, ()=> this.state.direction.x = 0)
-      this.setDirection(this.state.directionAux)
+    if (this.isNotMoving()) {
+      this.setState({ stop: false }, () => (this.state.direction.x = 0));
+      this.setDirection(this.state.directionAux);
     }
     // if (this.state.direction.dir === 'none') {
     //   this.setDirection(MovementTypes[0])
@@ -527,12 +544,12 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   pause() {
     this.setState({ stop: true });
 
-     //**SOCKET
+    //**SOCKET
     const data_to_send = {
-      property:'stop',
-      value:true
-    }
-    socket.emit('ball-handler', data_to_send)
+      property: "stop",
+      value: true,
+    };
+    socket.emit("ball-handler", data_to_send);
   }
 
   stop() {
@@ -557,17 +574,17 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (this.isInCenterX() && this.isInCenterY() && this.isNotMoving()) {
       this.setState({ directionStatus: direction });
 
-       //**SOCKET
+      //**SOCKET
       const data_to_send = {
-        property:'directionStatus',
-        value:direction
-      }
-      socket.emit('ball-handler', data_to_send)
+        property: "directionStatus",
+        value: direction,
+      };
+      socket.emit("ball-handler", data_to_send);
     }
   }
 
   setAuxDirection(direction: string) {
-    this.setState({ directionAux: direction })
+    this.setState({ directionAux: direction });
   }
 
   verifyCount() {
@@ -581,31 +598,29 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   setCounter(value: any) {
     this.setState({ countMovements: value, auxCount: value });
 
-     //**SOCKET
+    //**SOCKET
     const data_to_send = {
-      property:'countMovements',
-      value:value
-    }
-    socket.emit('ball-handler', data_to_send)
+      property: "countMovements",
+      value: value,
+    };
+    socket.emit("ball-handler", data_to_send);
     const data_to_send2 = {
-      property:'auxCount',
-      value:value
-    }
-    socket.emit('ball-handler', data_to_send2)
-    
+      property: "auxCount",
+      value: value,
+    };
+    socket.emit("ball-handler", data_to_send2);
   }
 
   setPlaySound(value: boolean) {
-    if(this.state.playSound !== value){
+    if (this.state.playSound !== value) {
       this.setState({ playSound: value });
-      
-    const data_to_send={
-      property:'playSound',
-      value:this.state.playSound
+
+      const data_to_send = {
+        property: "playSound",
+        value: this.state.playSound,
+      };
+      socket.emit("audio-handler", data_to_send);
     }
-    socket.emit('audio-handler', data_to_send)
-    }
-    
   }
 
   moveBalls(ctx: any) {
@@ -643,39 +658,84 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     return (
       <div className="grid items-center text-white">
         <div>
-          <EmdrSounds velocity={this.state.velocity} play={this.state.playSound} soundBalance={this.state.balanceSound} ControlsVisibility={this.props.ControlsVisibility} socket = {socket} ></EmdrSounds>
-          { this.props.ControlsVisibility?
-          
-          <div className="absolute bottom-0 left-0 z-30 grid items-center grid-cols-12 gap-4 ">
-
-            <label className="col-span-6 lg:col-span-2"> Velocidade
-              <input className="z-30 p-5 bg-red-500" type="range" name="velocity" min={1} value={this.state.velocity} max={20} onChange={(event) => this.chageVelocity(+event.target.value)} />
-            </label>
-
-            <div className="z-30 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
-              <span>Contagem <br /> {this.state.countMovements !== 'infinito'? this.state.auxCount - this.state.countMovements : 'infinito'}</span>
-            </div>
-            <div className="z-30 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
-            <label> Movimentos <br />
-              <SelectCustom options={SelectNumber} handleChange={(event: any) => this.setCounter(event.target.value)} />
+          <EmdrSounds
+            velocity={this.state.velocity}
+            play={this.state.playSound}
+            soundBalance={this.state.balanceSound}
+            ControlsVisibility={this.props.ControlsVisibility}
+            socket={socket}
+          ></EmdrSounds>
+          {this.props.ControlsVisibility ? (
+            <div className="absolute bottom-0 left-0 z-30 grid items-center grid-cols-12 gap-4 ">
+              <label className="col-span-6 lg:col-span-2">
+                {" "}
+                Velocidade
+                <input
+                  className="z-30 p-5 bg-red-500"
+                  type="range"
+                  name="velocity"
+                  min={1}
+                  value={this.state.velocity}
+                  max={20}
+                  onChange={(event) => this.chageVelocity(+event.target.value)}
+                />
               </label>
-            </div>
 
-            <div className="z-30 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
-              <label> Tipos <br />
-                <SelectCustom options={SelectMovement} handleChange={(event: any) => this.setAuxDirection(event.target.value)} />
-              </label>
-            </div>
+              <div className="z-30 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
+                <span>
+                  Contagem <br />{" "}
+                  {this.state.countMovements !== "infinito"
+                    ? this.state.auxCount - this.state.countMovements
+                    : "infinito"}
+                </span>
+              </div>
+              <div className="z-30 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
+                <label>
+                  {" "}
+                  Movimentos <br />
+                  <SelectCustom
+                    options={SelectNumber}
+                    handleChange={(event: any) =>
+                      this.setCounter(event.target.value)
+                    }
+                  />
+                </label>
+              </div>
 
-            <div className="z-30 grid grid-cols-1 col-span-6 ml-10 text-center lg:col-span-1 lg:grid-cols-1">
-              <button className={buttonStyle + ' mb-1'} onClick={this.hide}> Hide </button>
-              <button className={buttonStyle} onClick={this.show}> Show </button>
-            </div>
+              <div className="z-30 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
+                <label>
+                  {" "}
+                  Tipos <br />
+                  <SelectCustom
+                    options={SelectMovement}
+                    handleChange={(event: any) =>
+                      this.setAuxDirection(event.target.value)
+                    }
+                  />
+                </label>
+              </div>
 
-            <div className="z-30 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
-              <button className={buttonStyle + ' mb-1'} onClick={this.play}> Play </button>
-              <button className={buttonStyle} onClick={this.pause}> Stop </button>
-            </div>
+              <div className="z-30 grid grid-cols-1 col-span-6 ml-10 text-center lg:col-span-1 lg:grid-cols-1">
+                <button className={buttonStyle + " mb-1"} onClick={this.hide}>
+                  {" "}
+                  Hide{" "}
+                </button>
+                <button className={buttonStyle} onClick={this.show}>
+                  {" "}
+                  Show{" "}
+                </button>
+              </div>
+
+              <div className="z-30 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+                <button className={buttonStyle + " mb-1"} onClick={this.play}>
+                  {" "}
+                  Play{" "}
+                </button>
+                <button className={buttonStyle} onClick={this.pause}>
+                  {" "}
+                  Stop{" "}
+                </button>
+              </div>
               <div className="grid grid-cols-1 col-span-6 lg:col-span-1">
                 <input
                   className="z-30"
@@ -685,10 +745,14 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 />
               </div>
             </div>
-          : null}
+          ) : null}
           <div className="absolute bottom-0 right-0 z-50 mr-10 text-center">
-            <DragDropModal content={Chat} openModalComponent={buttonCustom} />
-            </div>
+            <DragDropModal
+              content={Chat}
+              openModalComponent={buttonCustom}
+              socket={socket}
+            />
+          </div>
           <canvas
             ref={this.state.canvas}
             className={`mx-auto border-2 absolute top-0 z-20 bg-gray-900`}

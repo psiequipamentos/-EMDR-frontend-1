@@ -5,6 +5,7 @@ import './drag'
 interface IModalProps {
     openModalComponent: any
     content?: any
+    socket?: any
 }
 
 interface IModalState {
@@ -91,7 +92,7 @@ dragElement(elmnt: any) {
                                     <article className="relative mx-auto overflow-auto bg-gray-100 rounded lg:w-1/2">
                                     <div id="mydivheader">Clique aqui para mover o chat</div>
                                         {this.props.content ?
-                                            <this.props.content closeModal={this.changeTrigger} />
+                                            <this.props.content closeModal={this.changeTrigger} socket={this.props.socket} trigger={this.changeTrigger}/>
                                             : this.props.children
                                         }
                                     </article>
