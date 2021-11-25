@@ -12,7 +12,7 @@ export default class buttonCustom extends React.Component<IButtonCustomProps, an
     render(){
         return(
             <div>
-                <button onClick={this.props.closeModal} className="p-3 text-white rounded">Chat</button>
+                <button onClick={this.props.closeModal} className="p-3 text-white border rounded">Chat</button>
             </div>
             
         )
