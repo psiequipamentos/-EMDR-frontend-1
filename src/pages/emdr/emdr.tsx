@@ -2,6 +2,9 @@ import React from "react";
 import SelectCustom from "../../components/inputs/select-custom";
 import EmdrSounds from "./emdrSounds";
 import WebsocketServer from "../../ws/server";
+import DragDropModal from "../../components/modals/DragDropModal";
+import Chat from "../../components/chat";
+import buttonCustom from "../../components/buttons/button";
 
 interface IEmdrProps{
   ControlsVisibility: boolean
@@ -672,6 +675,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             <div className="z-30 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
               <button className={buttonStyle + ' mb-1'} onClick={this.play}> Play </button>
               <button className={buttonStyle} onClick={this.pause}> Stop </button>
+            </div>
+
+            <div className="z-30 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+            <DragDropModal content={Chat} openModalComponent={buttonCustom} />
             </div>
 
               <div className="grid grid-cols-1 col-span-6 lg:col-span-1">

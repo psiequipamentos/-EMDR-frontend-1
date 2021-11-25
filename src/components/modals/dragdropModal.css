@@ -1,6 +1,6 @@
 #mydiv {
-  position: absolute;
-  z-index: 9;
+  /* position: absolute; */
+  z-index: 50;
   text-align: center;
 }
 

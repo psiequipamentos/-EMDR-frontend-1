@@ -85,7 +85,7 @@ dragElement(elmnt: any) {
                 </button>
                 {this.state.trigger == true ?
                     <section>
-                        <div id="mydiv" ref={this.state.draggableDiv} >
+                        <div id="mydiv" className="fixed top-0" ref={this.state.draggableDiv} >
                             <div className="relative w-full mx-auto my-6">
                                 <div className="relative flex flex-col w-full border-0 rounded-lg outline-none focus:outline-none">
                                     <article className="relative flex-auto w-full mx-auto overflow-auto bg-gray-100 rounded md:w-1/2">
