@@ -5,6 +5,8 @@ import WebsocketServer from "../../ws/server";
 import DragDropModal from "../../components/modals/DragDropModal";
 import Chat from "../../components/chat";
 import buttonCustom from "../../components/buttons/button";
+import DailyIframe, { DailyParticipantsObject } from "@daily-co/daily-js";
+import axios from "axios";
 
 interface IEmdrProps {
   ControlsVisibility: boolean;
@@ -38,6 +40,7 @@ interface IEmdrState {
   balanceSound: number;
 
   messages: any;
+  url:any
 }
 
 const buttonStyle =
@@ -80,8 +83,12 @@ init_ws.run(user_type);
 const socket = init_ws.socket;
 
 export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
+  private url;
+  private callObject;
   constructor(props: IEmdrProps) {
     super(props);
+    this.url = "http://localhost:3002/daily/new-room";
+    this.callObject = DailyIframe.createCallObject();
     this.state = {
       messages: [],
       canvas: React.createRef(),
@@ -109,6 +116,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       auxCount: MovementNumber[0],
 
       balanceSound: 0,
+      url:""
     };
 
     this.moveBalls = this.moveBalls.bind(this);
@@ -141,9 +149,29 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.isNotMoving = this.isNotMoving.bind(this);
     this.setColor = this.setColor.bind(this);
     this.balanceX = this.balanceX.bind(this);
+    this.callObject = DailyIframe.createCallObject();
+    this.createCall = this.createCall.bind(this);
+    this.joinCall = this.joinCall.bind(this);
+    this.participants = this.participants.bind(this);
+    this.start = this.start.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.entrar = this.entrar.bind(this);
+    this.videoCallListeners = this.videoCallListeners.bind(this)
   }
 
   componentDidMount() {
+    // * PREJOIN
+     navigator.mediaDevices
+      .getUserMedia({
+        video: true,
+        audio: false,
+      })
+      .then((stream: any) => {
+        let video: any = document.querySelector("video");
+        video.srcObject = stream;
+      });  
+      this.videoCallListeners()
+      // * PREJOIN
     const ctx = this.state.canvas.current.getContext("2d");
     playInterval = setInterval(() => this.moveBalls(ctx), this.state.intervalo);
 
@@ -151,6 +179,52 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     socket.on("ball-handler", (data) =>
       this.setState({ [data.property]: data.value } as any)
     );
+  }
+
+  handleChange = (event: any) =>
+    this.setState({ [event.target.name]: event.target.value } as any);
+  async createCall() {
+    this.setState({ url: "criando..." });
+    return new Promise((resolve, reject) => {
+      axios({
+        url: this.url,
+        method: "POST",
+      })
+        .then((response: any) => {
+          this.setState({ url: response.data.url });
+          resolve(response.data.url);
+        })
+        .catch((response_error: any) => reject(response_error.data.error));
+    });
+  }
+
+  joinCall(url: any) {
+    console.log(url);
+    return new Promise((resolve, reject) =>
+      this.callObject
+        .join({ url })
+        .then((res) => resolve(res))
+        .catch((err) => reject(err))
+    );
+  }
+
+  participants(): DailyParticipantsObject {
+    return this.callObject.participants();
+  }
+
+  async start() {
+    try {
+      const room_url = await this.createCall();
+     await this.joinCall(room_url)
+    } catch (err) {}
+  }
+
+  async entrar() {
+    try {
+      await this.joinCall(this.state.url);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   setColor(event: any) {
@@ -162,7 +236,6 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       value: event.target.value,
     };
     socket.emit("ball-handler", data_to_send);
-
   }
 
   drawBalls(ctx: any, clear: any) {
@@ -654,6 +727,66 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     }
   }
 
+  videoCallListeners() {
+    this.callObject.on("participant-updated", async (event) => {
+      if (event?.participant.video && event.participant.audio) {
+        const streams = this.callObject.participants();
+        let callItems: any = {};
+        let callAudioItems: any = {};
+        for (const [id, participant] of Object.entries(streams)) {
+          callItems[id] = {
+            videoTrack: participant.tracks.video.track,
+          };
+        }
+
+        for (const [id, participant] of Object.entries(streams)) {
+          callAudioItems[id] = {
+            audioTrack: participant.tracks.audio.track,
+          };
+        }
+
+        if (Object.keys(callItems).length >= 2) {
+          let videoStreams: any = {};
+          let audioStreams: any = {};
+          for (const [id] of Object.entries(callItems) as any) {
+            if (id !== "local" && !videoStreams[id]) {
+              videoStreams[id] = document.createElement("video");
+            }
+          }
+          for (const [id] of Object.entries(callAudioItems) as any) {
+            if (id !== "local" && !audioStreams[id]) {
+              audioStreams[id] = document.createElement("audio");
+            }
+          }
+
+          for (const [id, videoStreamer] of Object.entries(
+            videoStreams
+          ) as any) {
+            videoStreamer.setAttribute("class", "video-small");
+            videoStreamer.setAttribute("width", "100px");
+            videoStreamer.setAttribute("autoplay", "true");
+            videoStreamer.setAttribute("id", id);
+            const users_containers: any =
+              document.getElementById("users-container");
+            users_containers.appendChild(videoStreamer);
+            const videoStream = new MediaStream();
+            videoStream.addTrack(callItems[id].videoTrack);
+            videoStreamer.srcObject = videoStream;
+          }
+
+          for (const [id, audioStreamer] of Object.entries(
+            audioStreams
+          ) as any) {
+            audioStreamer.setAttribute("autoplay", "true");
+            audioStreamer.setAttribute("id", id);
+            const audioStream = new MediaStream();
+            audioStream.addTrack(callAudioItems[id].audioTrack);
+            audioStreamer.srcObject = audioStream;
+          }
+        }
+      }
+    });
+  }
   render() {
     return (
       <div className="grid items-center text-white">
@@ -746,6 +879,17 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </div>
             </div>
           ) : null}
+          // * Pre join
+          <video className="absolute z-50 w-25" autoPlay={true}></video>
+          // * prejoin
+          <h2 className="absolute z-50 text-red-500" >URL: {this.state.url}</h2>
+          {this.props.ControlsVisibility ? <button className="absolute z-50"onClick={this.createCall}>criar link</button> : null }
+          <br />
+          <button className="absolute z-50 text-red-500 right-0" onClick={() => this.joinCall(this.state.url)}>Entrar</button>
+          <input className="absolute z-50 text-gray-900" onChange={this.handleChange} name="url"></input>
+         
+          <div className="absolute z-50" id="users-container"></div>
+
           <div className="absolute bottom-0 right-0 z-50 mr-10 text-center">
             <DragDropModal
               content={Chat}
