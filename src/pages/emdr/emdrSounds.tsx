@@ -215,7 +215,7 @@ export default class EmdrSounds extends React.Component<
 
   render() {
     return (
-      <div className="absolute top-0 left-0 z-50 grid items-center grid-cols-12 gap-4 controls">
+      <div className="relative top-0 left-0 z-50 grid items-center grid-cols-12 gap-4 bg-gray-900 controls">
         <select
           className="col-span-6 p-3 text-black rounded outline-none lg:col-span-2"
           name="sound"
