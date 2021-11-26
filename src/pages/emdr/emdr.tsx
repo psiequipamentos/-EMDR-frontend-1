@@ -879,16 +879,16 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </div>
             </div>
           ) : null}
-          // * Pre join
-          <video className="absolute z-50 w-25" autoPlay={true}></video>
-          // * prejoin
+          {/* // * Pre join */}
+          <video className="fixed top-0 z-10 w-full min-h-screen bg-pink-900" autoPlay={true}></video>
+          {/* // * prejoin */}
           <h2 className="absolute z-50 text-red-500" >URL: {this.state.url}</h2>
           {this.props.ControlsVisibility ? <button className="absolute z-50"onClick={this.createCall}>criar link</button> : null }
           <br />
-          <button className="absolute z-50 text-red-500 right-0" onClick={() => this.joinCall(this.state.url)}>Entrar</button>
+          <button className="absolute right-0 z-50 text-red-500" onClick={() => this.joinCall(this.state.url)}>Entrar</button>
           <input className="absolute z-50 text-gray-900" onChange={this.handleChange} name="url"></input>
          
-          <div className="absolute z-50" id="users-container"></div>
+          <div className="fixed top-0 z-0 w-full min-h-screen bg-gray-900" id="users-container"></div>
 
           <div className="absolute bottom-0 right-0 z-50 mr-10 text-center">
             <DragDropModal
@@ -897,9 +897,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               socket={socket}
             />
           </div>
+          {/* <div className="fixed top-0 z-0 w-full min-h-screen bg-pink-400"></div> */}
           <canvas
             ref={this.state.canvas}
-            className={`mx-auto border-2 absolute top-0 z-20 bg-gray-900`}
+            className={`mx-auto border-2 absolute top-0 z-20`}
             width={this.state.canvasWidth}
             height={this.state.canvasHeight}
           ></canvas>
