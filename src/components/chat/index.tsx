@@ -74,6 +74,7 @@ export default class Chat extends React.Component<ChatProps, IChatState> {
     event.preventDefault();
     if (this.state.mensagem) {
       this.newMessage();
+      this.executeScroll()
     }
   }
 

@@ -880,7 +880,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             </div>
           ) : null}
           {/* // * Pre join */}
-          <video className="fixed top-0 z-10 w-full min-h-screen bg-pink-900" autoPlay={true}></video>
+          <video className="fixed top-0 z-10 w-full min-h-screen bg-gray-900" autoPlay={true}></video>
           {/* // * prejoin */}
           <h2 className="absolute z-50 text-red-500" >URL: {this.state.url}</h2>
           {this.props.ControlsVisibility ? <button className="absolute z-50"onClick={this.createCall}>criar link</button> : null }
