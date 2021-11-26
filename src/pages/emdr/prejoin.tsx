@@ -115,6 +115,9 @@ export default class Prejoin extends React.Component<any, iStates> {
             videoStreams
           ) as any) {
             videoStreamer.setAttribute("class", "video-small");
+            videoStreamer.setAttribute("class", "bg-red-500");
+            videoStreamer.setAttribute("class", "p-10");
+
             videoStreamer.setAttribute("width", "100px");
             videoStreamer.setAttribute("autoplay", "true");
             videoStreamer.setAttribute("id", id);
