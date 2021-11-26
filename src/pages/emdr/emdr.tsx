@@ -799,7 +799,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             socket={socket}
           ></EmdrSounds>
           {this.props.ControlsVisibility ? (
-            <div className="absolute bottom-0 left-0 z-30 grid items-center grid-cols-12 gap-4 ">
+            <div className="absolute bottom-0 left-0 z-30 grid items-center grid-cols-12 gap-4 lg:bg-gray-900 ">
               <label className="col-span-6 lg:col-span-2">
                 {" "}
                 Velocidade
@@ -882,12 +882,17 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           {/* // * Pre join */}
           <video className="fixed top-0 z-10 w-full min-h-screen bg-gray-900" autoPlay={true}></video>
           {/* // * prejoin */}
-          <h2 className="absolute z-50 text-red-500" >URL: {this.state.url}</h2>
-          {this.props.ControlsVisibility ? <button className="absolute z-50"onClick={this.createCall}>criar link</button> : null }
-          <br />
-          <button className="absolute right-0 z-50 text-red-500" onClick={() => this.joinCall(this.state.url)}>Entrar</button>
-          <input className="absolute z-50 text-gray-900" onChange={this.handleChange} name="url"></input>
-         
+          {/* <h2 className="absolute z-50 text-red-500" >URL: {this.state.url}</h2> */}
+          <div className="absolute left-0 z-50 mt-10">
+            {this.props.ControlsVisibility ? <button className="absolute left-0 p-2 border rounded"onClick={this.createCall}>gerar link</button> : null }
+            <br /><br />
+            <input className="text-gray-900" autoComplete="off" value={this.state.url} onChange={this.handleChange} name="url"></input>
+            <br />
+            {this.state.url && this.state.url !== 'criando...'? 
+            <button className="p-2 text-white bg-blue-500 rounded-b" onClick={() => this.joinCall(this.state.url)}>Entrar</button>
+          : null}
+          </div>
+
           <div className="fixed top-0 z-0 w-full min-h-screen bg-gray-900" id="users-container"></div>
 
           <div className="absolute bottom-0 right-0 z-50 mr-10 text-center">
@@ -900,7 +905,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           {/* <div className="fixed top-0 z-0 w-full min-h-screen bg-pink-400"></div> */}
           <canvas
             ref={this.state.canvas}
-            className={`mx-auto border-2 absolute top-0 z-20`}
+            className={`mx-auto absolute top-0 z-20`}
             width={this.state.canvasWidth}
             height={this.state.canvasHeight}
           ></canvas>
