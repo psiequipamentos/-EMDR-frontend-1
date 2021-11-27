@@ -1,0 +1,7 @@
+.small-video {
+    z-index: 60;
+    width: 20vw;
+    position: fixed;
+    top: 5em;
+    right: 5em;
+}

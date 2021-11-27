@@ -7,7 +7,7 @@ import Chat from "../../components/chat";
 import buttonCustom from "../../components/buttons/button";
 import DailyIframe, { DailyParticipantsObject } from "@daily-co/daily-js";
 import axios from "axios";
-
+import "../../styles/VideoSmall.css";
 interface IEmdrProps {
   ControlsVisibility: boolean;
 }
@@ -40,7 +40,7 @@ interface IEmdrState {
   balanceSound: number;
 
   messages: any;
-  url:any
+  url: any;
 }
 
 const buttonStyle =
@@ -116,7 +116,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       auxCount: MovementNumber[0],
 
       balanceSound: 0,
-      url:""
+      url: "",
     };
 
     this.moveBalls = this.moveBalls.bind(this);
@@ -156,12 +156,12 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.start = this.start.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.entrar = this.entrar.bind(this);
-    this.videoCallListeners = this.videoCallListeners.bind(this)
+    this.videoCallListeners = this.videoCallListeners.bind(this);
   }
 
   componentDidMount() {
     // * PREJOIN
-     navigator.mediaDevices
+    navigator.mediaDevices
       .getUserMedia({
         video: true,
         audio: false,
@@ -169,9 +169,9 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       .then((stream: any) => {
         let video: any = document.querySelector("video");
         video.srcObject = stream;
-      });  
-      this.videoCallListeners()
-      // * PREJOIN
+      });
+    this.videoCallListeners();
+    // * PREJOIN
     const ctx = this.state.canvas.current.getContext("2d");
     playInterval = setInterval(() => this.moveBalls(ctx), this.state.intervalo);
 
@@ -215,7 +215,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   async start() {
     try {
       const room_url = await this.createCall();
-     await this.joinCall(room_url)
+      await this.joinCall(room_url);
     } catch (err) {}
   }
 
@@ -762,7 +762,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           for (const [id, videoStreamer] of Object.entries(
             videoStreams
           ) as any) {
-            videoStreamer.setAttribute("class", "video-small");
+            videoStreamer.setAttribute("class", "small-video");
             videoStreamer.setAttribute("width", "100px");
             videoStreamer.setAttribute("autoplay", "true");
             videoStreamer.setAttribute("id", id);
@@ -799,12 +799,12 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             socket={socket}
           ></EmdrSounds>
           {this.props.ControlsVisibility ? (
-            <div className="absolute bottom-0 left-0 z-30 grid items-center grid-cols-12 gap-4 lg:bg-gray-900 ">
+            <div className="absolute bottom-0 left-0 z-50 grid items-center grid-cols-12 gap-4 lg:bg-gray-900 ">
               <label className="col-span-6 lg:col-span-2">
                 {" "}
                 Velocidade
                 <input
-                  className="z-30 p-5 bg-red-500"
+                  className="z-50 p-5 bg-red-500"
                   type="range"
                   name="velocity"
                   min={1}
@@ -814,7 +814,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 />
               </label>
 
-              <div className="z-30 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
                 <span>
                   Contagem <br />{" "}
                   {this.state.countMovements !== "infinito"
@@ -822,7 +822,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                     : "infinito"}
                 </span>
               </div>
-              <div className="z-30 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
                 <label>
                   {" "}
                   Movimentos <br />
@@ -835,7 +835,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 </label>
               </div>
 
-              <div className="z-30 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
                 <label>
                   {" "}
                   Tipos <br />
@@ -848,7 +848,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 </label>
               </div>
 
-              <div className="z-30 grid grid-cols-1 col-span-6 ml-10 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-6 ml-10 text-center lg:col-span-1 lg:grid-cols-1">
                 <button className={buttonStyle + " mb-1"} onClick={this.hide}>
                   {" "}
                   Hide{" "}
@@ -859,7 +859,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 </button>
               </div>
 
-              <div className="z-30 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
                 <button className={buttonStyle + " mb-1"} onClick={this.play}>
                   {" "}
                   Play{" "}
@@ -871,7 +871,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </div>
               <div className="grid grid-cols-1 col-span-6 lg:col-span-1">
                 <input
-                  className="z-30"
+                  className="z-50"
                   type="color"
                   name="circleColor"
                   onChange={(event) => this.setColor(event)}
@@ -880,20 +880,45 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             </div>
           ) : null}
           {/* // * Pre join */}
-          <video className="fixed top-0 z-10 w-full min-h-screen bg-gray-900" autoPlay={true}></video>
+          <video
+            className="fixed top-0 z-10 w-full min-h-screen bg-gray-900"
+            autoPlay={true}
+          ></video>
           {/* // * prejoin */}
           {/* <h2 className="absolute z-50 text-red-500" >URL: {this.state.url}</h2> */}
-          <div className="absolute left-0 z-50 mt-10">
-            {this.props.ControlsVisibility ? <button className="absolute left-0 p-2 border rounded"onClick={this.createCall}>gerar link</button> : null }
-            <br /><br />
-            <input className="text-gray-900" autoComplete="off" value={this.state.url} onChange={this.handleChange} name="url"></input>
+          <div className="absolute left-0 z-50 mt-10 bg-gray-900 rounded">
+            {this.props.ControlsVisibility ? (
+              <button
+                className="absolute left-0 p-2 border rounded"
+                onClick={this.createCall}
+              >
+                gerar link
+              </button>
+            ) : null}
             <br />
-            {this.state.url && this.state.url !== 'criando...'? 
-            <button className="p-2 text-white bg-blue-500 rounded-b" onClick={() => this.joinCall(this.state.url)}>Entrar</button>
-          : null}
+            <br />
+            <input
+              className="text-gray-900"
+              autoComplete="off"
+              value={this.state.url}
+              onChange={this.handleChange}
+              name="url"
+            ></input>
+            <br />
+            {this.state.url && this.state.url !== "criando..." ? (
+              <button
+                className="p-2 text-white bg-blue-500 rounded-b"
+                onClick={() => this.joinCall(this.state.url)}
+              >
+                Entrar
+              </button>
+            ) : null}
           </div>
 
-          <div className="fixed top-0 z-0 w-full min-h-screen bg-gray-900" id="users-container"></div>
+          <div
+            className="fixed top-0 z-40 w-full min-h-screen"
+            id="users-container"
+          ></div>
 
           <div className="absolute bottom-0 right-0 z-50 mr-10 text-center">
             <DragDropModal
