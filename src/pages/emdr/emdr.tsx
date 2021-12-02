@@ -8,6 +8,7 @@ import buttonCustom from "../../components/buttons/button";
 import DailyIframe, { DailyParticipantsObject } from "@daily-co/daily-js";
 import axios from "axios";
 import "../../styles/VideoSmall.css";
+import serverConnectionConfig from "../../config/server-connection.config";
 interface IEmdrProps {
   ControlsVisibility: boolean;
 }
@@ -87,7 +88,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   private callObject;
   constructor(props: IEmdrProps) {
     super(props);
-    this.url = "http://localhost:3002/daily/new-room";
+    this.url = serverConnectionConfig.create_room_url;
     this.callObject = DailyIframe.createCallObject();
     this.state = {
       messages: [],
@@ -769,9 +770,14 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             const users_containers: any =
               document.getElementById("users-container");
             users_containers.appendChild(videoStreamer);
+            try{
             const videoStream = new MediaStream();
             videoStream.addTrack(callItems[id].videoTrack);
             videoStreamer.srcObject = videoStream;
+            }catch(stream_creation_error) {
+              console.log('Erro creating media')
+              console.log(stream_creation_error)
+            }
           }
 
           for (const [id, audioStreamer] of Object.entries(
