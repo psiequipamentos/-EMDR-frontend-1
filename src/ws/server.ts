@@ -1,5 +1,6 @@
 import io, { Socket } from "socket.io-client";
 import crypto from "crypto";
+import serverConnectionConfig from "../config/server-connection.config";
 
 
 export default class WebsocketServer {
@@ -7,7 +8,7 @@ export default class WebsocketServer {
   public socket: Socket;
 
   constructor() {
-    this.ws_url = "http://localhost:3001";
+    this.ws_url = serverConnectionConfig.api_url;
     this.socket = io(this.ws_url);
   }
 
