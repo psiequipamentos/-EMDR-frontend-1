@@ -8,7 +8,7 @@ export default class WebsocketServer {
   public socket: Socket;
 
   constructor() {
-    this.ws_url = serverConnectionConfig.api_url;
+    this.ws_url = serverConnectionConfig.websocket_url;
     this.socket = io(this.ws_url);
   }
 

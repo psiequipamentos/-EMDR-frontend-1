@@ -805,8 +805,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           for (const [id, videoStreamer] of Object.entries(
             videoStreams
           ) as any) {
-            videoStreamer.setAttribute("class", "small-video");
-            videoStreamer.setAttribute("width", "100px");
+            videoStreamer.setAttribute("class", "fixed top-0 z-0 w-full min-h-screen bg-gray-900");
             videoStreamer.setAttribute("autoplay", "true");
             videoStreamer.setAttribute("id", id);
             const users_containers: any =
@@ -827,9 +826,13 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           ) as any) {
             audioStreamer.setAttribute("autoplay", "true");
             audioStreamer.setAttribute("id", id);
-            const audioStream = new MediaStream();
-            audioStream.addTrack(callAudioItems[id].audioTrack);
-            audioStreamer.srcObject = audioStream;
+            try{
+              const audioStream = new MediaStream();
+              audioStream.addTrack(callAudioItems[id].audioTrack);
+              audioStreamer.srcObject = audioStream;
+            }catch(audio_stream_error) {
+              console.log('error audio stream')
+            }
           }
         }
       }
@@ -929,7 +932,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           ) : null}
           {/* // * Pre join */}
           <video
-            className="fixed top-0 z-10 w-full min-h-screen bg-gray-900"
+            className="small-video z-10" width="100px"
             autoPlay={true}
           ></video>
           {/* // * prejoin */}
@@ -964,7 +967,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           </div>
 
           <div
-            className="fixed top-0 z-40 w-full min-h-screen"
+            className="fixed top-0 z-0 w-full min-h-screen"
             id="users-container"
           ></div>
 
