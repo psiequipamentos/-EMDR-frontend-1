@@ -76,6 +76,8 @@ const SelectMovement = [
 
 const centerX = (document.documentElement.clientWidth - 5) / 2 - 45;
 const centerY = (document.documentElement.clientHeight - 5) / 2;
+
+// ---------- SOCKET --------------------
 const init_ws = new WebsocketServer();
 const url = window.location.href;
 const user_type = url.split("/").reverse()[0];
@@ -101,7 +103,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       velocity: 3,
       stop: true,
       playSound: false,
-      visibility: true,
+      visibility: false,
       sacadicSide: "left",
 
       circleSize: 20,
@@ -463,6 +465,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       if (this.state.stop) {
         this.stop();
         this.setPlaySound(false);
+        if(user_type === 'paciente'){
+          setTimeout(() => {
+            this.setState({visibility: false});
+          }, 5000)
+        }
       }
     }
 
@@ -486,6 +493,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (this.isInCenterY()) {
       if (this.state.stop) {
         this.stop();
+        if(user_type === 'paciente'){
+          setTimeout(() => {
+            this.setState({visibility: false});
+          }, 5000)
+        }
       } else {
         this.changeMovement();
       }
@@ -516,6 +528,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       if (this.state.stop) {
         this.stop();
         this.setPlaySound(false);
+        if(user_type === 'paciente'){
+          setTimeout(() => {
+            this.setState({visibility: false});
+          }, 5000)
+        }
       } else {
         this.changeMovement();
       }
@@ -540,6 +557,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (this.state.stop) {
       this.stop();
       this.setPlaySound(false);
+      if(user_type === 'paciente'){
+        setTimeout(() => {
+          this.setState({visibility: false});
+        }, 5000)
+      }
     } else {
       if (side === "left") {
         this.state.position.x =
@@ -604,6 +626,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
   play() {
     if (this.isNotMoving()) {
+      this.setState({visibility: true});
       this.setState({ stop: false }, () => (this.state.direction.x = 0));
       this.setDirection(this.state.directionAux);
     }
@@ -612,6 +635,13 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     // } else {
     //   this.setDirection(this.state.direction.lastDir)
     // }
+
+    //**SOCKET
+    const data_to_send = {
+      property: "visibility",
+      value: true,
+    };
+    socket.emit("ball-handler", data_to_send);
   }
 
   pause() {
@@ -637,6 +667,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       () => this.setPlaySound(false)
     );
     this.setState({ position: { x: centerX, y: centerY } });
+    if(user_type==='psicologo'){
+        setTimeout(() => {
+          this.setState({visibility: false});
+        }, 5000)
+    }
   }
 
   isNotMoving() {
@@ -658,6 +693,13 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
   setAuxDirection(direction: string) {
     this.setState({ directionAux: direction });
+
+     //**SOCKET
+     const data_to_send = {
+      property: "directionAux",
+      value: direction,
+    };
+    socket.emit("ball-handler", data_to_send);
   }
 
   verifyCount() {
