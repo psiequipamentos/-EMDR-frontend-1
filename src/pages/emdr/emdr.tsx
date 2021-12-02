@@ -465,6 +465,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       if (this.state.stop) {
         this.stop();
         this.setPlaySound(false);
+        if(user_type === 'paciente'){
+          setTimeout(() => {
+            this.setState({visibility: false});
+          }, 5000)
+        }
       }
     }
 
@@ -488,6 +493,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (this.isInCenterY()) {
       if (this.state.stop) {
         this.stop();
+        if(user_type === 'paciente'){
+          setTimeout(() => {
+            this.setState({visibility: false});
+          }, 5000)
+        }
       } else {
         this.changeMovement();
       }
@@ -518,6 +528,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       if (this.state.stop) {
         this.stop();
         this.setPlaySound(false);
+        if(user_type === 'paciente'){
+          setTimeout(() => {
+            this.setState({visibility: false});
+          }, 5000)
+        }
       } else {
         this.changeMovement();
       }
@@ -542,6 +557,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (this.state.stop) {
       this.stop();
       this.setPlaySound(false);
+      if(user_type === 'paciente'){
+        setTimeout(() => {
+          this.setState({visibility: false});
+        }, 5000)
+      }
     } else {
       if (side === "left") {
         this.state.position.x =
@@ -647,18 +667,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       () => this.setPlaySound(false)
     );
     this.setState({ position: { x: centerX, y: centerY } });
-    
-    setTimeout(() => {
-      this.setState({visibility: false});
-
-      //**SOCKET
-    const data_to_send = {
-      property: "visibility",
-      value: false,
-    };
-    socket.emit("ball-handler", data_to_send);
-
-    }, 5000)
+    if(user_type==='psicologo'){
+        setTimeout(() => {
+          this.setState({visibility: false});
+        }, 5000)
+    }
   }
 
   isNotMoving() {
