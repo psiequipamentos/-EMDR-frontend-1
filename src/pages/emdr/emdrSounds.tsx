@@ -284,6 +284,8 @@ export default class EmdrSounds extends React.Component<
           {/* {this.setPlayback()} */}
         </div>
 
+        <button className="p-1 border" onClick={() => this.setVolume(0)}>mudo</button>
+
         <div className="col-span-12 mx-10 audioHandler lg:col-span-4"></div>
 
       </div>
