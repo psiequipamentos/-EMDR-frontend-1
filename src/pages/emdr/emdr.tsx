@@ -830,8 +830,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
                 <span>
                   Contagem <br />{" "}
-                  {this.state.countMovements !== 0 ?
-                  this.state.maxNumberOfMovements - this.state.countMovements : 0}
+                  {this.state.maxNumberOfMovements - this.state.countMovements}
                 </span>
               </div>
               <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
