@@ -9,6 +9,17 @@ import sound5 from "../../assets/musicas/sparkling-stream-in-the-quiet.mp3";
 import sound6 from "../../assets/musicas/sparrow-chirps-3-times-in-a.mp3";
 import sound7 from "../../assets/musicas/stone-throwing-in-water.mp3";
 import sound8 from "../../assets/musicas/underwater-image-of-a-river.mp3";
+
+import sound9 from "../../assets/tons/104242970.mp3";
+import sound10 from "../../assets/tons/108001370.mp3";
+import sound11 from "../../assets/tons/108001386.mp3";
+import sound12 from "../../assets/tons/115054166.mp3";
+import sound13 from "../../assets/tons/147775842.mp3"
+import sound14 from "../../assets/tons/218248983.mp3"
+import sound15 from "../../assets/tons/88495192.mp3"
+import sound16 from "../../assets/tons/89096439.mp3"
+import sound17 from "../../assets/tons/90586315.mp3"
+
 import SelectCustom from "../../components/inputs/select-custom";
 
 interface ISoundProps {
@@ -40,7 +51,17 @@ const musicas = [
   { name: "underwater image of a river", value: sound8 },
 ];
 
-const toques = [{ name: "Selecione um som", value: "Selecione um som" }];
+const toques = [
+  { name: "som 1", value: sound9 },
+  { name: "som 2", value: sound10 },
+  { name: "som 3", value: sound11 },
+  { name: "som 4", value: sound12 },
+  { name: "som 5", value: sound13 },
+  { name: "som 6", value: sound14 },
+  { name: "som 7", value: sound15 },
+  { name: "som 8", value: sound16 },
+  { name: "som 9", value: sound17 },
+];
 
 const semSom = [{ name: "Selecione um som", value: "Selecione um som" }];
 
@@ -88,9 +109,11 @@ export default class EmdrSounds extends React.Component<
   }
 
   
-  handleAudio({name, value}: any) {
+  handleAudio(event: any) {
+    const name = event.target.name
+    const value = event.target.value
     this.deleteAudio();
-    this.setState({ name : value } as any, () =>
+    this.setState({ sound : value } as any, () =>
       this.createAudio(this.state.sound)
     );
 
@@ -241,7 +264,7 @@ export default class EmdrSounds extends React.Component<
 
           <SelectCustom
             options={this.state.soundList}
-            handleChange={(event: any) => this.handleAudio({name: event.target.name, value: event.target.value})}
+            handleChange={(event: any) => this.handleAudio(event)}
           />
         </div>
 
