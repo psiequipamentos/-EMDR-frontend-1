@@ -33,10 +33,10 @@ interface IEmdrState {
   intervalo: number;
 
   directionStatus: string;
-  directionAux: string;
+  nextDirection: string;
 
   countMovements: any;
-  auxCount: any;
+  maxNumberOfMovements: any;
 
   balanceSound: number;
 
@@ -104,10 +104,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       intervalo: 10,
 
       directionStatus: "stop",
-      directionAux: "horizontal",
+      nextDirection: "horizontal",
 
       countMovements: SelectNumber[0].value,
-      auxCount: SelectNumber[0].value,
+      maxNumberOfMovements: SelectNumber[0].value,
 
       balanceSound: 0,
       url: "",
@@ -398,28 +398,6 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     }
   }
 
-  startMovement(x: number, y: number, dir: string) {
-    this.setState({
-      direction: {
-        x: x,
-        y: y,
-        dir: dir,
-        lastDir: this.state.direction.lastDir,
-      },
-      stop: false,
-    });
-    // console.log(this.state.directionStatus, this.state.direction.lastDir)
-    if (
-      this.state.directionStatus !== this.state.direction.lastDir ||
-      !this.state.countMovements
-    ) {
-      this.setState({ countMovements: this.state.auxCount });
-    }
-    // else{
-    //   this.setState({countMovements: this.state.countMovements - 1})
-    // }
-  }
-
   balanceX() {
     if (this.state.directionStatus === "sacadico") {
       if (this.state.sacadicPosition.x > centerX) {
@@ -435,16 +413,14 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
         this.setState({ balanceSound: balance });
       } else {
         const balance = (1 - this.state.position.x / this.right()) * -1 + 0.1;
-        // console.log(this.state.position.x, balance.toFixed(2), centerX)
         this.setState({ balanceSound: balance });
       }
     }
   }
 
   changeMovement() {
-    if (this.state.directionAux !== this.state.directionStatus) {
+    if (this.state.nextDirection !== this.state.directionStatus) {
       this.setState({ stop: true }, () => setTimeout(() => this.play(), 700));
-      //this.setState({stop: true}, () => this.setDirection(this.state.directionAux))
     }
   }
 
@@ -454,6 +430,24 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
         this.setState({visibility: false});
       }
     }, 3000)
+  }
+
+  startMovement(x: number, y: number, dir: string) {
+    this.setState({
+      direction: {
+        x: x,
+        y: y,
+        dir: dir,
+        lastDir: this.state.direction.lastDir,
+      },
+      stop: false,
+    });
+    // if (
+    //   this.state.directionStatus !== this.state.direction.lastDir ||
+    //   !this.state.countMovements
+    // ) {
+    //   this.setState({ countMovements: this.state.maxNumberOfMovements });
+    // }
   }
 
   horizontalMovement(movementDirection: number) {
@@ -501,12 +495,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       this.setState({ countMovements: this.state.countMovements - 1 });
     }
 
-    if (this.isOnTop() && this.state.countMovements !== "infinito") {
-      this.setState({ countMovements: this.state.countMovements - 1 });
-    }
-
     if (this.isOnTop() || this.isOnBottom()) {
-      // if (this.isOnTop()) { console.log('topo') }
       this.state.direction.y = -this.state.direction.y;
     }
 
@@ -533,7 +522,6 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     }
 
     if (this.isOnTop() || this.isOnBottom()) {
-      // if (this.isOnTop()) { console.log('topo diagonal') }
       this.state.direction.y = -this.state.direction.y;
       this.state.direction.x = -this.state.direction.x;
     }
@@ -572,12 +560,12 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
         stop: false,
       });
 
-      if (
-        this.state.directionStatus !== this.state.direction.lastDir ||
-        !this.state.countMovements
-      ) {
-        this.setState({ countMovements: this.state.auxCount });
-      }
+      // if (
+      //   this.state.directionStatus !== this.state.direction.lastDir ||
+      //   !this.state.countMovements
+      // ) {
+      //   this.setState({ countMovements: this.state.maxNumberOfMovements });
+      // }
     }
 
     if (
@@ -602,7 +590,6 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
         this.state.canvasWidth - this.state.circleSize * 8 + 50
     ) {
       this.state.direction.x = -this.state.direction.x;
-      // console.log('tocou a borda')
       this.sacadicAux(this.state.sacadicSide);
     }
 
@@ -614,13 +601,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (this.isNotMoving()) {
       this.setState({visibility: true});
       this.setState({ stop: false }, () => (this.state.direction.x = 0));
-      this.setDirection(this.state.directionAux);
+      this.setDirection(this.state.nextDirection);
+      if(this.state.nextDirection !== this.state.directionStatus){
+        this.setCounter(this.state.maxNumberOfMovements)
+      }
     }
-    // if (this.state.direction.dir === 'none') {
-    //   this.setDirection(MovementTypes[0])
-    // } else {
-    //   this.setDirection(this.state.direction.lastDir)
-    // }
 
     //**SOCKET
     const data_to_send = {
@@ -678,24 +663,18 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   }
 
   setAuxDirection(direction: string) {
-    this.setState({ directionAux: direction });
+    this.setState({ nextDirection: direction });
 
      //**SOCKET
      const data_to_send = {
-      property: "directionAux",
+      property: "nextDirection",
       value: direction,
     };
     socket.emit("ball-handler", data_to_send);
   }
 
-  verifyCount() {
-      if (!this.state.countMovements) {
-        this.setState({ stop: true });
-      }
-  }
-
   setCounter(value: any) {
-    this.setState({ countMovements: 0, auxCount: value });
+    this.setState({ countMovements: value, maxNumberOfMovements: value });
 
     //**SOCKET
     const data_to_send = {
@@ -704,7 +683,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     };
     socket.emit("ball-handler", data_to_send);
     const data_to_send2 = {
-      property: "auxCount",
+      property: "maxNumberOfMovements",
       value: value,
     };
     socket.emit("ball-handler", data_to_send2);
@@ -852,7 +831,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 <span>
                   Contagem <br />{" "}
                   {this.state.countMovements !== 0 ?
-                  this.state.auxCount - this.state.countMovements : 0}
+                  this.state.maxNumberOfMovements - this.state.countMovements : 0}
                 </span>
               </div>
               <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
@@ -918,7 +897,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             autoPlay={true}
           ></video>
           {/* // * prejoin */}
-          {/* <h2 className="absolute z-50 text-red-500" >URL: {this.state.url}</h2> */}
+          
           <div className="absolute left-0 z-50 mt-10 bg-gray-900 rounded">
             {this.props.ControlsVisibility ? (
               <button

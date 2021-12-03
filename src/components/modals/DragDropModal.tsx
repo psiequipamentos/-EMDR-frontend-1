@@ -32,8 +32,8 @@ export default class DragDropModal extends React.Component<IModalProps, IModalSt
 
 
 dragElement(elmnt: any) {
-    console.log('entrou na função dragElement')
-    console.log(elmnt)
+    // console.log('entrou na função dragElement')
+    // console.log(elmnt)
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
   if(elmnt){
 
