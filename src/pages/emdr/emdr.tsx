@@ -48,11 +48,9 @@ const buttonStyle =
   "z-30 p-10 mx-1 border rounded lg:p-1 hover:bg-white hover:text-black";
 
 let playInterval: any;
-let sacadicTimeOut: any;
 
-const MovementNumber = ["infinito", 8, 16, 30, 44, 62];
 const SelectNumber = [
-  { name: "infinito", value: "infinito" },
+  { name: "infinito", value: 1000000000 },
   { name: "8", value: 8 },
   { name: "16", value: 16 },
   { name: "30", value: 30 },
@@ -60,13 +58,6 @@ const SelectNumber = [
   { name: "62", value: 62 },
 ];
 
-const MovementTypes = [
-  "horizontal",
-  "vertical",
-  "diagonal1",
-  "diagonal2",
-  "sacadico",
-];
 const SelectMovement = [
   { name: "horizontal", value: "horizontal" },
   { name: "vertical", value: "vertical" },
@@ -115,8 +106,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       directionStatus: "stop",
       directionAux: "horizontal",
 
-      countMovements: MovementNumber[0],
-      auxCount: MovementNumber[0],
+      countMovements: SelectNumber[0].value,
+      auxCount: SelectNumber[0].value,
 
       balanceSound: 0,
       url: "",
@@ -160,6 +151,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.handleChange = this.handleChange.bind(this);
     this.entrar = this.entrar.bind(this);
     this.videoCallListeners = this.videoCallListeners.bind(this);
+
+    this.hideBallOnPause = this.hideBallOnPause.bind(this)
   }
 
   componentDidMount() {
@@ -455,6 +448,14 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     }
   }
 
+  hideBallOnPause(){
+    setTimeout(() => {
+    if(user_type === 'paciente' && this.state.directionStatus === "stop"){
+        this.setState({visibility: false});
+      }
+    }, 3000)
+  }
+
   horizontalMovement(movementDirection: number) {
     if (this.state.direction.x === 0) {
       this.startMovement(this.state.velocity, 0, "right");
@@ -466,15 +467,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       if (this.state.stop) {
         this.stop();
         this.setPlaySound(false);
-        if(user_type === 'paciente'){
-          setTimeout(() => {
-            this.setState({visibility: false});
-          }, 5000)
-        }
+        this.hideBallOnPause()
       }
     }
 
-    if (this.isInLeft() && this.state.countMovements !== "infinito") {
+    if (this.isInLeft()) {
       this.setState({ countMovements: this.state.countMovements - 1 });
     }
 
@@ -494,11 +491,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (this.isInCenterY()) {
       if (this.state.stop) {
         this.stop();
-        if(user_type === 'paciente'){
-          setTimeout(() => {
-            this.setState({visibility: false});
-          }, 5000)
-        }
+        this.hideBallOnPause()
       } else {
         this.changeMovement();
       }
@@ -529,11 +522,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       if (this.state.stop) {
         this.stop();
         this.setPlaySound(false);
-        if(user_type === 'paciente'){
-          setTimeout(() => {
-            this.setState({visibility: false});
-          }, 5000)
-        }
+        this.hideBallOnPause()
       } else {
         this.changeMovement();
       }
@@ -558,11 +547,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (this.state.stop) {
       this.stop();
       this.setPlaySound(false);
-      if(user_type === 'paciente'){
-        setTimeout(() => {
-          this.setState({visibility: false});
-        }, 5000)
-      }
+      this.hideBallOnPause()
     } else {
       if (side === "left") {
         this.state.position.x =
@@ -668,11 +653,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       () => this.setPlaySound(false)
     );
     this.setState({ position: { x: centerX, y: centerY } });
-    if(user_type==='psicologo'){
-        setTimeout(() => {
+    setTimeout(() => {
+          if(user_type==='psicologo' && this.state.directionStatus === "stop"){
           this.setState({visibility: false});
-        }, 5000)
-    }
+        }
+      }, 5000)
   }
 
   isNotMoving() {
@@ -704,15 +689,13 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   }
 
   verifyCount() {
-    if (this.state.countMovements !== "infinito") {
       if (!this.state.countMovements) {
         this.setState({ stop: true });
       }
-    }
   }
 
   setCounter(value: any) {
-    this.setState({ countMovements: value, auxCount: value });
+    this.setState({ countMovements: 0, auxCount: value });
 
     //**SOCKET
     const data_to_send = {
@@ -868,9 +851,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
                 <span>
                   Contagem <br />{" "}
-                  {this.state.countMovements !== "infinito"
-                    ? this.state.auxCount - this.state.countMovements
-                    : "infinito"}
+                  {this.state.countMovements !== 0 ?
+                  this.state.auxCount - this.state.countMovements : 0}
                 </span>
               </div>
               <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
@@ -932,7 +914,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           ) : null}
           {/* // * Pre join */}
           <video
-            className="small-video z-10" width="100px"
+            className="z-10 small-video" width="100px"
             autoPlay={true}
           ></video>
           {/* // * prejoin */}
