@@ -47,7 +47,7 @@ interface IEmdrState {
 const buttonStyle =
   "z-30 p-10 mx-1 border rounded lg:p-1 hover:bg-white hover:text-black";
 
-  const buttonPaciente = 
+  const buttonPaciente =
   "z-30 p-10 mx-1 border rounded lg:p-1 bg-black hover:bg-white text-white hover:text-black";
 let playInterval: any;
 
@@ -88,6 +88,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   constructor(props: IEmdrProps) {
     super(props);
     this.url = serverConnectionConfig.create_room_url;
+
     this.callObject = DailyIframe.createCallObject();
     this.state = {
       messages: [],
@@ -187,6 +188,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.setState({ [event.target.name]: event.target.value } as any);
   async createCall() {
     this.setState({ url: "criando..." });
+    console.log(this.url)
     return new Promise((resolve, reject) => {
       axios({
         url: this.url,
@@ -804,10 +806,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             ControlsVisibility={this.props.ControlsVisibility}
             socket={socket}
           ></EmdrSounds>
-          
+
             <div className={ this.props.ControlsVisibility ? MovementControlsStyle : MovementControlsStylePaciente}>
-              
-            {this.props.ControlsVisibility? 
+
+            {this.props.ControlsVisibility?
               <label className="col-span-6 lg:col-span-2">
                 {" "}
                 Velocidade
@@ -822,7 +824,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 />
               </label> : null }
 
-              {this.props.ControlsVisibility? 
+              {this.props.ControlsVisibility?
               <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
                 <span>
                   Contagem <br />{" "}
@@ -830,7 +832,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 </span>
               </div> : null }
 
-              {this.props.ControlsVisibility? 
+              {this.props.ControlsVisibility?
               <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
                 <label>
                   {" "}
@@ -844,7 +846,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 </label>
               </div> : null }
 
-              {this.props.ControlsVisibility? 
+              {this.props.ControlsVisibility?
               <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
                 <label>
                   {" "}
@@ -858,7 +860,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 </label>
               </div> : null }
 
-              {this.props.ControlsVisibility? 
+              {this.props.ControlsVisibility?
               <div className="z-50 grid grid-cols-1 col-span-6 ml-10 text-center lg:col-span-1 lg:grid-cols-1">
                 <button className={buttonStyle + " mb-1"} onClick={this.hide}>
                   {" "}
@@ -870,7 +872,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 </button>
               </div> : null }
 
-              {this.props.ControlsVisibility?    
+              {this.props.ControlsVisibility?
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
                 <button className={buttonStyle + " mb-1"} onClick={this.play}>
                   {" "}
@@ -882,7 +884,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 </button>
               </div> : null}
 
-              {this.props.ControlsVisibility? 
+              {this.props.ControlsVisibility?
               <div className="grid grid-cols-1 col-span-6 lg:col-span-1">
                 <input
                   className="z-50"
@@ -891,21 +893,21 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                   onChange={(event) => this.setColor(event)}
                 />
               </div> : null}
-              
+
               <button className={ this.props.ControlsVisibility? buttonStyle : buttonPaciente}>
                   {" "}
                   Mutar microfone{" "}
                 </button>
 
             </div>
-          
+
           {/* // * Pre join */}
           <video
             className="z-10 small-video" width="100px"
             autoPlay={true}
           ></video>
           {/* // * prejoin */}
-          
+
           <div className="absolute left-0 z-50 mt-10 bg-gray-900 rounded">
             {this.props.ControlsVisibility ? (
               <button
