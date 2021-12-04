@@ -198,7 +198,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           this.setState({ url: response.data.url });
           resolve(response.data.url);
         })
-        .catch((response_error: any) => reject(response_error.data.error));
+        .catch((response_error: any) =>{
+          console.log('erro ao criar nova chamada')
+          console.log(response_error)
+        });
     });
   }
 
