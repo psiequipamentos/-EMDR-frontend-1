@@ -9,6 +9,7 @@ import DailyIframe, { DailyParticipantsObject } from "@daily-co/daily-js";
 import axios from "axios";
 import "../../styles/VideoSmall.css";
 import serverConnectionConfig from "../../config/server-connection.config";
+import { hide, muteMicrofone, pause, play, show } from "./icons";
 interface IEmdrProps {
   ControlsVisibility: boolean;
 }
@@ -45,7 +46,7 @@ interface IEmdrState {
 }
 
 const buttonStyle =
-  "z-30 p-10 mx-1 border rounded lg:p-1 hover:bg-white hover:text-black";
+  "z-30 p-5 mx-1 border rounded lg:p-1 text-black lg:text-white hover:bg-white hover:text-black";
 
   const buttonPaciente =
   "z-30 p-10 mx-1 border rounded lg:p-1 bg-black hover:bg-white text-white hover:text-black";
@@ -326,13 +327,9 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   }
   hide() {
     this.setState({ visibility: false });
-
     //**SOCKET
-    const data_to_send = {
-      property: "visibility",
-      value: false,
-    };
-    socket.emit("ball-handler", data_to_send);
+    //const data_to_send = { property: "visibility", value: false, };
+    //socket.emit("ball-handler", data_to_send);
   }
 
   setVelocity(variable: any, velocity: any) {
@@ -813,8 +810,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             <div className={ this.props.ControlsVisibility ? MovementControlsStyle : MovementControlsStylePaciente}>
 
             {this.props.ControlsVisibility?
-              <label className="col-span-6 lg:col-span-2">
-                {" "}
+              <label className="col-span-6 text-black lg:col-span-2 lg:text-white">
                 Velocidade
                 <input
                   className="z-50 p-5 bg-red-500"
@@ -828,9 +824,9 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </label> : null }
 
               {this.props.ControlsVisibility?
-              <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-6 text-center text-black lg:col-span-1 lg:grid-cols-1 lg:text-white">
                 <span>
-                  Contagem <br />{" "}
+                  Contagem <br />
                   {this.state.maxNumberOfMovements - this.state.countMovements}
                 </span>
               </div> : null }
@@ -838,7 +834,6 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               {this.props.ControlsVisibility?
               <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
                 <label>
-                  {" "}
                   Movimentos <br />
                   <SelectCustom
                     options={SelectNumber}
@@ -852,7 +847,6 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               {this.props.ControlsVisibility?
               <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
                 <label>
-                  {" "}
                   Tipos <br />
                   <SelectCustom
                     options={SelectMovement}
@@ -865,42 +859,51 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
               {this.props.ControlsVisibility?
               <div className="z-50 grid grid-cols-1 col-span-6 ml-10 text-center lg:col-span-1 lg:grid-cols-1">
-                <button className={buttonStyle + " mb-1"} onClick={this.hide}>
-                  {" "}
-                  Hide{" "}
-                </button>
-                <button className={buttonStyle} onClick={this.show}>
-                  {" "}
-                  Show{" "}
-                </button>
+                {this.state.visibility?
+                  <button className={buttonStyle} onClick={this.hide}>
+                    {hide}
+                  </button>
+                  :
+                  <button className={buttonStyle} onClick={this.show}>
+                    {show}
+                  </button>
+                }
               </div> : null }
 
               {this.props.ControlsVisibility?
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
-                <button className={buttonStyle + " mb-1"} onClick={this.play}>
-                  {" "}
-                  Play{" "}
+                {this.isNotMoving()?
+                
+                <button className={buttonStyle} onClick={this.play}>
+                  {play}
                 </button>
+                :
                 <button className={buttonStyle} onClick={this.pause}>
-                  {" "}
-                  Stop{" "}
+                  {pause}
                 </button>
+              }
               </div> : null}
 
               {this.props.ControlsVisibility?
-              <div className="grid grid-cols-1 col-span-6 lg:col-span-1">
+              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
                 <input
-                  className="z-50"
+                  className="z-50 p-5 rounded"
+                  style={{backgroundColor: this.state.circleColor}}
                   type="color"
                   name="circleColor"
                   onChange={(event) => this.setColor(event)}
                 />
               </div> : null}
-
-              <button className={ this.props.ControlsVisibility? buttonStyle : buttonPaciente}>
-                  {" "}
-                  Mutar microfone{" "}
+              {this.props.ControlsVisibility?
+              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+              <button className={buttonStyle + " bg-white"}>
+                  {muteMicrofone}
                 </button>
+              </div>
+              : null}
+
+
+              
 
             </div>
 
