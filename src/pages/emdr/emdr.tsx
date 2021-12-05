@@ -810,10 +810,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             <div className={ this.props.ControlsVisibility ? MovementControlsStyle : MovementControlsStylePaciente}>
 
             {this.props.ControlsVisibility?
-              <label className="col-span-6 text-black lg:col-span-2 lg:text-white">
+              <label className="col-span-6 pt-1 m-2 text-sm font-semibold text-black rounded lg:bg-white lg:col-span-2">
                 Velocidade
                 <input
-                  className="z-50 p-5 bg-red-500"
+                  className="z-50 mb-3 bg-red-500"
                   type="range"
                   name="velocity"
                   min={1}
@@ -824,7 +824,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </label> : null }
 
               {this.props.ControlsVisibility?
-              <div className="z-50 grid grid-cols-1 col-span-6 text-center text-black lg:col-span-1 lg:grid-cols-1 lg:text-white">
+              <div className="z-50 grid grid-cols-1 col-span-6 text-sm font-semibold text-center text-black lg:col-span-1 lg:grid-cols-1 lg:text-white">
                 <span>
                   Contagem <br />
                   {this.state.maxNumberOfMovements - this.state.countMovements}
@@ -832,7 +832,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </div> : null }
 
               {this.props.ControlsVisibility?
-              <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-6 text-sm font-semibold text-center lg:col-span-1 lg:grid-cols-1">
                 <label>
                   Movimentos <br />
                   <SelectCustom
@@ -845,7 +845,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </div> : null }
 
               {this.props.ControlsVisibility?
-              <div className="z-50 grid grid-cols-1 col-span-6 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-6 text-sm font-semibold text-center lg:col-span-1 lg:grid-cols-1">
                 <label>
                   Tipos <br />
                   <SelectCustom

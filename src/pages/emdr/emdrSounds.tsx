@@ -21,6 +21,7 @@ import sound16 from "../../assets/tons/89096439.mp3"
 import sound17 from "../../assets/tons/90586315.mp3"
 
 import SelectCustom from "../../components/inputs/select-custom";
+import { soundOff, soundOn } from "./icons";
 
 interface ISoundProps {
   ControlsVisibility: boolean;
@@ -195,11 +196,33 @@ export default class EmdrSounds extends React.Component<
   setVolume(value: number) {
     const audio = document.querySelector('audio');
     if (audio) {
-      this.setState({ volume: value / 100 }, () => audio.volume = this.state.volume)
+      if(value == 0 && this.state.volume == 0){
+        this.setState({ volume: 0.1 }, () => audio.volume = this.state.volume)
+      } else{
+        this.setState({ volume: value / 100 }, () => audio.volume = this.state.volume)
+      }
       
       //**SOCKET
       //TODO SOUND-HANDLER
     }
+  }
+
+  muteOptions(config: string) {
+    const audio = document.querySelector('audio');
+    const url = window.location.href;
+    const user_type = url.split("/").reverse()[0];
+
+    if (audio) {
+      if(user_type === config || config === "ambos"){
+        audio.volume = 0
+      } else{
+        audio.volume = this.state.volume
+      }
+    }
+
+    //**SOCKET
+      //TODO SOUND-HANDLER
+
   }
 
   // setPlayback() {
@@ -238,9 +261,9 @@ export default class EmdrSounds extends React.Component<
 
   render() {
     return (
-      <div className="relative top-0 left-0 z-50 grid items-center grid-cols-12 gap-4 lg:bg-gray-900 controls">
+      <div className="relative top-0 left-0 z-50 grid items-center grid-cols-12 gap-4 py-1 lg:bg-gray-900 controls">
         <select
-          className="col-span-6 p-3 text-black rounded outline-none lg:col-span-2"
+          className="col-span-6 p-2 text-sm font-semibold text-black rounded outline-none lg:col-span-2"
           name="sound"
           onChange={this.handleType}
         >
@@ -268,8 +291,8 @@ export default class EmdrSounds extends React.Component<
           />
         </div>
 
-        <div className="col-span-6 lg:col-span-2">
-          <label>Volume <br />
+        <div className="col-span-6 px-5 mx-5 text-sm font-semibold text-black rounded lg:col-span-3 lg:bg-white">
+          <label className="pt-1 m-2 ">Volume <br />
             <input type="range"
               min={0} max={100}
               value={this.state.volume * 100}
@@ -284,7 +307,21 @@ export default class EmdrSounds extends React.Component<
           {/* {this.setPlayback()} */}
         </div>
 
-        <button className="p-1 border" onClick={() => this.setVolume(0)}>mudo</button>
+        {/* <button className="py-1 border rounded" onClick={() => this.setVolume(0)}>
+          {!this.state.play? soundOn : soundOff}
+        </button> */}
+
+        <div className="col-span-6 text-sm font-semibold lg:col-span-2">
+          <label>Silenciar para 
+          <SelectCustom
+            options={[
+            {name:'paciente', value:'paciente'}, 
+            {name:'psicologo', value:'psicologo'}, 
+            {name:'ambos', value:'ambos'}]}
+            handleChange={(event: any) => this.muteOptions(event.target.value)}
+          />
+          </label>
+        </div>
 
         <div className="col-span-12 mx-10 audioHandler lg:col-span-4"></div>
 
