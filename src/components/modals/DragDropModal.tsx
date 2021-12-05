@@ -89,8 +89,8 @@ dragElement(elmnt: any) {
                         <div id="mydiv" className="fixed top-0 left-0" ref={this.state.draggableDiv} >
                             <div className="relative w-full mx-auto my-6">
                                 <div className="relative flex flex-col w-full border-0 rounded-lg outline-none focus:outline-none">
-                                    <article className="relative mx-auto overflow-auto bg-gray-100 rounded lg:w-1/2">
-                                    <div id="mydivheader">Clique aqui para mover o chat</div>
+                                    <article className="relative w-full mx-auto overflow-auto bg-gray-100 rounded">
+                                    <div className="" id="mydivheader">Clique aqui para mover o chat</div>
                                         {this.props.content ?
                                             <this.props.content closeModal={this.changeTrigger} socket={this.props.socket} trigger={this.changeTrigger}/>
                                             : this.props.children
