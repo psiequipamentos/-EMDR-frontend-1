@@ -352,11 +352,12 @@ export default class EmdrSounds extends React.Component<
           {/* {this.setPlayback()} */}
         </div>
 
-        {/* <button className="py-1 border rounded" onClick={() => this.setVolume(0)}>
+        <button className="py-1 border rounded" onClick={() => this.setVolume(0)}>
           {!this.state.play? soundOn : soundOff}
-        </button> */}
+        </button>
 
-        <div className="col-span-6 text-sm font-semibold lg:col-span-2">
+        {/*Importante não apagar isso aqui mans*/}
+        {/* <div className="col-span-6 text-sm font-semibold lg:col-span-2">
           <label>Silenciar para
           <SelectCustom
             options={[
@@ -366,7 +367,7 @@ export default class EmdrSounds extends React.Component<
             handleChange={(event: any) => this.muteOptions(event.target.value)}
           />
           </label>
-        </div>
+        </div> */}
 
         <div className="col-span-12 mx-10 audioHandler lg:col-span-4"></div>
 
