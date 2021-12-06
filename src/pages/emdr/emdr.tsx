@@ -9,7 +9,7 @@ import DailyIframe, { DailyParticipantsObject } from "@daily-co/daily-js";
 import axios from "axios";
 import "../../styles/VideoSmall.css";
 import serverConnectionConfig from "../../config/server-connection.config";
-import { hide, muteMicrofone, pause, play, show } from "./icons";
+import { hide, muteMicrofone, pause, play, show, unMuteMicrofone } from "./icons";
 interface IEmdrProps {
   ControlsVisibility: boolean;
 }
@@ -893,7 +893,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               {this.props.ControlsVisibility?
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
                 <input
-                  className="z-50 p-5 rounded"
+                  className="z-50 px-5 py-4 rounded"
                   style={{backgroundColor: this.state.circleColor}}
                   type="color"
                   name="circleColor"
@@ -905,7 +905,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               <button className={buttonStyle + " bg-white"} onClick={() => this.setState({
                 mic_state: !this.state.mic_state
               }, () => this.changeMicState())}>
-                  {muteMicrofone}
+                  {this.state.mic_state? muteMicrofone : unMuteMicrofone }
                 </button>
               </div>
               : null}
@@ -916,14 +916,14 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             </div>
 
           {/* // * Pre join */}
-            <div className={'z-10'} >
-                <button id={'video-button'} className={'small-video-button bg-gray-900 ' + buttonStyle} onClick={() => {
+            <div className={'z-10 font-semibold text-sm'} >
+                <button id={'video-button'} className={'z-30 p-1 small-video-button bg-gray-900 '} onClick={() => {
                     const video: any = document.getElementById('self-camera')
                     video.classList.toggle('hidden')
                     const button: any = document.getElementById('video-button')
-                    button.textContent = video.classList.contains('hidden') ? show : hide
+                    button.textContent = video.classList.contains('hidden') ? 'show' : 'hide'
                     console.log(button.textContent)
-                }}></button>
+                }}>hide</button>
 
                 <video
                     className="z-10 small-video" id={'self-camera'} width="100px"
