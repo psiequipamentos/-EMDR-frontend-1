@@ -916,10 +916,21 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             </div>
 
           {/* // * Pre join */}
-          <video
-            className="z-10 small-video" width="100px"
-            autoPlay={true}
-          ></video>
+            <div className={'z-10'} >
+                <button id={'video-button'} className={'small-video-button bg-gray-900 ' + buttonStyle} onClick={() => {
+                    const video: any = document.getElementById('self-camera')
+                    video.classList.toggle('hidden')
+                    const button: any = document.getElementById('video-button')
+                    button.textContent = video.classList.contains('hidden') ? show : hide
+                    console.log(button.textContent)
+                }}></button>
+
+                <video
+                    className="z-10 small-video" id={'self-camera'} width="100px"
+                    autoPlay={true}
+                ></video>
+
+            </div>
           {/* // * prejoin */}
 
           <div className="absolute left-0 z-50 mt-10 bg-gray-900 rounded">
