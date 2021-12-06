@@ -23,6 +23,8 @@ import sound17 from "../../assets/tons/90586315.mp3"
 import SelectCustom from "../../components/inputs/select-custom";
 import { soundOff, soundOn } from "./icons";
 
+
+
 interface ISoundProps {
   ControlsVisibility: boolean;
   soundBalance: number;
@@ -109,7 +111,7 @@ export default class EmdrSounds extends React.Component<
     this.play = this.play.bind(this)
   }
 
-  
+
   handleAudio(event: any) {
     const name = event.target.name
     const value = event.target.value
@@ -168,6 +170,8 @@ export default class EmdrSounds extends React.Component<
   }
 
   createAudio(sound: any) {
+
+
     const controls = document.querySelector(".controls");
     const defaultSound = sound;
     const audioHandler = document.querySelector(".audioHandler");
@@ -190,20 +194,41 @@ export default class EmdrSounds extends React.Component<
     audio.append(source);
     audioHandler?.append(audio);
     this.setState({ audioNode: audio })
-    
+
   }
 
   setVolume(value: number) {
+    const url = window.location.href;
+    const user_type = url.split("/").reverse()[0];
     const audio = document.querySelector('audio');
     if (audio) {
       if(value == 0 && this.state.volume == 0){
-        this.setState({ volume: 0.1 }, () => audio.volume = this.state.volume)
+        this.setState({ volume: 0.1 }, () => {
+          audio.volume = this.state.volume
+          if(user_type === 'psicologo'){
+            const data_to_send = {
+              property: 'volume',
+              value: this.state.volume
+            }
+            this.props.socket.emit('audio-handler', data_to_send)
+          }
+        })
       } else{
-        this.setState({ volume: value / 100 }, () => audio.volume = this.state.volume)
+        this.setState({ volume: value / 100 }, () => {
+          audio.volume = this.state.volume
+          if(user_type === 'psicologo'){
+            const data_to_send = {
+              property: 'volume',
+              value: this.state.volume
+            }
+            this.props.socket.emit('audio-handler', data_to_send)
+          }
+        })
       }
-      
+
       //**SOCKET
       //TODO SOUND-HANDLER
+
     }
   }
 
@@ -222,6 +247,7 @@ export default class EmdrSounds extends React.Component<
 
     //**SOCKET
       //TODO SOUND-HANDLER
+
 
   }
 
@@ -255,8 +281,27 @@ export default class EmdrSounds extends React.Component<
   }
 
   componentDidMount() {
-    this.createAudio(allSounds[0].value);
-    this.props.socket.on("audio-handler", (data:any) => this.play(this.props.play));
+    navigator.mediaDevices
+        .getUserMedia({
+          video: false,
+          audio: true,
+        })
+    const url = window.location.href;
+    const user_type = url.split("/").reverse()[0];
+      this.createAudio(allSounds[0].value);
+    if(user_type ===  'paciente')
+      this.props.socket.on("audio-handler", ({property, value}:any) => {
+            if (property === 'sound'){
+              this.deleteAudio();
+              this.setState({ sound : value } as any, () =>
+                  this.createAudio(this.state.sound)
+              );
+            }
+            else if(property === 'volume'){
+              this.setVolume(parseFloat(value) * 100)
+            }
+          }
+      );
   }
 
   render() {
@@ -312,11 +357,11 @@ export default class EmdrSounds extends React.Component<
         </button> */}
 
         <div className="col-span-6 text-sm font-semibold lg:col-span-2">
-          <label>Silenciar para 
+          <label>Silenciar para
           <SelectCustom
             options={[
-            {name:'paciente', value:'paciente'}, 
-            {name:'psicologo', value:'psicologo'}, 
+            {name:'paciente', value:'paciente'},
+            {name:'psicologo', value:'psicologo'},
             {name:'ambos', value:'ambos'}]}
             handleChange={(event: any) => this.muteOptions(event.target.value)}
           />
