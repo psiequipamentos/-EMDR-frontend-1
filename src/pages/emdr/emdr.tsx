@@ -43,6 +43,7 @@ interface IEmdrState {
 
   messages: any;
   url: any;
+  mic_state: boolean
 }
 
 const buttonStyle =
@@ -119,6 +120,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
       balanceSound: 0,
       url: "",
+      mic_state:true
     };
 
     this.moveBalls = this.moveBalls.bind(this);
@@ -159,7 +161,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.handleChange = this.handleChange.bind(this);
     this.entrar = this.entrar.bind(this);
     this.videoCallListeners = this.videoCallListeners.bind(this);
-
+    this.changeMicState = this.changeMicState.bind(this)
     this.hideBallOnPause = this.hideBallOnPause.bind(this)
   }
 
@@ -726,6 +728,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       this.sacadicMovement();
     }
   }
+   changeMicState = () =>
+    this.callObject.setLocalAudio(this.state.mic_state)
 
   videoCallListeners() {
     this.callObject.on("participant-updated", async (event) => {
@@ -750,11 +754,13 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           let audioStreams: any = {};
           for (const [id] of Object.entries(callItems) as any) {
             if (id !== "local" && !videoStreams[id]) {
+              if(!videoStreams[id])
               videoStreams[id] = document.createElement("video");
             }
           }
           for (const [id] of Object.entries(callAudioItems) as any) {
             if (id !== "local" && !audioStreams[id]) {
+              if(!audioStreams[id])
               audioStreams[id] = document.createElement("audio");
             }
           }
@@ -873,7 +879,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               {this.props.ControlsVisibility?
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
                 {this.isNotMoving()?
-                
+
                 <button className={buttonStyle} onClick={this.play}>
                   {play}
                 </button>
@@ -896,14 +902,16 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </div> : null}
               {this.props.ControlsVisibility?
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
-              <button className={buttonStyle + " bg-white"}>
+              <button className={buttonStyle + " bg-white"} onClick={() => this.setState({
+                mic_state: !this.state.mic_state
+              }, () => this.changeMicState())}>
                   {muteMicrofone}
                 </button>
               </div>
               : null}
 
 
-              
+
 
             </div>
 
