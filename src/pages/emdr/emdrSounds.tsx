@@ -236,18 +236,21 @@ export default class EmdrSounds extends React.Component<
     const audio = document.querySelector('audio');
     const url = window.location.href;
     const user_type = url.split("/").reverse()[0];
-
+    console.log(config)
     if (audio) {
       if(user_type === config || config === "ambos"){
         audio.volume = 0
       } else{
         audio.volume = this.state.volume
       }
+      if(user_type === 'psicologo'){
+        const data_to_send = {
+          property: 'mute-song',
+          value: config
+        }
+        this.props.socket.emit('audio-handler', data_to_send)
+      }
     }
-
-    //**SOCKET
-      //TODO SOUND-HANDLER
-
 
   }
 
@@ -297,9 +300,11 @@ export default class EmdrSounds extends React.Component<
                   this.createAudio(this.state.sound)
               );
             }
-            else if(property === 'volume'){
+            else if(property === 'volume')
               this.setVolume(parseFloat(value) * 100)
-            }
+
+            else if(property === 'mute-song')
+              this.muteOptions(value)
           }
       );
   }
@@ -358,7 +363,7 @@ export default class EmdrSounds extends React.Component<
 
         {/*Importante não apagar isso aqui mans*/}
         <div className="col-span-6 text-sm font-semibold lg:col-span-2">
-          <label> <span>Silenciar para  </span> 
+          <label> <span>Silenciar para  </span>
           <SelectCustom
             options={[
             {name:'paciente', value:'paciente'},
