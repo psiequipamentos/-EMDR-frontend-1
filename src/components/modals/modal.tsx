@@ -40,14 +40,12 @@ export default class Modal extends React.Component<IModalProps, IModalState>{
                                         }
                                     </article>
 
-                                    {this.props.content ?
-                                        <div className="flex justify-center mx-auto mb-4 rounded-b md:w-1/2">
+                                        <div className="flex justify-center mx-auto mt-4 rounded-b md:w-1/2">
                                             <button
                                                 onClick={this.changeTrigger}
                                                 className="z-40 flex items-center justify-center w-12 h-12 text-white transition transform rotate-45 bg-red-500 border border-red-500 rounded hover:border-white hover:-rotate-45 hover:bg-white hover:text-red-500"
                                             > + </button>
-                                        </div> : null
-                                    }
+                                        </div> 
 
                                 </div>
                             </div>
