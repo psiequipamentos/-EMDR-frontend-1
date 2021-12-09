@@ -71,6 +71,7 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
         <label className="mt-3 mb-1">
           <span className="mr-2 text-sm font-semibold">DDI</span>
           <SelectCustom
+          name={"ddi"}
             handleChange
             options={[{ name: "Brasil", option: "+55" }]}
           />

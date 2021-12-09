@@ -2,29 +2,31 @@ import React from "react";
 import InputCustom from "../../../components/inputs/input-custom";
 import SelectCustom from "../../../components/inputs/select-custom";
 
-interface PacienteProps {
-  closeModal: any;
+interface EditPacienteProps{
+  paciente: any;
 }
 
-interface PacienteState {
+interface EditPacienteState {
   nome: string;
   email: string;
   telefone: number;
   ddi: any;
+  status: any;
 }
 
-export default class AddPaciente extends React.Component<
-  PacienteProps,
-  PacienteState
+export default class EditPaciente extends React.Component<
+  EditPacienteProps,
+  EditPacienteState
 > {
-  constructor(props: PacienteProps) {
+  constructor(props: EditPacienteProps) {
     super(props);
 
     this.state = {
-      nome: "",
-      email: "",
-      telefone: 0,
+      nome: this.props.paciente.nome,
+      email: this.props.paciente.email,
+      telefone: this.props.paciente.whatsapp,
       ddi: "",
+      status: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -50,11 +52,12 @@ export default class AddPaciente extends React.Component<
           Informações do paciente
         </h2>
 
-        <InputCustom label="nome" type="text" name="nome" placeholder="nome" />
+        <InputCustom value={this.props.paciente.nome} label="nome" type="text" name="nome" placeholder="nome" />
         <InputCustom
           label="email"
           type="email"
           name="email"
+          value={this.props.paciente.email}
           placeholder="email"
         />
 
@@ -72,16 +75,21 @@ export default class AddPaciente extends React.Component<
           label="telefone"
           type="tel"
           name="telefone"
+          value={this.props.paciente.whatsapp}
           placeholder="numero de telefone"
         ></InputCustom>
 
+        <label className="w-full mt-3 mb-1">
+          {" "}
+          <span className="mr-2 text-sm font-semibold">Status</span>
+          <SelectCustom
+          name={"status"}
+            handleChange
+            options={[{ name: "ativo", option: "ativo" }, {name: "inativo", option: "inativo"}]}
+          />
+        </label>
+
         <div className="flex justify-around gap-2 mt-3">
-          <button
-            onClick={this.props.closeModal}
-            className="w-full p-3 bg-gray-100 rounded hover:bg-gray-300"
-          >
-            Cancelar
-          </button>
           <button className="w-full p-3 bg-gray-100 rounded hover:bg-gray-300">
             Confirmar
           </button>

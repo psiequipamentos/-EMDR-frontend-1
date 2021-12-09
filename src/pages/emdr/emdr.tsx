@@ -8,7 +8,7 @@ import buttonCustom from "../../components/buttons/button";
 import DailyIframe, { DailyParticipantsObject } from "@daily-co/daily-js";
 import axios from "axios";
 import "../../styles/VideoSmall.css";
-import serverConnectionConfig from "../../config/server-connection.config";
+import {serverConnectionConfig} from "../../config/server-connection.config";
 import { hide, muteMicrofone, pause, play, show, unMuteMicrofone } from "./icons";
 import DragCamera from "../../components/modals/dragCamera/DragCamera";
 interface IEmdrProps {
@@ -843,6 +843,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 <label>
                   Movimentos <br />
                   <SelectCustom
+                  name={"movimentos"}
                     options={SelectNumber}
                     handleChange={(event: any) =>
                       this.setCounter(event.target.value)
@@ -856,6 +857,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 <label>
                   Tipos <br />
                   <SelectCustom
+                  name={"tipos"}
                     options={SelectMovement}
                     handleChange={(event: any) =>
                       this.setAuxDirection(event.target.value)

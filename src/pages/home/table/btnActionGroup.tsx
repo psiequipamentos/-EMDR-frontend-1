@@ -2,6 +2,7 @@ import React from "react"
 import EditProfileBtn from "../../../components/buttons/EditProfileBtn"
 import InviteBtn from "../../../components/buttons/sendInviteBtn"
 import Modal from "../../../components/modals/modal"
+import EditPaciente from "../forms/editPaciente"
 import Invite from "../invite"
 
 interface BtnProps{
@@ -26,7 +27,7 @@ export default class BtnActionGroup extends React.Component<BtnProps, any>{
                   />
                 </Modal>
                 <Modal openModalComponent={EditProfileBtn}>
-                  Formulário de edição do paciente {this.props.paciente.id}
+                  <EditPaciente paciente={this.props.paciente} />
                 </Modal>
               </div>
     )
