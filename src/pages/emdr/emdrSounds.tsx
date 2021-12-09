@@ -336,6 +336,7 @@ export default class EmdrSounds extends React.Component<
           {'volume' + this.state.volume} */}
 
           <SelectCustom
+          name={"soundList"}
             options={this.state.soundList}
             handleChange={(event: any) => this.handleAudio(event)}
           />
@@ -365,6 +366,7 @@ export default class EmdrSounds extends React.Component<
         <div className="col-span-6 text-sm font-semibold lg:col-span-2">
           <label> <span>Silenciar para  </span>
           <SelectCustom
+          name={"silenciarMovimentos"}
             options={[
             {name:'paciente', value:'paciente'},
             {name:'psicologo', value:'psicologo'},

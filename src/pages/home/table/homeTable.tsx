@@ -37,7 +37,7 @@ export default class TableMenu extends React.Component<any, tableState>{
     return (
       <section className="font-semibold md:px-10">
 
-        <form className="lg:w-1/2 w-full lg:p-10 p-3" onChange={event => this.search(event)}>
+        <form className="md:w-1/2 w-full md:p-10 p-3" onChange={event => this.search(event)}>
           <InputCustom name="pesquisa" type='search' placeholder='Pesquisar paciente'/>
         </form>
 

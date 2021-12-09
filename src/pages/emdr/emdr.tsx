@@ -843,6 +843,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 <label>
                   Movimentos <br />
                   <SelectCustom
+                  name={"movimentos"}
                     options={SelectNumber}
                     handleChange={(event: any) =>
                       this.setCounter(event.target.value)
@@ -856,6 +857,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 <label>
                   Tipos <br />
                   <SelectCustom
+                  name={"tipos"}
                     options={SelectMovement}
                     handleChange={(event: any) =>
                       this.setAuxDirection(event.target.value)
