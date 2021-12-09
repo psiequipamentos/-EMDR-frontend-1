@@ -43,7 +43,7 @@ export default class InputCustom extends React.Component<IInputProps, IInputStat
             <div className={ inputStyle + " flex"}>
                     <input 
                 required
-                autoComplete={this.props.name=="cpf"? "off" : "on"}
+                autoComplete={this.props.name==="cpf" || this.props.name ==="pesquisa"? "off" : "on"}
                 className={handleInputStyle}
                 placeholder={this.props.label? '' : this.props.placeholder} 
                 name={this.props.name}
