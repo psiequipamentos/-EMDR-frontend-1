@@ -8,7 +8,7 @@ import buttonCustom from "../../components/buttons/button";
 import DailyIframe, { DailyParticipantsObject } from "@daily-co/daily-js";
 import axios from "axios";
 import "../../styles/VideoSmall.css";
-import serverConnectionConfig from "../../config/server-connection.config";
+import {serverConnectionConfig} from "../../config/server-connection.config";
 import { hide, muteMicrofone, pause, play, show, unMuteMicrofone } from "./icons";
 import DragCamera from "../../components/modals/dragCamera/DragCamera";
 interface IEmdrProps {
