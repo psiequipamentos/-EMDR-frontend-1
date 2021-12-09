@@ -14,7 +14,7 @@ interface IInputState{
     dinamicType: any
 }
 
-export default class InputCustom extends React.Component<IInputProps, any>{
+export default class InputCustom extends React.Component<IInputProps, IInputState>{
     constructor(props: IInputProps) {
         super(props)
         this.state = {
