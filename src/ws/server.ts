@@ -1,6 +1,6 @@
 import io, { Socket } from "socket.io-client";
 import crypto from "crypto";
-import serverConnectionConfig from "../config/server-connection.config";
+import {serverConnectionConfig} from "../config/server-connection.config";
 
 
 export default class WebsocketServer {
