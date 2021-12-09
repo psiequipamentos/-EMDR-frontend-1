@@ -1,4 +1,5 @@
 import React from "react";
+import { hide, show } from "../../pages/emdr/icons";
 import { handleInputStyle, inputStyle, labelStyle } from "./inputStyle";
 
 interface IInputProps {
@@ -51,7 +52,7 @@ export default class InputCustom extends React.Component<IInputProps, IInputStat
                 onChange={this.changeValue}
                 />
                  {this.props.type==='password'?
-                <button onClick={this.changeType}> olhinho </button>: null
+                <button onClick={this.changeType}> {this.state.dinamicType === 'password'? show : hide} </button>: null
             } 
             </div>
             </label>

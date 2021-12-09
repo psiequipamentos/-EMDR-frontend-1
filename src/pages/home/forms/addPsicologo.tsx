@@ -2,29 +2,29 @@ import React from "react";
 import InputCustom from "../../../components/inputs/input-custom";
 import SelectCustom from "../../../components/inputs/select-custom";
 
-interface PacienteProps {
-  closeModal: any;
-}
-
-interface PacienteState {
+interface PsicologoState {
   nome: string;
+  sobrenome: string;
   email: string;
   telefone: number;
   ddi: any;
+  senha: string;
+  confirmarSenha: string;
 }
 
-export default class AddPaciente extends React.Component<
-  PacienteProps,
-  PacienteState
-> {
-  constructor(props: PacienteProps) {
+export default class AddPsicologo extends React.Component<any, PsicologoState> {
+  constructor(props: any) {
     super(props);
 
     this.state = {
       nome: "",
+      sobrenome: "",
       email: "",
       telefone: 0,
       ddi: "",
+      senha: "",
+      confirmarSenha: "",
+
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -42,24 +42,32 @@ export default class AddPaciente extends React.Component<
   render() {
     return (
       <form
-        className="flex flex-col gap-1 p-0 text-black bg-gray-200 rounded lg:p-10"
+        className="grid grid-cols-2 gap-1 p-0 text-black bg-gray-200 rounded lg:p-10"
         onSubmit={(event) => this.submitForm(event)}
         onChange={this.handleChange}
       >
-        <h2 className="my-5 font-semibold text-center text-md">
-          Informações do paciente
+        <h2 className="col-span-2 my-5 text-lg font-semibold text-center">
+          Cadastro de psicólogo
         </h2>
 
-        <InputCustom label="nome" type="text" name="nome" placeholder="nome" />
+        <InputCustom label="Nome" type="text" name="nome" placeholder="Nome" />
         <InputCustom
-          label="email"
-          type="email"
-          name="email"
-          placeholder="email"
+          label="Sobrenome"
+          type="text"
+          name="sobrenome"
+          placeholder="Sobrenome"
         />
 
-        <label className="w-full mt-3 mb-1">
-          {" "}
+        <div className="col-span-2">
+          <InputCustom
+            label="Email"
+            type="email"
+            name="email"
+            placeholder="email"
+          />
+        </div>
+
+        <label className="mt-3 mb-1">
           <span className="mr-2 text-sm font-semibold">DDI</span>
           <SelectCustom
             handleChange
@@ -68,19 +76,27 @@ export default class AddPaciente extends React.Component<
         </label>
 
         <InputCustom
-          label="telefone"
+          label="Telefone"
           type="tel"
           name="telefone"
           placeholder="numero de telefone"
         ></InputCustom>
 
-        <div className="flex justify-around gap-2 mt-3">
-          <button
-            onClick={this.props.closeModal}
-            className="w-full p-3 bg-gray-100 rounded hover:bg-gray-300"
-          >
-            Cancelar
-          </button>
+        <InputCustom
+          label="Senha"
+          type="password"
+          name="senha"
+          placeholder="Senha"
+        ></InputCustom>
+
+        <InputCustom
+          label="Confirmar senha"
+          type="password"
+          name="confirmarSenha"
+          placeholder="Confirmar senha"
+        ></InputCustom>
+
+        <div className="flex justify-around col-span-2 gap-2 mt-3">
           <button className="w-full p-3 bg-gray-100 rounded hover:bg-gray-300">
             Confirmar
           </button>
