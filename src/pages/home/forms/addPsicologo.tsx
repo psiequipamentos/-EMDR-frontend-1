@@ -37,6 +37,7 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
   submitForm(event: any) {
     event.preventDefault();
     console.log(this.state);
+    
   }
 
   render() {
