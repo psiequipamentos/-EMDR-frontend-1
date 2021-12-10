@@ -1,6 +1,7 @@
 import React from "react";
 import InputCustom from "../../../components/inputs/input-custom";
 import SelectCustom from "../../../components/inputs/select-custom";
+import PacienteService from "../../../services/paciente.service";
 
 interface PacienteProps {
   closeModal: any;
@@ -34,9 +35,16 @@ export default class AddPaciente extends React.Component<
   handleChange = (event: any) =>
     this.setState({ [event.target.name]: event.target.value } as any);
 
-  submitForm(event: any) {
+  async submitForm(event: any) {
     event.preventDefault();
-    console.log(this.state);
+    const paciente_service = new PacienteService();
+    const data_to_send = {
+      email:this.state.email,
+      nome: this.state.nome,
+      telefone: this.state.ddi + this.state.telefone,
+    }
+    const response = await paciente_service.create(data_to_send);
+    console.log(response);
   }
 
   render() {

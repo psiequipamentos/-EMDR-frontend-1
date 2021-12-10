@@ -8,26 +8,26 @@ export default class MasterService {
         this.endpoint = endpoint
     }
 
-    protected create = async (data:any) => {
+    public create = async (data:any) => {
         const response = await this.api_service.RequestData('POST', this.endpoint, data, '')
         return response
     }
 
-    protected readAll = async() => {
+    public readAll = async() => {
         const response = await this.api_service.RequestData('GET', this.endpoint, '')
         return response
     }
 
-    protected readOne = async(ID:any) => {
+    public readOne = async(ID:any) => {
         const response = await this.api_service.RequestData('GET', this.endpoint, ID)
         return response
     }
 
-    protected update = async(ID:any, data:any) => {
+    public update = async(ID:any, data:any) => {
         const response = await this.api_service.RequestData('PUT', this.endpoint,data, ID)
         return response
     }
-    protected delete = async (ID:any) => {
+    public delete = async (ID:any) => {
         const response = await this.api_service.RequestData('DELETE', this.endpoint, ID)
         return response
     }

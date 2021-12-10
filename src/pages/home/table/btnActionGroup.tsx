@@ -22,7 +22,7 @@ export default class BtnActionGroup extends React.Component<BtnProps, any>{
                   <Invite
                     nome={this.props.paciente.nome} 
                     email={this.props.paciente.email} 
-                    whatsapp={this.props.paciente.whatsapp} 
+                    whatsapp={this.props.paciente.telefone} 
                     telegram={this.props.paciente.telegram}
                   />
                 </Modal>
