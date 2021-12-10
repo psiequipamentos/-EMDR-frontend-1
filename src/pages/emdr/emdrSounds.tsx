@@ -21,7 +21,6 @@ import sound16 from "../../assets/tons/89096439.mp3"
 import sound17 from "../../assets/tons/90586315.mp3"
 
 import SelectCustom from "../../components/inputs/select-custom";
-import { soundOff, soundOn } from "./icons";
 
 
 
@@ -121,7 +120,8 @@ export default class EmdrSounds extends React.Component<
     );
 
     const url = window.location.href;
-    const user_type = url.split("/").reverse()[0];
+    const user_type = url.split("/").reverse()[1];
+    console.log(user_type)
     if(user_type === 'psicologo'){
       const data_to_send = {
         property: name,
@@ -199,7 +199,8 @@ export default class EmdrSounds extends React.Component<
 
   setVolume(value: number) {
     const url = window.location.href;
-    const user_type = url.split("/").reverse()[0];
+    const user_type = url.split("/").reverse()[1];
+    console.log(user_type)
     const audio = document.querySelector('audio');
     if (audio) {
       if(value == 0 && this.state.volume == 0){
@@ -235,7 +236,8 @@ export default class EmdrSounds extends React.Component<
   muteOptions(config: string) {
     const audio = document.querySelector('audio');
     const url = window.location.href;
-    const user_type = url.split("/").reverse()[0];
+    const user_type = url.split("/").reverse()[1];
+    console.log(user_type)
     console.log(config)
     if (audio) {
       if(user_type === config || config === "ambos"){
@@ -253,21 +255,6 @@ export default class EmdrSounds extends React.Component<
     }
 
   }
-
-  // setPlayback() {
-  //   const audio = document.querySelector('audio');
-  //   const velocity = this.props.velocity / 10
-  //   // console.log(velocity)
-  //   if (audio) {
-  //     if(velocity > 2){
-  //       audio.playbackRate = 2
-  //     } else if(velocity < 0.5){
-  //       audio.playbackRate = 0.5
-  //     } else{
-  //       audio.playbackRate = velocity
-  //     }
-  //   }
-  // }
 
   play(playStatus: boolean) {
     const audio = document.querySelector("audio");
@@ -290,7 +277,8 @@ export default class EmdrSounds extends React.Component<
           audio: true,
         })
     const url = window.location.href;
-    const user_type = url.split("/").reverse()[0];
+    const user_type = url.split("/").reverse()[1];
+    console.log(user_type)
       this.createAudio(allSounds[0].value);
     if(user_type ===  'paciente')
       this.props.socket.on("audio-handler", ({property, value}:any) => {

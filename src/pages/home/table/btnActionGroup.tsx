@@ -4,25 +4,51 @@ import InviteBtn from "../../../components/buttons/sendInviteBtn"
 import Modal from "../../../components/modals/modal"
 import EditPaciente from "../forms/editPaciente"
 import Invite from "../invite"
+import axios from "axios";
+import DailyService from "../../../services/daily.service";
 
 interface BtnProps{
   paciente: any
 }
 
-export default class BtnActionGroup extends React.Component<BtnProps, any>{
+interface BtnState {
+    text: string;
+    enabled:boolean;
+}
+
+export default class BtnActionGroup extends React.Component<BtnProps, BtnState>{
+    private psicologo_id: number;
   constructor(props:BtnProps){
     super(props)
+
+      this.psicologo_id = 1 //TODO pegar o ID do paciente pelo cookie
+      this.createCall = this.createCall.bind(this);
+    this.state  = {
+        text: 'Criar Sessão',
+        enabled: true
+      }
   }
+    async createCall() {
+        this.setState({ text: "Criando ..." , enabled: false});
+        const daily_service = new DailyService();
+        const daily_create_response: any = await daily_service.create({psicologo: this.psicologo_id, paciente: this.props.paciente.id})
+        if(daily_create_response.created)
+            window.location.reload()
+        else
+            alert(daily_create_response.error)
+    }
 
   render(){
     return(
       <div className="flex flex-wrap col-span-1 gap-1">
-                <button className="px-1 text-sm font-semibold text-right border rounded">Iniciar sessão</button>
+                <button className="px-1 text-sm font-semibold text-right border" onClick={() => this.state.enabled ? this.createCall() : null}>{this.state.text}</button>
+                {this.props.paciente?.pacient_sessions[0]?.session_code ? <button className="px-1 text-sm font-semibold text-right border bg-green-300" onClick={() => window.location.href = "/emdr/psicologo/" + this.props.paciente?.pacient_sessions[0]?.session_code}>Iniciar Sessão</button> : null }
                 <Modal openModalComponent={InviteBtn}>
                   <Invite
-                    nome={this.props.paciente.nome} 
-                    email={this.props.paciente.email} 
-                    whatsapp={this.props.paciente.telefone} 
+                      url_sessao={this.props.paciente?.pacient_sessions[0]?.session_code}
+                    nome={this.props.paciente.nome}
+                    email={this.props.paciente.email}
+                    whatsapp={this.props.paciente.telefone}
                     telegram={this.props.paciente.telegram}
                   />
                 </Modal>

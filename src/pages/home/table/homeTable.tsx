@@ -21,7 +21,7 @@ export default class TableMenu extends React.Component<any, tableState>{
   async componentDidMount() {
     const get_pacientes_service = new PacienteService();
     const lista =  await get_pacientes_service.readAll();
-    console.log(lista);
+
     this.setState({ todosPacientes: lista }, ()=>
     this.setState({pacientes: this.state.todosPacientes}))
   }
@@ -29,8 +29,8 @@ export default class TableMenu extends React.Component<any, tableState>{
   search(event: any){
     const searchInput = event.target.value
     const filterPacientes = this.state.todosPacientes.filter(
-      (paciente: any) => 
-        paciente.nome.includes(searchInput) 
+      (paciente: any) =>
+        paciente.nome.includes(searchInput)
        || paciente.telefone.toString().includes(searchInput)
        || paciente.email.includes(searchInput)
     )
