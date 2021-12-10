@@ -3,6 +3,8 @@ import EditProfileBtn from '../../../components/buttons/EditProfileBtn'
 import InviteBtn from '../../../components/buttons/sendInviteBtn'
 import InputCustom from '../../../components/inputs/input-custom'
 import Modal from '../../../components/modals/modal'
+import PacienteService from '../../../services/paciente.service'
+import PsicologoService from '../../../services/psicologo.service'
 import Invite from '../invite'
 import { pacientes } from '../mocks/pacientes'
 import BtnActionGroup from './btnActionGroup'
@@ -16,9 +18,11 @@ export default class TableMenu extends React.Component<any, tableState>{
     this.search = this.search.bind(this)
   }
 
-  componentDidMount() {
-    const mockPacientes = pacientes
-    this.setState({ todosPacientes: mockPacientes }, ()=>
+  async componentDidMount() {
+    const get_pacientes_service = new PacienteService();
+    const lista =  await get_pacientes_service.readAll();
+    console.log(lista);
+    this.setState({ todosPacientes: lista }, ()=>
     this.setState({pacientes: this.state.todosPacientes}))
   }
 
@@ -27,7 +31,7 @@ export default class TableMenu extends React.Component<any, tableState>{
     const filterPacientes = this.state.todosPacientes.filter(
       (paciente: any) => 
         paciente.nome.includes(searchInput) 
-       || paciente.whatsapp.toString().includes(searchInput)
+       || paciente.telefone.toString().includes(searchInput)
        || paciente.email.includes(searchInput)
     )
     this.setState({pacientes: filterPacientes})
@@ -53,7 +57,7 @@ export default class TableMenu extends React.Component<any, tableState>{
             <article key={"paciente-" + index} className="grid items-center grid-cols-1 py-3 pl-5 mx-0 border-b md:mx-10 md:grid-cols-2 lg:grid-cols-4"> {/* paciente */}
               <h3 className="col-span-1"> {paciente.nome} </h3>
               <h3 className="col-span-1">{paciente.email}</h3>
-              <h3 className="col-span-1">{paciente.whatsapp}</h3>
+              <h3 className="col-span-1">{paciente.telefone}</h3>
               <BtnActionGroup paciente={paciente}></BtnActionGroup>
             </article>
         )}

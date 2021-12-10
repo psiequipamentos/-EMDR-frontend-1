@@ -1,6 +1,7 @@
 import React from "react";
 import InputCustom from "../../../components/inputs/input-custom";
 import SelectCustom from "../../../components/inputs/select-custom";
+import PacienteService from "../../../services/paciente.service";
 
 interface EditPacienteProps{
   paciente: any;
@@ -12,6 +13,7 @@ interface EditPacienteState {
   telefone: number;
   ddi: any;
   status: any;
+  id: any;
 }
 
 export default class EditPaciente extends React.Component<
@@ -24,9 +26,10 @@ export default class EditPaciente extends React.Component<
     this.state = {
       nome: this.props.paciente.nome,
       email: this.props.paciente.email,
-      telefone: this.props.paciente.whatsapp,
+      telefone: this.props.paciente.telefone,
       ddi: "",
       status: "",
+      id: this.props.paciente.id,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -36,9 +39,17 @@ export default class EditPaciente extends React.Component<
   handleChange = (event: any) =>
     this.setState({ [event.target.name]: event.target.value } as any);
 
-  submitForm(event: any) {
+  async submitForm(event: any) {
     event.preventDefault();
-    console.log(this.state);
+    const paciente_service = new PacienteService();
+    const data_to_send = {
+      nome:this.state.nome,
+      email:this.state.email,
+      telefone:this.state.ddi + this.state.telefone,
+      status:this.state.status,
+    }
+    await paciente_service.update(this.state.id, data_to_send); 
+    window.location.reload();    
   }
 
   render() {
@@ -75,7 +86,7 @@ export default class EditPaciente extends React.Component<
           label="telefone"
           type="tel"
           name="telefone"
-          value={this.props.paciente.whatsapp}
+          value={this.props.paciente.telefone}
           placeholder="numero de telefone"
         ></InputCustom>
 

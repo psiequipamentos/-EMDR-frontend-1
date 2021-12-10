@@ -1,5 +1,6 @@
 import React from "react";
 import InputCustom from "../../../components/inputs/input-custom";
+import PsicologoService from "../../../services/psicologo.service";
 
 interface PsicologoState {
   email: string;
@@ -22,9 +23,16 @@ export default class LoginPsicologo extends React.Component<any, PsicologoState>
   handleChange = (event: any) =>
     this.setState({ [event.target.name]: event.target.value } as any);
 
-  submitForm(event: any) {
+  async submitForm(event: any) {
     event.preventDefault();
-    console.log(this.state);
+    const auth_service = new PsicologoService();
+    const data_to_send = {
+      email: this.state.email,
+      senha: this.state.senha,
+    };
+    const response = await auth_service.login(data_to_send);
+    console.log(response);
+
   }
 
   render() {
