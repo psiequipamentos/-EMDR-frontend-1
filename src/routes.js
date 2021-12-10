@@ -16,10 +16,10 @@ function RouterComponent() {
           <Route path='editar-paciente/:id' element={<EditPaciente />}> </Route>
           <Route path='cadastro' element={<Cadastro />}> </Route>
           <Route path='login' element={<Login />}> </Route>
-          <Route path='prejoin' element={<Prejoin />}> </Route>
-          <Route path="emdr/psicologo" element={<Emdr ControlsVisibility={true} />}></Route>
-          <Route path="emdr/paciente" element={<Emdr ControlsVisibility={false} />}></Route>
-        </Routes>    
+          <Route path='prejoin/:meeting_id' element={<Prejoin />}> </Route>
+          <Route path="emdr/psicologo/:meeting_code" element={<Emdr ControlsVisibility={true} />}></Route>
+          <Route path="emdr/paciente/:meeting_code" element={<Emdr ControlsVisibility={false} />}></Route>
+        </Routes>
     </div>
     </BrowserRouter>
   );

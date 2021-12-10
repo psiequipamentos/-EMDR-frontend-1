@@ -81,17 +81,16 @@ const centerY = (document.documentElement.clientHeight - 5) / 2;
 // ---------- SOCKET --------------------
 const init_ws = new WebsocketServer();
 const url = window.location.href;
-const user_type = url.split("/").reverse()[0];
+const user_type = url.split("/").reverse()[1];
 init_ws.run(user_type);
 const socket = init_ws.socket;
 
 export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
-  private url;
   private callObject;
+  private serverConfig;
   constructor(props: IEmdrProps) {
     super(props);
-    this.url = serverConnectionConfig.create_room_url;
-
+    this.serverConfig = serverConnectionConfig
     this.callObject = DailyIframe.createCallObject();
     this.state = {
       messages: [],
@@ -120,7 +119,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       maxNumberOfMovements: SelectNumber[0].value,
 
       balanceSound: 0,
-      url: "",
+      url: `${this.serverConfig.daily_co_api}/${window.location.href.split("/").reverse()[0]}`,
       mic_state:true
     };
 
@@ -155,10 +154,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.setColor = this.setColor.bind(this);
     this.balanceX = this.balanceX.bind(this);
     this.callObject = DailyIframe.createCallObject();
-    this.createCall = this.createCall.bind(this);
     this.joinCall = this.joinCall.bind(this);
-    this.participants = this.participants.bind(this);
-    this.start = this.start.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.entrar = this.entrar.bind(this);
     this.videoCallListeners = this.videoCallListeners.bind(this);
@@ -176,6 +172,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       .then((stream: any) => {
         let video: any = document.querySelector("video");
         video.srcObject = stream;
+        this.entrar();
       });
     this.videoCallListeners();
     // * PREJOIN
@@ -190,27 +187,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
   handleChange = (event: any) =>
     this.setState({ [event.target.name]: event.target.value } as any);
-  async createCall() {
-    this.setState({ url: "criando..." });
-    console.log(this.url)
-    return new Promise((resolve, reject) => {
-      axios({
-        url: this.url,
-        method: "POST",
-      })
-        .then((response: any) => {
-          this.setState({ url: response.data.url });
-          resolve(response.data.url);
-        })
-        .catch((response_error: any) =>{
-          console.log('erro ao criar nova chamada')
-          console.log(response_error)
-        });
-    });
-  }
 
   joinCall(url: any) {
-    console.log(url);
     return new Promise((resolve, reject) =>
       this.callObject
         .join({ url })
@@ -219,16 +197,6 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     );
   }
 
-  participants(): DailyParticipantsObject {
-    return this.callObject.participants();
-  }
-
-  async start() {
-    try {
-      const room_url = await this.createCall();
-      await this.joinCall(room_url);
-    } catch (err) {}
-  }
 
   async entrar() {
     try {
@@ -942,35 +910,6 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
             </div>
           {/* // * prejoin */}
-
-          <div className="absolute left-0 z-50 mt-10 bg-gray-900 rounded">
-            {this.props.ControlsVisibility ? (
-              <button
-                className="absolute left-0 p-2 border rounded"
-                onClick={this.createCall}
-              >
-                gerar link
-              </button>
-            ) : null}
-            <br />
-            <br />
-            <input
-              className="text-gray-900"
-              autoComplete="off"
-              value={this.state.url}
-              onChange={this.handleChange}
-              name="url"
-            ></input>
-            <br />
-            {this.state.url && this.state.url !== "criando..." ? (
-              <button
-                className="p-2 text-white bg-blue-500 rounded-b"
-                onClick={() => this.joinCall(this.state.url)}
-              >
-                Entrar
-              </button>
-            ) : null}
-          </div>
 
           <div
             className="fixed top-0 z-0 w-full min-h-screen"

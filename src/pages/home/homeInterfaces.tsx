@@ -3,6 +3,7 @@ export interface InviteProps{
   nome: string;
   whatsapp: string;
   telegram?: string;
+  url_sessao: string;
 }
 
 export interface InviteState{
