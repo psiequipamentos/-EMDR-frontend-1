@@ -71,7 +71,7 @@ const SelectMovement = [
   { name: "sacadico", value: "sacadico" },
 ];
 
-const MovementControlsStyle = "absolute bottom-0 left-0 z-50 grid items-center grid-cols-12 gap-4 lg:bg-gray-900"
+const MovementControlsStyle = "absolute bottom-0 w-full left-0 z-50 grid items-center grid-cols-12 gap-4 lg:bg-gray-900"
 const MovementControlsStylePaciente = "absolute bottom-0 left-0 z-50 grid items-center grid-cols-12 gap-4"
 
 
