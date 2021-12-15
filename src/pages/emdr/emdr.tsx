@@ -8,7 +8,7 @@ import buttonCustom from "../../components/buttons/button";
 import DailyIframe, { DailyParticipantsObject } from "@daily-co/daily-js";
 import axios from "axios";
 import "../../styles/VideoSmall.css";
-import {serverConnectionConfig} from "../../config/server-connection.config";
+import { serverConnectionConfig } from "../../config/server-connection.config";
 import { hide, muteMicrofone, pause, play, show, unMuteMicrofone } from "./icons";
 import DragCamera from "../../components/modals/dragCamera/DragCamera";
 interface IEmdrProps {
@@ -50,7 +50,7 @@ interface IEmdrState {
 const buttonStyle =
   "z-30 p-5 mx-1 border rounded lg:p-1 text-black lg:text-white hover:bg-white hover:text-black";
 
-  const buttonPaciente =
+const buttonPaciente =
   "z-30 p-10 mx-1 border rounded lg:p-1 bg-black hover:bg-white text-white hover:text-black";
 let playInterval: any;
 
@@ -120,7 +120,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
       balanceSound: 0,
       url: `${this.serverConfig.daily_co_api}/${window.location.href.split("/").reverse()[0]}`,
-      mic_state:true
+      mic_state: true
     };
 
     this.moveBalls = this.moveBalls.bind(this);
@@ -403,10 +403,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     }
   }
 
-  hideBallOnPause(){
+  hideBallOnPause() {
     setTimeout(() => {
-    if(user_type === 'paciente' && this.state.directionStatus === "stop"){
-        this.setState({visibility: false});
+      if (user_type === 'psicologo' && this.state.directionStatus === "stop") {
+        this.setState({ visibility: false });
       }
     }, 3000)
   }
@@ -553,7 +553,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (
       this.state.sacadicPosition.x < this.state.circleSize ||
       this.state.sacadicPosition.x >
-        this.state.canvasWidth - this.state.circleSize * 8 + 50
+      this.state.canvasWidth - this.state.circleSize * 8 + 50
     ) {
       this.state.direction.x = -this.state.direction.x;
       this.sacadicAux(this.state.sacadicSide);
@@ -565,10 +565,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
   play() {
     if (this.isNotMoving()) {
-      this.setState({visibility: true});
+      this.setState({ visibility: true });
       this.setState({ stop: false }, () => (this.state.direction.x = 0));
       this.setDirection(this.state.nextDirection);
-      if(this.state.nextDirection !== this.state.directionStatus){
+      if (this.state.nextDirection !== this.state.directionStatus) {
         this.setCounter(this.state.maxNumberOfMovements)
       }
     }
@@ -605,10 +605,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     );
     this.setState({ position: { x: centerX, y: centerY } });
     setTimeout(() => {
-          if(user_type==='psicologo' && this.state.directionStatus === "stop"){
-          this.setState({visibility: false});
-        }
-      }, 5000)
+      if (user_type === 'psicologo' && this.state.directionStatus === "stop") {
+        this.setState({ visibility: false });
+      }
+    }, 5000)
   }
 
   isNotMoving() {
@@ -631,8 +631,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   setAuxDirection(direction: string) {
     this.setState({ nextDirection: direction });
 
-     //**SOCKET
-     const data_to_send = {
+    //**SOCKET
+    const data_to_send = {
       property: "nextDirection",
       value: direction,
     };
@@ -697,7 +697,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       this.sacadicMovement();
     }
   }
-   changeMicState = () =>
+  changeMicState = () =>
     this.callObject.setLocalAudio(this.state.mic_state)
 
   videoCallListeners() {
@@ -723,14 +723,14 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           let audioStreams: any = {};
           for (const [id] of Object.entries(callItems) as any) {
             if (id !== "local" && !videoStreams[id]) {
-              if(!videoStreams[id])
-              videoStreams[id] = document.createElement("video");
+              if (!videoStreams[id])
+                videoStreams[id] = document.createElement("video");
             }
           }
           for (const [id] of Object.entries(callAudioItems) as any) {
             if (id !== "local" && !audioStreams[id]) {
-              if(!audioStreams[id])
-              audioStreams[id] = document.createElement("audio");
+              if (!audioStreams[id])
+                audioStreams[id] = document.createElement("audio");
             }
           }
 
@@ -743,11 +743,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             const users_containers: any =
               document.getElementById("users-container");
             users_containers.appendChild(videoStreamer);
-            try{
-            const videoStream = new MediaStream();
-            videoStream.addTrack(callItems[id].videoTrack);
-            videoStreamer.srcObject = videoStream;
-            }catch(stream_creation_error) {
+            try {
+              const videoStream = new MediaStream();
+              videoStream.addTrack(callItems[id].videoTrack);
+              videoStreamer.srcObject = videoStream;
+            } catch (stream_creation_error) {
               console.log('Erro creating media')
               console.log(stream_creation_error)
             }
@@ -758,11 +758,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           ) as any) {
             audioStreamer.setAttribute("autoplay", "true");
             audioStreamer.setAttribute("id", id);
-            try{
+            try {
               const audioStream = new MediaStream();
               audioStream.addTrack(callAudioItems[id].audioTrack);
               audioStreamer.srcObject = audioStream;
-            }catch(audio_stream_error) {
+            } catch (audio_stream_error) {
               console.log('error audio stream')
             }
           }
@@ -782,9 +782,9 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             socket={socket}
           ></EmdrSounds>
 
-            <div className={ this.props.ControlsVisibility ? MovementControlsStyle : MovementControlsStylePaciente}>
+          <div className={this.props.ControlsVisibility ? MovementControlsStyle : MovementControlsStylePaciente}>
 
-            {this.props.ControlsVisibility?
+            {this.props.ControlsVisibility ?
               <label className="col-span-6 pt-1 m-2 text-sm font-semibold text-black rounded lg:bg-white lg:col-span-2">
                 Velocidade
                 <input
@@ -796,47 +796,47 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                   max={20}
                   onChange={(event) => this.chageVelocity(+event.target.value)}
                 />
-              </label> : null }
+              </label> : null}
 
-              {this.props.ControlsVisibility?
+            {this.props.ControlsVisibility ?
               <div className="z-50 grid grid-cols-1 col-span-6 text-sm font-semibold text-center text-black lg:col-span-1 lg:grid-cols-1 lg:text-white">
                 <span>
                   Contagem <br />
                   {this.state.maxNumberOfMovements - this.state.countMovements}
                 </span>
-              </div> : null }
+              </div> : null}
 
-              {this.props.ControlsVisibility?
+            {this.props.ControlsVisibility ?
               <div className="z-50 grid grid-cols-1 col-span-6 text-sm font-semibold text-center lg:col-span-1 lg:grid-cols-1">
                 <label>
                   Movimentos <br />
                   <SelectCustom
-                  name={"movimentos"}
+                    name={"movimentos"}
                     options={SelectNumber}
                     handleChange={(event: any) =>
                       this.setCounter(event.target.value)
                     }
                   />
                 </label>
-              </div> : null }
+              </div> : null}
 
-              {this.props.ControlsVisibility?
+            {this.props.ControlsVisibility ?
               <div className="z-50 grid grid-cols-1 col-span-6 text-sm font-semibold text-center lg:col-span-1 lg:grid-cols-1">
                 <label>
                   Tipos <br />
                   <SelectCustom
-                  name={"tipos"}
+                    name={"tipos"}
                     options={SelectMovement}
                     handleChange={(event: any) =>
                       this.setAuxDirection(event.target.value)
                     }
                   />
                 </label>
-              </div> : null }
+              </div> : null}
 
-              {this.props.ControlsVisibility?
+            {this.props.ControlsVisibility ?
               <div className="z-50 grid grid-cols-1 col-span-6 ml-10 text-center lg:col-span-1 lg:grid-cols-1">
-                {this.state.visibility?
+                {this.state.visibility ?
                   <button className={buttonStyle} onClick={this.hide}>
                     {hide}
                   </button>
@@ -845,38 +845,38 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                     {show}
                   </button>
                 }
-              </div> : null }
-
-              {this.props.ControlsVisibility?
-              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
-                {this.isNotMoving()?
-
-                <button className={buttonStyle} onClick={this.play}>
-                  {play}
-                </button>
-                :
-                <button className={buttonStyle} onClick={this.pause}>
-                  {pause}
-                </button>
-              }
               </div> : null}
 
-              {this.props.ControlsVisibility?
+            {this.props.ControlsVisibility ?
+              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+                {this.isNotMoving() ?
+
+                  <button className={buttonStyle} onClick={this.play}>
+                    {play}
+                  </button>
+                  :
+                  <button className={buttonStyle} onClick={this.pause}>
+                    {pause}
+                  </button>
+                }
+              </div> : null}
+
+            {this.props.ControlsVisibility ?
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
                 <input
                   className="z-50 px-5 py-4 rounded"
-                  style={{backgroundColor: this.state.circleColor}}
+                  style={{ backgroundColor: this.state.circleColor }}
                   type="color"
                   name="circleColor"
                   onChange={(event) => this.setColor(event)}
                 />
               </div> : null}
-              {this.props.ControlsVisibility?
+            {this.props.ControlsVisibility ?
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
-              <button className={buttonStyle + " bg-white"} onClick={() => this.setState({
-                mic_state: !this.state.mic_state
-              }, () => this.changeMicState())}>
-                  {this.state.mic_state? muteMicrofone : unMuteMicrofone }
+                <button className={buttonStyle + " bg-white"} onClick={() => this.setState({
+                  mic_state: !this.state.mic_state
+                }, () => this.changeMicState())}>
+                  {this.state.mic_state ? muteMicrofone : unMuteMicrofone}
                 </button>
               </div>
               : null}
@@ -884,31 +884,39 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
 
 
-            </div>
+          </div>
 
           {/* // * Pre join */}
-            <div className={'z-10 font-semibold text-sm'} >
-                {/* <button id={'video-button'} className={'z-30 p-1 small-video-button bg-gray-900 '} onClick={() => {
+          <div className={'z-10 font-semibold text-sm'} >
+            {/* <button id={'video-button'} className={'z-30 p-1 small-video-button bg-gray-900 '} onClick={() => {
                     const video: any = document.getElementById('self-camera')
                     video.classList.toggle('hidden')
                     const button: any = document.getElementById('video-button')
                     button.textContent = video.classList.contains('hidden') ? 'show' : 'hide'
                     console.log(button.textContent)
                 }}>hide</button> */}
+            
 
-                <DragCamera>
+            <div className={`${!this.isNotMoving() && this.props.ControlsVisibility === false ? 'absolute top-0 right-0 z-0 mr-10 text-center' : ''}`}>
+            <DragCamera>
                 <video
-                    className="z-10 small-video" id={'self-camera'} width="100px"
-                    autoPlay={true}
+                  className="z-10 small-video" id={'self-camera'} width="100px"
+                  autoPlay={true}
                 ></video>
-                </DragCamera>
+              </DragCamera>
+            </div>
 
-                {/* <video
+              
+
+            
+
+
+            {/* <video
                     className="z-10 small-video" id={'self-camera'} width="100px"
                     autoPlay={true}
                 ></video> */}
 
-            </div>
+          </div>
           {/* // * prejoin */}
 
           <div
@@ -916,7 +924,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             id="users-container"
           ></div>
 
-          <div className="absolute bottom-0 right-0 z-50 mr-10 text-center">
+          <div className={`${!this.isNotMoving() && this.props.ControlsVisibility === false ? '' : 'absolute bottom-0 right-0 z-50 mr-10 text-center'}`}>
             <DragDropModal
               content={Chat}
               openModalComponent={buttonCustom}
@@ -926,7 +934,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           {/* <div className="fixed top-0 z-0 w-full min-h-screen bg-pink-400"></div> */}
           <canvas
             ref={this.state.canvas}
-            className={`mx-auto absolute top-0 z-20`}
+            className={`absolute top-0 z-20 ${!this.isNotMoving() && this.props.ControlsVisibility === false ? 'bg-gray-900' : ''} `}
             width={this.state.canvasWidth}
             height={this.state.canvasHeight}
           ></canvas>
