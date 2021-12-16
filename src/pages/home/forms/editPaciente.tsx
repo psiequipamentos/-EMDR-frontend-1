@@ -2,6 +2,7 @@ import React from "react";
 import InputCustom from "../../../components/inputs/input-custom";
 import SelectCustom from "../../../components/inputs/select-custom";
 import PacienteService from "../../../services/paciente.service";
+import { toast } from "react-toastify";
 
 interface EditPacienteProps{
   paciente: any;
@@ -48,8 +49,19 @@ export default class EditPaciente extends React.Component<
       telefone:this.state.ddi + this.state.telefone,
       status:this.state.status,
     }
-    await paciente_service.update(this.state.id, data_to_send); 
-    window.location.reload();    
+    try {
+    const response: any = await paciente_service.update(this.state.id, data_to_send); 
+    if (response.updated){
+      toast.success("Paciente editado com sucesso!")
+      setInterval(() => {
+        window.location.reload();
+      }, 1000);
+    }else{
+      toast.error("Erro ao editar paciente!")
+    }
+    } catch (error) {
+      toast.error("Não foi possível editar o paciente, tente novamente!")
+    }    
   }
 
   render() {

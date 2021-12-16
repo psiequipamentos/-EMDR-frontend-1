@@ -1,19 +1,23 @@
 import React from "react";
 import InputCustom from "../../../components/inputs/input-custom";
 import PsicologoService from "../../../services/psicologo.service";
+import { toast } from "react-toastify";
 
 interface PsicologoState {
   email: string;
   senha: string;
 }
 
-export default class LoginPsicologo extends React.Component<any, PsicologoState> {
+export default class LoginPsicologo extends React.Component<
+  any,
+  PsicologoState
+> {
   constructor(props: any) {
     super(props);
 
     this.state = {
       email: "",
-      senha: ""
+      senha: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -30,9 +34,21 @@ export default class LoginPsicologo extends React.Component<any, PsicologoState>
       email: this.state.email,
       senha: this.state.senha,
     };
-    const response = await auth_service.login(data_to_send);
-    console.log(response);
-
+    try {
+      const response: any = await auth_service.login(data_to_send);
+      if (response.auth) {
+        toast.success("Usuário logado com sucesso!");
+        const url = window.location.href;
+        const path = url.split("/")[0];
+        setInterval(() => {
+          window.location.href = `${path}/home`;
+        }, 1000);
+      } else {
+        toast.error("Usuário ou/e senha incorretos!");
+      }
+    } catch (error) {
+      toast.error("Erro no login, tente mais tarde!");
+    }
   }
 
   render() {
@@ -54,16 +70,15 @@ export default class LoginPsicologo extends React.Component<any, PsicologoState>
             placeholder="email"
           />
         </div>
-      
-        <div className="col-span-2 lg:col-span-1">
-        <InputCustom
-          label="Senha"
-          type="password"
-          name="senha"
-          placeholder="Senha"
-        ></InputCustom>
-        </div>
 
+        <div className="col-span-2 lg:col-span-1">
+          <InputCustom
+            label="Senha"
+            type="password"
+            name="senha"
+            placeholder="Senha"
+          ></InputCustom>
+        </div>
 
         <div className="flex justify-around col-span-2 gap-2 mt-3">
           <button className="w-full p-3 bg-gray-100 rounded hover:bg-gray-300">

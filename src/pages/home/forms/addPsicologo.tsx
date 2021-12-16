@@ -2,6 +2,7 @@ import React from "react";
 import InputCustom from "../../../components/inputs/input-custom";
 import SelectCustom from "../../../components/inputs/select-custom";
 import PsicologoService from "../../../services/psicologo.service";
+import { toast } from "react-toastify";
 
 interface PsicologoState {
   nome: string;
@@ -25,7 +26,6 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
       ddi: "",
       senha: "",
       confirmarSenha: "",
-
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -35,18 +35,31 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
   handleChange = (event: any) =>
     this.setState({ [event.target.name]: event.target.value } as any);
 
-  async submitForm (event: any) {
+  async submitForm(event: any) {
     event.preventDefault();
     const psicologo_service = new PsicologoService();
     const data_to_send = {
-      email:this.state.email,
+      email: this.state.email,
       nome: `${this.state.nome} ${this.state.sobrenome}`,
       telefone: this.state.ddi + this.state.telefone,
       confsenha: this.state.confirmarSenha,
-      senha: this.state.senha
+      senha: this.state.senha,
+    };
+    try {
+      if (data_to_send.senha === data_to_send.confsenha) {
+        await psicologo_service.create(data_to_send);
+        const url = window.location.href;
+        const path = url.split("/")[0];
+        toast.success("Psicológo cadastrado com sucesso!");
+        setInterval(() => {
+          window.location.href = `${path}/home`;
+        }, 1000);
+      }else{
+        toast.error("Senhas com caracteres diferentes");
+      }
+    } catch (error) {
+      toast.error("Erro ao cadastrar Psicológo");
     }
-    const response = await psicologo_service.create(data_to_send);
-    
   }
 
   render() {
@@ -80,7 +93,7 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
         <label className="mt-3 mb-1">
           <span className="mr-2 text-sm font-semibold">DDI</span>
           <SelectCustom
-          name={"ddi"}
+            name={"ddi"}
             handleChange
             options={[{ name: "Brasil", option: "+55" }]}
           />
