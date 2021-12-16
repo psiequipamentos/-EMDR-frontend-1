@@ -1,11 +1,11 @@
 import axios from 'axios'
 import {Method} from 'axios'
-import {serverConnectionConfig} from '../config/server-connection.config'
+import {serverConnectionConfigProduction} from '../config/server-connection.config'
 
 export default class ApiService {
     private emdr_api_url:string
     constructor() {
-        this.emdr_api_url = serverConnectionConfig.api_url
+        this.emdr_api_url = serverConnectionConfigProduction.api_url
     }
     public RequestData = (HTTPMethod: Method , endpoint: string, data:any = '',payload: any = '', token:any = false) => {
         let url = `${this.emdr_api_url}/${endpoint}`;

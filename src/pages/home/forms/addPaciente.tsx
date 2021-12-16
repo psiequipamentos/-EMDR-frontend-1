@@ -45,6 +45,7 @@ export default class AddPaciente extends React.Component<
     }
     const response = await paciente_service.create(data_to_send);
     console.log(response);
+    window.location.reload();
   }
 
   render() {
