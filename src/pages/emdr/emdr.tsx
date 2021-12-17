@@ -11,6 +11,7 @@ import "../../styles/VideoSmall.css";
 import { serverConnectionConfig } from "../../config/server-connection.config";
 import { hide, muteMicrofone, pause, play, show, unMuteMicrofone } from "./icons";
 import DragCamera from "../../components/modals/dragCamera/DragCamera";
+import { sendIcon } from "../home/mocks/icons";
 interface IEmdrProps {
   ControlsVisibility: boolean;
 }
@@ -48,7 +49,7 @@ interface IEmdrState {
 }
 
 const buttonStyle =
-  "z-30 p-5 mx-1 border rounded lg:p-1 text-black lg:text-white hover:bg-white hover:text-black";
+  "z-30 p-5 mx-1 border rounded lg:p-1 text-black lg:text-white hover:bg-white hover:text-black text-xs font-semibold";
 
 const buttonPaciente =
   "z-30 p-10 mx-1 border rounded lg:p-1 bg-black hover:bg-white text-white hover:text-black";
@@ -160,6 +161,22 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.videoCallListeners = this.videoCallListeners.bind(this);
     this.changeMicState = this.changeMicState.bind(this)
     this.hideBallOnPause = this.hideBallOnPause.bind(this)
+    this.toggleFullscreen = this.toggleFullscreen.bind(this)
+  }
+
+  toggleFullscreen() {
+    if (!document.fullscreen) {
+      var elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      }
+    }
+    else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
   }
 
   componentDidMount() {
@@ -785,7 +802,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           <div className={this.props.ControlsVisibility ? MovementControlsStyle : MovementControlsStylePaciente}>
 
             {this.props.ControlsVisibility ?
-              <label className="col-span-6 pt-1 m-2 text-sm font-semibold text-black rounded lg:bg-white lg:col-span-2">
+              <label className="col-span-6 pt-1 m-2 text-sm font-semibold text-black rounded lg:bg-white lg:col-span-1">
                 Velocidade
                 <input
                   className="z-50 mb-3 bg-red-500"
@@ -880,6 +897,37 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 </button>
               </div>
               : null}
+            {this.props.ControlsVisibility ?
+              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+                <button className={buttonStyle + " text-red-500"} >
+                  Enviar {sendIcon}
+                </button>
+              </div>
+              : null}
+
+            <div className={`${!this.isNotMoving() && this.props.ControlsVisibility === false ? '' : 'relative z-50 text-center'}`}>
+              <DragDropModal
+                content={Chat}
+                openModalComponent={buttonCustom}
+                socket={socket}
+              />
+            </div>
+
+            {this.props.ControlsVisibility ?
+              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+                <button className={buttonStyle} onClick={this.toggleFullscreen} >
+                  Tela cheia
+                </button>
+              </div>
+              : null}
+
+            {this.props.ControlsVisibility ?
+              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+                <button className={buttonStyle} >
+                  Encerrar chamada
+                </button>
+              </div>
+              : null}
 
 
 
@@ -895,10 +943,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                     button.textContent = video.classList.contains('hidden') ? 'show' : 'hide'
                     console.log(button.textContent)
                 }}>hide</button> */}
-            
+
 
             <div className={`${!this.isNotMoving() && this.props.ControlsVisibility === false ? 'absolute top-0 right-0 z-0 mr-10 text-center' : ''}`}>
-            <DragCamera>
+              <DragCamera>
                 <video
                   className="z-10 small-video" id={'self-camera'} width="100px"
                   autoPlay={true}
@@ -906,9 +954,9 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </DragCamera>
             </div>
 
-              
 
-            
+
+
 
 
             {/* <video
@@ -924,13 +972,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             id="users-container"
           ></div>
 
-          <div className={`${!this.isNotMoving() && this.props.ControlsVisibility === false ? '' : 'absolute bottom-0 right-0 z-50 mr-10 text-center'}`}>
-            <DragDropModal
-              content={Chat}
-              openModalComponent={buttonCustom}
-              socket={socket}
-            />
-          </div>
+
           {/* <div className="fixed top-0 z-0 w-full min-h-screen bg-pink-400"></div> */}
           <canvas
             ref={this.state.canvas}
