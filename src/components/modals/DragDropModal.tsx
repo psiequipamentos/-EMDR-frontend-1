@@ -84,8 +84,8 @@ dragElement(elmnt: any) {
                 <button onClick={this.changeTrigger}>
                     <this.props.openModalComponent />
                 </button>
-                
-                    <section className={this.state.trigger? 'block' : 'hidden'}>
+                {this.state.trigger == true ?
+                    <section>
                         <div id="mydiv" className="fixed top-0 left-0" ref={this.state.draggableDiv} >
                             <div className="relative w-full mx-auto my-6">
                                 <div className="relative flex flex-col w-full border-0 rounded-lg outline-none focus:outline-none">
@@ -97,21 +97,25 @@ dragElement(elmnt: any) {
                                         }
                                     </article>
 
-                                    
+                                    {this.props.content ?
                                         <div className="flex justify-center mx-auto mt-5 mb-4 rounded-b lg:w-1/2">
                                             <button
                                                 onClick={this.changeTrigger}
                                                 className="z-40 flex items-center justify-center w-12 h-12 text-white transition transform rotate-45 bg-red-500 border border-red-500 rounded hover:border-white hover:-rotate-45 hover:bg-white hover:text-red-500"
                                             > + </button>
-                                        </div> 
+                                        </div> : null
+                                    }
 
                                 </div>
                             </div>
                         </div>
 
 
+                        {/* <div role="button" onClick={this.changeTrigger} className="fixed inset-0 z-40 bg-black bg-opacity-70"></div> */}
+
+
                     </section>
-                    
+                    : null}
 
             </div>
 
