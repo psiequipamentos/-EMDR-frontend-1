@@ -11,7 +11,7 @@ import "../../styles/VideoSmall.css";
 import { serverConnectionConfig } from "../../config/server-connection.config";
 import { hide, muteMicrofone, pause, play, show, unMuteMicrofone } from "./icons";
 import DragCamera from "../../components/modals/dragCamera/DragCamera";
-import { fullScreenIcon, sendIcon } from "../home/mocks/icons";
+import { closeIcon, fullScreenIcon, sendIcon } from "../home/mocks/icons";
 import Modal from "../../components/modals/modal";
 import Invite from "../home/invite";
 import InviteButton from "./InviteButton";
@@ -927,7 +927,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             {this.props.ControlsVisibility ?
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
                 <button className={buttonStyle} >
-                  Encerrar chamada
+                  Encerrar chamada 
+                  {closeIcon}
                 </button>
               </div>
               : null}
