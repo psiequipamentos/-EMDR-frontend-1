@@ -79,7 +79,7 @@ dragElement(elmnt: any) {
                             <div className="relative w-full mx-auto my-6">
                                 <div className="relative flex flex-col w-full border-0 rounded-lg outline-none focus:outline-none">
                                     <article className="relative w-full mx-auto overflow-auto bg-gray-100 rounded">
-                                    <div className="text-black" id="cameraDivheader">Clique e arraste para mover</div>
+                                    <div className="text-black" id="cameraDivheader">Clique aqui para mover A câmera</div>
                                         {this.props.children}
                                     </article>
 
