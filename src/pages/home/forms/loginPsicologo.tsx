@@ -2,6 +2,7 @@ import React from "react";
 import InputCustom from "../../../components/inputs/input-custom";
 import PsicologoService from "../../../services/psicologo.service";
 import { toast } from "react-toastify";
+import CookiesProvider from "../../../providers/Cookies.provider";
 
 interface PsicologoState {
   email: string;
@@ -40,7 +41,9 @@ export default class LoginPsicologo extends React.Component<
         toast.success("Usuário logado com sucesso!");
         const url = window.location.href;
         const path = url.split("/")[0];
-        setInterval(() => {
+        const cookies_provider = new CookiesProvider();
+        cookies_provider.saveUserData(response);
+       setInterval(() => {
           window.location.href = `${path}/home`;
         }, 1000);
       } else {
