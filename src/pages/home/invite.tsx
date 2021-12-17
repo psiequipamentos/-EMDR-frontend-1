@@ -39,6 +39,7 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
           {this.state.linkSessao}
         </textarea>
         <div className="flex justify-around gap-4">
+        {this.props.whatsapp ? (
           <a
             className="text-sm"
             href={`mailto:${this.props.email}?&subject=Link para a sessão EMDR Remoto&body=Olá ${this.props.nome}, Seu link de acesso para a sessão com o psicólogo é ${this.state.linkSessao}`}
@@ -46,7 +47,7 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
             {" "}
             Email
             {emailIcon}
-          </a>
+          </a>) : null}
           <button
             onClick={this.copyToClipboard}
             className="text-sm font-semibold js-textareacopybtn"
@@ -55,6 +56,7 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
             Copiar
             {copyIcon}
           </button>
+          {this.props.whatsapp ? (
           <a
             className="text-sm"
             target="_blank"
@@ -64,7 +66,7 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
             {" "}
             Whatsapp
             {whatsappIcon}
-          </a>
+          </a>) : null}
           {this.props.telegram ? (
             <a
               target="_blank"

@@ -11,7 +11,10 @@ import "../../styles/VideoSmall.css";
 import { serverConnectionConfig } from "../../config/server-connection.config";
 import { hide, muteMicrofone, pause, play, show, unMuteMicrofone } from "./icons";
 import DragCamera from "../../components/modals/dragCamera/DragCamera";
-import { sendIcon } from "../home/mocks/icons";
+import { fullScreenIcon, sendIcon } from "../home/mocks/icons";
+import Modal from "../../components/modals/modal";
+import Invite from "../home/invite";
+import InviteButton from "./InviteButton";
 interface IEmdrProps {
   ControlsVisibility: boolean;
 }
@@ -899,9 +902,9 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               : null}
             {this.props.ControlsVisibility ?
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
-                <button className={buttonStyle + " text-red-500"} >
-                  Enviar {sendIcon}
-                </button>
+                <Modal openModalComponent={InviteButton}>
+                  <Invite nome={"João"} url_sessao={document.URL.split('psicologo/')[1]}></Invite>
+                </Modal>
               </div>
               : null}
 
@@ -916,7 +919,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             {this.props.ControlsVisibility ?
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
                 <button className={buttonStyle} onClick={this.toggleFullscreen} >
-                  Tela cheia
+                  {fullScreenIcon}
                 </button>
               </div>
               : null}

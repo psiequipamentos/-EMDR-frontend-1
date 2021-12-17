@@ -1,7 +1,7 @@
 export interface InviteProps{
-  email: string;
+  email?: string;
   nome: string;
-  whatsapp: string;
+  whatsapp?: string;
   telegram?: string;
   url_sessao: string;
 }
