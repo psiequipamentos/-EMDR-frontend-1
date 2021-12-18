@@ -10,4 +10,8 @@ export default class AuthService extends MasterService{
         const login_response = await this.api_service.RequestData('POST',`${this.endpoint}/login`,data,'')
         return login_response
     }
+    public tokenValidation = async (token: any) => {
+        const response =  await this.api_service.RequestData('POST',`${this.endpoint}`, token, '')
+        return response;
+    }
 }
