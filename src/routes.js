@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes , Route, Navigate } from 'react-router-dom';
+import Timer from './components/timer/timer';
 import PsicologoMiddleware from './middleware/psicologo.middleware';
 import Cadastro from './pages/cadastroPsicologo/cadastro';
 import Emdr from './pages/emdr/emdr';
@@ -15,6 +16,8 @@ function RouterComponent() {
     <BrowserRouter>
     <div className="App">
         <Routes> 
+        <Route path='timer' element={<Timer />}> </Route>
+
           <Route path='home' element={PsiMiddleware.autenticar() ? <HomePage /> : <Navigate to="/login" />}> </Route>
           <Route path='editar-paciente/:id' element={PsiMiddleware.autenticar() ? <EditPaciente /> : <Navigate to="/login" />}> </Route>
           <Route path='cadastro' element={PsiMiddleware.autenticar() ? <Cadastro /> : <Navigate to="/login" />}> </Route>
