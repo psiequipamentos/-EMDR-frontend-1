@@ -16,6 +16,7 @@ function RouterComponent() {
     <BrowserRouter>
     <div className="App">
         <Routes> 
+        {console.log(PsiMiddleware.autenticar())}
         <Route path='timer' element={<Timer />}> </Route>
 
           <Route path='home' element={PsiMiddleware.autenticar() ? <HomePage /> : <Navigate to="/login" />}> </Route>
