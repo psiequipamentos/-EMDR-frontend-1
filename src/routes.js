@@ -24,6 +24,9 @@ function RouterComponent() {
           <Route path='login' element={<Login />}> </Route>
           <Route path='prejoin/:meeting_id' element={PsiMiddleware.autenticar() ? <Prejoin /> : <Navigate to="/login" />}> </Route>
           <Route path="emdr/psicologo/:meeting_code" element={PsiMiddleware.autenticar() ? <Emdr ControlsVisibility={true} /> : <Navigate to="/login" />}></Route>
+
+          <Route path="emdr/psicologo/" element={<Emdr ControlsVisibility={true} /> }></Route>
+
           <Route path="emdr/paciente/:meeting_code" element={PsiMiddleware.autenticar() ? <Emdr ControlsVisibility={false} /> : <Navigate to="/login" />}></Route>
         </Routes>
     </div>

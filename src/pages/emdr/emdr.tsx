@@ -15,6 +15,7 @@ import { closeIcon, fullScreenIcon, sendIcon } from "../home/mocks/icons";
 import Modal from "../../components/modals/modal";
 import Invite from "../home/invite";
 import InviteButton from "./InviteButton";
+import Timer from "../../components/timer/timer";
 interface IEmdrProps {
   ControlsVisibility: boolean;
 }
@@ -75,12 +76,12 @@ const SelectMovement = [
   { name: "sacadico", value: "sacadico" },
 ];
 
-const MovementControlsStyle = "absolute bottom-0 w-full left-0 z-50 grid items-center grid-cols-12 gap-4 lg:bg-gray-900"
+const MovementControlsStyle = "absolute bottom-0 w-full left-0 z-50 grid items-center grid-cols-12 lg:bg-gray-900"
 const MovementControlsStylePaciente = "absolute bottom-0 left-0 z-50 grid items-center grid-cols-12 gap-4"
 
 
-const centerX = (document.documentElement.clientWidth - 5) / 2 - 45;
-const centerY = (document.documentElement.clientHeight - 5) / 2;
+let centerX = (document.documentElement.clientWidth - 5) / 2 - 45;
+let centerY = (document.documentElement.clientHeight - 5) / 2;
 
 // ---------- SOCKET --------------------
 const init_ws = new WebsocketServer();
@@ -165,6 +166,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.changeMicState = this.changeMicState.bind(this)
     this.hideBallOnPause = this.hideBallOnPause.bind(this)
     this.toggleFullscreen = this.toggleFullscreen.bind(this)
+    this.resizeCanvas = this.resizeCanvas.bind(this)
   }
 
   toggleFullscreen() {
@@ -182,7 +184,20 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
   }
 
+  resizeCanvas(){
+    centerX = (document.documentElement.clientWidth - 5) / 2 - 45;
+    centerY = (document.documentElement.clientHeight - 5) / 2;
+    if (this.state.directionStatus === "sacadico") {
+      this.setState({ sacadicPosition: { x: centerX, y: centerY } });
+    }
+    this.setState({ position: { x: centerX, y: centerY } });
+    this.setState({
+      canvasWidth: document.documentElement.clientWidth - 5,
+      canvasHeight: document.documentElement.clientHeight - 5
+    })
+  }
   componentDidMount() {
+    window.addEventListener("resize", this.resizeCanvas)
     // * PREJOIN
     navigator.mediaDevices
       .getUserMedia({
@@ -227,6 +242,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   }
 
   setColor(event: any) {
+    console.log(event)
     this.setState({ circleColor: event.target.value });
 
     //**SOCKET
@@ -908,14 +924,6 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </div>
               : null}
 
-            <div className={`${!this.isNotMoving() && this.props.ControlsVisibility === false ? '' : 'relative z-50 text-center'}`}>
-              <DragDropModal
-                content={Chat}
-                openModalComponent={buttonCustom}
-                socket={socket}
-              />
-            </div>
-
             {this.props.ControlsVisibility ?
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
                 <button className={buttonStyle} onClick={this.toggleFullscreen} >
@@ -927,11 +935,18 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             {this.props.ControlsVisibility ?
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
                 <button className={buttonStyle} >
-                  Encerrar chamada 
-                  {closeIcon}
+                  Encerrar chamada  {true? <Timer /> : {closeIcon}}
                 </button>
               </div>
               : null}
+
+<div className={`${!this.isNotMoving() && this.props.ControlsVisibility === false ? '' : 'relative z-50 text-center'} truncate`}>
+              <DragDropModal
+                content={Chat}
+                openModalComponent={buttonCustom}
+                socket={socket}
+              /> {this.props.ControlsVisibility? <span className="text-xs font-semibold break-words">Nome do paciente asd asd asd asd asd asd ad </span> : null}
+            </div>
 
 
 
