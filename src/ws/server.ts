@@ -12,11 +12,11 @@ export default class WebsocketServer {
     this.socket = io(this.ws_url);
   }
 
-  run = (user_type: string) => {
+  run = (user_type: string, code:string) => {
     this.socket.on("connect", () => console.log(`[IO] `+`${user_type}`+` conectado`));
     const id = crypto.randomBytes(16).toString("hex");
     const data_to_send = {
-      session_id: 12345,
+      session_code: code,
       user: {
         type: user_type,
       },

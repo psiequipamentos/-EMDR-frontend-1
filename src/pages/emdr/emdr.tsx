@@ -50,6 +50,9 @@ interface IEmdrState {
   messages: any;
   url: any;
   mic_state: boolean
+
+  all_users_connected:boolean
+  nome_paciente:string
 }
 
 const buttonStyle =
@@ -87,7 +90,8 @@ let centerY = (document.documentElement.clientHeight - 5) / 2;
 const init_ws = new WebsocketServer();
 const url = window.location.href;
 const user_type = url.split("/").reverse()[1];
-init_ws.run(user_type);
+const code:any = url.split('/').reverse()[0]
+init_ws.run(user_type,code);
 const socket = init_ws.socket;
 
 export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
@@ -98,6 +102,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.serverConfig = serverConnectionConfig
     this.callObject = DailyIframe.createCallObject();
     this.state = {
+      nome_paciente: '',
+      all_users_connected: false,
       messages: [],
       canvas: React.createRef(),
       canvasWidth: document.documentElement.clientWidth - 5,
@@ -218,6 +224,14 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     socket.on("ball-handler", (data) =>
       this.setState({ [data.property]: data.value } as any)
     );
+    socket.on('start-cron', (data: any) => {
+      if(user_type === 'psicologo'){
+        this.setState({nome_paciente:data.paciente})
+      }
+      this.setState({all_users_connected: true})
+    })
+
+    socket.on('end-call',() => this.endCall())
   }
 
   handleChange = (event: any) =>
@@ -236,6 +250,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   async entrar() {
     try {
       await this.joinCall(this.state.url);
+      socket.emit('user-joined',{codigo: this.state.url})
     } catch (err) {
       console.log(err);
     }
@@ -736,6 +751,12 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   changeMicState = () =>
     this.callObject.setLocalAudio(this.state.mic_state)
 
+  endCall = () => {
+    if(user_type === 'psicologo')
+      window.location.href='/home'
+    else if(user_type === 'paciente')
+      window.location.href='/chamada-encerrada'
+  }
   videoCallListeners() {
     this.callObject.on("participant-updated", async (event) => {
       if (event?.participant.video && event.participant.audio) {
@@ -783,6 +804,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               const videoStream = new MediaStream();
               videoStream.addTrack(callItems[id].videoTrack);
               videoStreamer.srcObject = videoStream;
+
             } catch (stream_creation_error) {
               console.log('Erro creating media')
               console.log(stream_creation_error)
@@ -802,9 +824,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               console.log('error audio stream')
             }
           }
+
         }
       }
     });
+
   }
   render() {
     return (
@@ -934,8 +958,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
             {this.props.ControlsVisibility ?
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
-                <button className={buttonStyle} >
-                  Encerrar chamada  {true? <Timer /> : {closeIcon}}
+                <button className={buttonStyle}  onClick={() => socket.emit('end-call',{code})}>
+                  Encerrar chamada  {this.state.all_users_connected? <Timer /> : null}
                 </button>
               </div>
               : null}
@@ -945,7 +969,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 content={Chat}
                 openModalComponent={buttonCustom}
                 socket={socket}
-              /> {this.props.ControlsVisibility? <span className="text-xs font-semibold break-words">Nome do paciente asd asd asd asd asd asd ad </span> : null}
+              /> {this.props.ControlsVisibility? <span className="text-xs font-semibold break-words">Paciente {this.state.nome_paciente}</span> : null}
             </div>
 
 
