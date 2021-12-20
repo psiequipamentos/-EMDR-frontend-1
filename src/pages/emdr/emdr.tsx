@@ -207,7 +207,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       .then((stream: any) => {
         let video: any = document.querySelector("video");
         video.srcObject = stream;
-        this.entrar();
+       this.entrar();
       });
     this.videoCallListeners();
     // * PREJOIN
