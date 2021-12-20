@@ -3,6 +3,7 @@ import { BrowserRouter, Routes , Route, Navigate } from 'react-router-dom';
 import Timer from './components/timer/timer';
 import PsicologoMiddleware from './middleware/psicologo.middleware';
 import Cadastro from './pages/cadastroPsicologo/cadastro';
+import ChamadaEncerrada from './pages/chamadaEncerrada/chamadaEncerrada';
 import Emdr from './pages/emdr/emdr';
 import Prejoin from './pages/emdr/prejoin';
 import HomePage from './pages/home';
@@ -18,6 +19,7 @@ function RouterComponent() {
         <Routes> 
         {console.log(PsiMiddleware.autenticar())}
         <Route path='timer' element={<Timer />}> </Route>
+        <Route path='chamada-encerrada' element={<ChamadaEncerrada />}> </Route>
 
           <Route path='home' element={PsiMiddleware.autenticar() ? <HomePage /> : <Navigate to="/login" />}> </Route>
           <Route path='editar-paciente/:id' element={PsiMiddleware.autenticar() ? <EditPaciente /> : <Navigate to="/login" />}> </Route>
