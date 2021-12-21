@@ -3,6 +3,7 @@ import EditProfileBtn from '../../../components/buttons/EditProfileBtn'
 import InviteBtn from '../../../components/buttons/sendInviteBtn'
 import InputCustom from '../../../components/inputs/input-custom'
 import Modal from '../../../components/modals/modal'
+import CookiesProvider from '../../../providers/Cookies.provider'
 import PacienteService from '../../../services/paciente.service'
 import PsicologoService from '../../../services/psicologo.service'
 import Invite from '../invite'
@@ -21,6 +22,8 @@ export default class TableMenu extends React.Component<any, tableState>{
   async componentDidMount() {
     const get_pacientes_service = new PacienteService();
     const lista =  await get_pacientes_service.readAll();
+    const cookie_service = new CookiesProvider();
+    const cookie = cookie_service.getUserData();
 
     this.setState({ todosPacientes: lista }, ()=>
     this.setState({pacientes: this.state.todosPacientes}))

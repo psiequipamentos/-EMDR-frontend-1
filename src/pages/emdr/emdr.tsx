@@ -11,6 +11,11 @@ import "../../styles/VideoSmall.css";
 import { serverConnectionConfigProduction } from "../../config/server-connection.config";
 import { hide, muteMicrofone, pause, play, show, unMuteMicrofone } from "./icons";
 import DragCamera from "../../components/modals/dragCamera/DragCamera";
+import { closeIcon, fullScreenIcon, sendIcon } from "../home/mocks/icons";
+import Modal from "../../components/modals/modal";
+import Invite from "../home/invite";
+import InviteButton from "./InviteButton";
+import Timer from "../../components/timer/timer";
 interface IEmdrProps {
   ControlsVisibility: boolean;
 }
@@ -45,10 +50,13 @@ interface IEmdrState {
   messages: any;
   url: any;
   mic_state: boolean
+
+  all_users_connected:boolean
+  nome_paciente:string
 }
 
 const buttonStyle =
-  "z-30 p-5 mx-1 border rounded lg:p-1 text-black lg:text-white hover:bg-white hover:text-black";
+  "z-30 p-5 mx-1 border rounded lg:p-1 text-black lg:text-white hover:bg-white hover:text-black text-xs font-semibold";
 
 const buttonPaciente =
   "z-30 p-10 mx-1 border rounded lg:p-1 bg-black hover:bg-white text-white hover:text-black";
@@ -71,18 +79,19 @@ const SelectMovement = [
   { name: "sacadico", value: "sacadico" },
 ];
 
-const MovementControlsStyle = "absolute bottom-0 w-full left-0 z-50 grid items-center grid-cols-12 gap-4 lg:bg-gray-900"
+const MovementControlsStyle = "absolute bottom-0 w-full left-0 z-50 grid items-center grid-cols-12 lg:bg-gray-900"
 const MovementControlsStylePaciente = "absolute bottom-0 left-0 z-50 grid items-center grid-cols-12 gap-4"
 
 
-const centerX = (document.documentElement.clientWidth - 5) / 2 - 45;
-const centerY = (document.documentElement.clientHeight - 5) / 2;
+let centerX = (document.documentElement.clientWidth - 5) / 2 - 45;
+let centerY = (document.documentElement.clientHeight - 5) / 2;
 
 // ---------- SOCKET --------------------
 const init_ws = new WebsocketServer();
 const url = window.location.href;
 const user_type = url.split("/").reverse()[1];
-init_ws.run(user_type);
+const code:any = url.split('/').reverse()[0]
+init_ws.run(user_type,code);
 const socket = init_ws.socket;
 
 export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
@@ -93,6 +102,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.serverConfig = serverConnectionConfigProduction
     this.callObject = DailyIframe.createCallObject();
     this.state = {
+      nome_paciente: '',
+      all_users_connected: false,
       messages: [],
       canvas: React.createRef(),
       canvasWidth: document.documentElement.clientWidth - 5,
@@ -160,9 +171,39 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.videoCallListeners = this.videoCallListeners.bind(this);
     this.changeMicState = this.changeMicState.bind(this)
     this.hideBallOnPause = this.hideBallOnPause.bind(this)
+    this.toggleFullscreen = this.toggleFullscreen.bind(this)
+    this.resizeCanvas = this.resizeCanvas.bind(this)
   }
 
+  toggleFullscreen() {
+    if (!document.fullscreen) {
+      var elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      }
+    }
+    else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
+  }
+
+  resizeCanvas(){
+    centerX = (document.documentElement.clientWidth - 5) / 2 - 45;
+    centerY = (document.documentElement.clientHeight - 5) / 2;
+    if (this.state.directionStatus === "sacadico") {
+      this.setState({ sacadicPosition: { x: centerX, y: centerY } });
+    }
+    this.setState({ position: { x: centerX, y: centerY } });
+    this.setState({
+      canvasWidth: document.documentElement.clientWidth - 5,
+      canvasHeight: document.documentElement.clientHeight - 5
+    })
+  }
   componentDidMount() {
+    window.addEventListener("resize", this.resizeCanvas)
     // * PREJOIN
     navigator.mediaDevices
       .getUserMedia({
@@ -172,7 +213,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       .then((stream: any) => {
         let video: any = document.querySelector("video");
         video.srcObject = stream;
-        this.entrar();
+       this.entrar();
       });
     this.videoCallListeners();
     // * PREJOIN
@@ -183,6 +224,14 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     socket.on("ball-handler", (data) =>
       this.setState({ [data.property]: data.value } as any)
     );
+    socket.on('start-cron', (data: any) => {
+      if(user_type === 'psicologo'){
+        this.setState({nome_paciente:data.paciente})
+      }
+      this.setState({all_users_connected: true})
+    })
+
+    socket.on('end-call',() => this.endCall())
   }
 
   handleChange = (event: any) =>
@@ -201,12 +250,14 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   async entrar() {
     try {
       await this.joinCall(this.state.url);
+      socket.emit('user-joined',{codigo: this.state.url})
     } catch (err) {
       console.log(err);
     }
   }
 
   setColor(event: any) {
+    console.log(event)
     this.setState({ circleColor: event.target.value });
 
     //**SOCKET
@@ -700,6 +751,12 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   changeMicState = () =>
     this.callObject.setLocalAudio(this.state.mic_state)
 
+  endCall = () => {
+    if(user_type === 'psicologo')
+      window.location.href='/home'
+    else if(user_type === 'paciente')
+      window.location.href='/chamada-encerrada'
+  }
   videoCallListeners() {
     this.callObject.on("participant-updated", async (event) => {
       if (event?.participant.video && event.participant.audio) {
@@ -747,6 +804,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               const videoStream = new MediaStream();
               videoStream.addTrack(callItems[id].videoTrack);
               videoStreamer.srcObject = videoStream;
+
             } catch (stream_creation_error) {
               console.log('Erro creating media')
               console.log(stream_creation_error)
@@ -766,9 +824,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               console.log('error audio stream')
             }
           }
+
         }
       }
     });
+
   }
   render() {
     return (
@@ -785,7 +845,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           <div className={this.props.ControlsVisibility ? MovementControlsStyle : MovementControlsStylePaciente}>
 
             {this.props.ControlsVisibility ?
-              <label className="col-span-6 pt-1 m-2 text-sm font-semibold text-black rounded lg:bg-white lg:col-span-2">
+              <label className="col-span-6 pt-1 m-2 text-sm font-semibold text-black rounded lg:bg-white lg:col-span-1">
                 Velocidade
                 <input
                   className="z-50 mb-3 bg-red-500"
@@ -880,6 +940,37 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 </button>
               </div>
               : null}
+            {this.props.ControlsVisibility ?
+              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+                <Modal openModalComponent={InviteButton}>
+                  <Invite nome={"João"} url_sessao={document.URL.split('psicologo/')[1]}></Invite>
+                </Modal>
+              </div>
+              : null}
+
+            {this.props.ControlsVisibility ?
+              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+                <button className={buttonStyle} onClick={this.toggleFullscreen} >
+                  {fullScreenIcon}
+                </button>
+              </div>
+              : null}
+
+            {this.props.ControlsVisibility ?
+              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+                <button className={buttonStyle}  onClick={() => socket.emit('end-call',{code})}>
+                  Encerrar chamada  {this.state.all_users_connected? <Timer /> : null}
+                </button>
+              </div>
+              : null}
+
+<div className={`${!this.isNotMoving() && this.props.ControlsVisibility === false ? '' : 'relative z-50 text-center'} truncate`}>
+              <DragDropModal
+                content={Chat}
+                openModalComponent={buttonCustom}
+                socket={socket}
+              /> {this.props.ControlsVisibility? <span className="text-xs font-semibold break-words">Paciente {this.state.nome_paciente}</span> : null}
+            </div>
 
 
 
@@ -895,10 +986,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                     button.textContent = video.classList.contains('hidden') ? 'show' : 'hide'
                     console.log(button.textContent)
                 }}>hide</button> */}
-            
+
 
             <div className={`${!this.isNotMoving() && this.props.ControlsVisibility === false ? 'absolute top-0 right-0 z-0 mr-10 text-center' : ''}`}>
-            <DragCamera>
+              <DragCamera>
                 <video
                   className="z-10 small-video" id={'self-camera'} width="100px"
                   autoPlay={true}
@@ -906,9 +997,9 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </DragCamera>
             </div>
 
-              
 
-            
+
+
 
 
             {/* <video
@@ -924,13 +1015,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             id="users-container"
           ></div>
 
-          <div className={`${!this.isNotMoving() && this.props.ControlsVisibility === false ? '' : 'absolute bottom-0 right-0 z-50 mr-10 text-center'}`}>
-            <DragDropModal
-              content={Chat}
-              openModalComponent={buttonCustom}
-              socket={socket}
-            />
-          </div>
+
           {/* <div className="fixed top-0 z-0 w-full min-h-screen bg-pink-400"></div> */}
           <canvas
             ref={this.state.canvas}

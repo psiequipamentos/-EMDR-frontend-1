@@ -2,6 +2,7 @@ import React from "react";
 import InputCustom from "../../../components/inputs/input-custom";
 import SelectCustom from "../../../components/inputs/select-custom";
 import PacienteService from "../../../services/paciente.service";
+import { toast } from "react-toastify";
 
 interface PacienteProps {
   closeModal: any;
@@ -43,9 +44,16 @@ export default class AddPaciente extends React.Component<
       nome: this.state.nome,
       telefone: this.state.ddi + this.state.telefone,
     }
-    const response = await paciente_service.create(data_to_send);
-    console.log(response);
-    window.location.reload();
+    try {
+      const response = await paciente_service.create(data_to_send);
+      toast.success("Paciente cadastrado com sucesso!");
+      setInterval(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      toast.error("Erro ao cadastrar paciente!");
+    }
+    
   }
 
   render() {

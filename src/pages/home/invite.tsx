@@ -27,7 +27,7 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
   render() {
     return (
       <div className="p-5 px-5 bg-gray-200">
-        <h1 className="text-center">Convidar paciente</h1>
+        <h1 className="text-center text-black">Convidar paciente</h1>
         <span className="justify-start text-sm text-gray-600">
           Link da sessão
         </span>{" "}
@@ -39,24 +39,26 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
           {this.state.linkSessao}
         </textarea>
         <div className="flex justify-around gap-4">
+        {this.props.whatsapp ? (
           <a
-            className="text-sm"
+            className="text-sm text-black"
             href={`mailto:${this.props.email}?&subject=Link para a sessão EMDR Remoto&body=Olá ${this.props.nome}, Seu link de acesso para a sessão com o psicólogo é ${this.state.linkSessao}`}
           >
             {" "}
             Email
             {emailIcon}
-          </a>
+          </a>) : null}
           <button
             onClick={this.copyToClipboard}
-            className="text-sm font-semibold js-textareacopybtn"
+            className="text-sm font-semibold js-textareacopybtn text-black"
           >
             {" "}
             Copiar
             {copyIcon}
           </button>
+          {this.props.whatsapp ? (
           <a
-            className="text-sm"
+            className="text-sm text-black"
             target="_blank"
             rel="noreferrer"
             href={`https://wa.me/${this.props.whatsapp}?text=Olá ${this.props.nome}, Seu link de acesso para a sessão com o psicólogo é ${this.state.linkSessao}`}
@@ -64,12 +66,12 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
             {" "}
             Whatsapp
             {whatsappIcon}
-          </a>
+          </a>) : null}
           {this.props.telegram ? (
             <a
               target="_blank"
               rel="noreferrer"
-              className="text-sm"
+              className="text-sm text-black"
               href={`https://telegram.me/${this.props.telegram}`}
             >
               {" "}

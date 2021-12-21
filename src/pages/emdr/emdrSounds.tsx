@@ -282,7 +282,7 @@ export default class EmdrSounds extends React.Component<
       this.createAudio(allSounds[0].value);
     if(user_type ===  'paciente')
       this.props.socket.on("audio-handler", ({property, value}:any) => {
-            if (property === 'sound'){
+            if (property === 'soundList'){
               this.deleteAudio();
               this.setState({ sound : value } as any, () =>
                   this.createAudio(this.state.sound)
@@ -293,6 +293,8 @@ export default class EmdrSounds extends React.Component<
 
             else if(property === 'mute-song')
               this.muteOptions(value)
+          else if(property === 'playSound')
+              this.play(value)
           }
       );
   }
