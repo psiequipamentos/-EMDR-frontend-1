@@ -17,6 +17,7 @@ const Routes = () => (
   <BrowserRouter>
     <GuardProvider guards={[PsiMiddleware.autenticar]}>
       <Switch>
+        <Route exact path="/" component={Login} />
         <Route path="/login" component={Login} />
 
         {/* HOME */}

@@ -31,7 +31,8 @@ export default class InputCustom extends React.Component<IInputProps, IInputStat
     }
 
     changeValue = (event: any) => this.setState({value: event.target.value})
-    changeType(){
+    changeType(event: any){
+        event.preventDefault();
         if(this.state.dinamicType === 'password'){
             this.setState({dinamicType: 'text'})
         } else{this.setState({dinamicType: 'password'})}
@@ -52,7 +53,7 @@ export default class InputCustom extends React.Component<IInputProps, IInputStat
                 onChange={this.changeValue}
                 />
                  {this.props.type==='password'?
-                <button onClick={this.changeType}> {this.state.dinamicType === 'password'? show : hide} </button>: null
+                <button tabIndex={-1} onClick={(event) => this.changeType(event)}> {this.state.dinamicType === 'password'? show : hide} </button>: null
             } 
             </div>
             </label>
