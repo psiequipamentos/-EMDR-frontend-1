@@ -1,6 +1,6 @@
 import io, { Socket } from "socket.io-client";
 import crypto from "crypto";
-import {serverConnectionConfig} from "../config/server-connection.config";
+import {serverConnectionConfigProduction} from "../config/server-connection.config";
 
 
 export default class WebsocketServer {
@@ -8,7 +8,7 @@ export default class WebsocketServer {
   public socket: Socket;
 
   constructor() {
-    this.ws_url = serverConnectionConfig.websocket_url;
+    this.ws_url = serverConnectionConfigProduction.websocket_url;
     this.socket = io(this.ws_url);
   }
 

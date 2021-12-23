@@ -8,15 +8,8 @@ import buttonCustom from "../../components/buttons/button";
 import DailyIframe, { DailyParticipantsObject } from "@daily-co/daily-js";
 import axios from "axios";
 import "../../styles/VideoSmall.css";
-import { serverConnectionConfig } from "../../config/server-connection.config";
-import {
-  hide,
-  muteMicrofone,
-  pause,
-  play,
-  show,
-  unMuteMicrofone,
-} from "./icons";
+import { serverConnectionConfigProduction } from "../../config/server-connection.config";
+import { hide, muteMicrofone, pause, play, show, unMuteMicrofone } from "./icons";
 import DragCamera from "../../components/modals/dragCamera/DragCamera";
 import { closeIcon, fullScreenIcon, sendIcon } from "../home/mocks/icons";
 import Modal from "../../components/modals/modal";
@@ -107,7 +100,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   private serverConfig;
   constructor(props: IEmdrProps) {
     super(props);
-    this.serverConfig = serverConnectionConfig;
+    this.serverConfig = serverConnectionConfigProduction
     this.callObject = DailyIframe.createCallObject();
     this.state = {
       nome_paciente: "",
