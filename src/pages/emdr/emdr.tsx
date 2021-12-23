@@ -9,7 +9,14 @@ import DailyIframe, { DailyParticipantsObject } from "@daily-co/daily-js";
 import axios from "axios";
 import "../../styles/VideoSmall.css";
 import { serverConnectionConfig } from "../../config/server-connection.config";
-import { hide, muteMicrofone, pause, play, show, unMuteMicrofone } from "./icons";
+import {
+  hide,
+  muteMicrofone,
+  pause,
+  play,
+  show,
+  unMuteMicrofone,
+} from "./icons";
 import DragCamera from "../../components/modals/dragCamera/DragCamera";
 import { closeIcon, fullScreenIcon, sendIcon } from "../home/mocks/icons";
 import Modal from "../../components/modals/modal";
@@ -49,10 +56,10 @@ interface IEmdrState {
 
   messages: any;
   url: any;
-  mic_state: boolean
+  mic_state: boolean;
 
-  all_users_connected:boolean
-  nome_paciente:string
+  all_users_connected: boolean;
+  nome_paciente: string;
 }
 
 const buttonStyle =
@@ -79,9 +86,10 @@ const SelectMovement = [
   { name: "sacadico", value: "sacadico" },
 ];
 
-const MovementControlsStyle = "absolute bottom-0 w-full left-0 z-50 grid items-center grid-cols-12 lg:bg-gray-900"
-const MovementControlsStylePaciente = "absolute bottom-0 left-0 z-50 grid items-center grid-cols-12 gap-4"
-
+const MovementControlsStyle =
+  "absolute bottom-0 w-full left-0 z-50 grid items-center grid-cols-12 lg:bg-gray-900";
+const MovementControlsStylePaciente =
+  "absolute bottom-0 left-0 z-50 grid items-center grid-cols-12 gap-4";
 
 let centerX = (document.documentElement.clientWidth - 5) / 2 - 45;
 let centerY = (document.documentElement.clientHeight - 5) / 2;
@@ -90,8 +98,8 @@ let centerY = (document.documentElement.clientHeight - 5) / 2;
 const init_ws = new WebsocketServer();
 const url = window.location.href;
 const user_type = url.split("/").reverse()[1];
-const code:any = url.split('/').reverse()[0]
-init_ws.run(user_type,code);
+const code: any = url.split("/").reverse()[0];
+init_ws.run(user_type, code);
 const socket = init_ws.socket;
 
 export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
@@ -99,10 +107,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   private serverConfig;
   constructor(props: IEmdrProps) {
     super(props);
-    this.serverConfig = serverConnectionConfig
+    this.serverConfig = serverConnectionConfig;
     this.callObject = DailyIframe.createCallObject();
     this.state = {
-      nome_paciente: '',
+      nome_paciente: "",
       all_users_connected: false,
       messages: [],
       canvas: React.createRef(),
@@ -130,8 +138,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       maxNumberOfMovements: SelectNumber[0].value,
 
       balanceSound: 0,
-      url: `${this.serverConfig.daily_co_api}/${window.location.href.split("/").reverse()[0]}`,
-      mic_state: true
+      url: `${this.serverConfig.daily_co_api}/${
+        window.location.href.split("/").reverse()[0]
+      }`,
+      mic_state: true,
     };
 
     this.moveBalls = this.moveBalls.bind(this);
@@ -169,10 +179,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.handleChange = this.handleChange.bind(this);
     this.entrar = this.entrar.bind(this);
     this.videoCallListeners = this.videoCallListeners.bind(this);
-    this.changeMicState = this.changeMicState.bind(this)
-    this.hideBallOnPause = this.hideBallOnPause.bind(this)
-    this.toggleFullscreen = this.toggleFullscreen.bind(this)
-    this.resizeCanvas = this.resizeCanvas.bind(this)
+    this.changeMicState = this.changeMicState.bind(this);
+    this.hideBallOnPause = this.hideBallOnPause.bind(this);
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
+    this.resizeCanvas = this.resizeCanvas.bind(this);
   }
 
   toggleFullscreen() {
@@ -181,16 +191,14 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       if (elem.requestFullscreen) {
         elem.requestFullscreen();
       }
-    }
-    else {
+    } else {
       if (document.exitFullscreen) {
         document.exitFullscreen();
       }
     }
-
   }
 
-  resizeCanvas(){
+  resizeCanvas() {
     centerX = (document.documentElement.clientWidth - 5) / 2 - 45;
     centerY = (document.documentElement.clientHeight - 5) / 2;
     if (this.state.directionStatus === "sacadico") {
@@ -199,11 +207,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.setState({ position: { x: centerX, y: centerY } });
     this.setState({
       canvasWidth: document.documentElement.clientWidth - 5,
-      canvasHeight: document.documentElement.clientHeight - 5
-    })
+      canvasHeight: document.documentElement.clientHeight - 5,
+    });
   }
   componentDidMount() {
-    window.addEventListener("resize", this.resizeCanvas)
+    window.addEventListener("resize", this.resizeCanvas);
     // * PREJOIN
     navigator.mediaDevices
       .getUserMedia({
@@ -213,7 +221,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       .then((stream: any) => {
         let video: any = document.querySelector("video");
         video.srcObject = stream;
-       this.entrar();
+        this.entrar();
       });
     this.videoCallListeners();
     // * PREJOIN
@@ -224,14 +232,14 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     socket.on("ball-handler", (data) =>
       this.setState({ [data.property]: data.value } as any)
     );
-    socket.on('start-cron', (data: any) => {
-      if(user_type === 'psicologo'){
-        this.setState({nome_paciente:data.paciente})
+    socket.on("start-cron", (data: any) => {
+      if (user_type === "psicologo") {
+        this.setState({ nome_paciente: data.paciente });
       }
-      this.setState({all_users_connected: true})
-    })
+      this.setState({ all_users_connected: true });
+    });
 
-    socket.on('end-call',() => this.endCall())
+    socket.on("end-call", () => this.endCall());
   }
 
   handleChange = (event: any) =>
@@ -246,18 +254,17 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     );
   }
 
-
   async entrar() {
     try {
       await this.joinCall(this.state.url);
-      socket.emit('user-joined',{codigo: this.state.url})
+      socket.emit("user-joined", { codigo: this.state.url });
     } catch (err) {
       console.log(err);
     }
   }
 
   setColor(event: any) {
-    console.log(event)
+    console.log(event);
     this.setState({ circleColor: event.target.value });
 
     //**SOCKET
@@ -350,8 +357,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   hide() {
     this.setState({ visibility: false });
     //**SOCKET
-    //const data_to_send = { property: "visibility", value: false, };
-    //socket.emit("ball-handler", data_to_send);
+    const data_to_send = { property: "visibility", value: false };
+    socket.emit("ball-handler", data_to_send);
   }
 
   setVelocity(variable: any, velocity: any) {
@@ -456,10 +463,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
   hideBallOnPause() {
     setTimeout(() => {
-      if (user_type === 'psicologo' && this.state.directionStatus === "stop") {
+      if (this.state.directionStatus === "stop") {
         this.setState({ visibility: false });
       }
-    }, 3000)
+    }, 3000);
   }
 
   startMovement(x: number, y: number, dir: string) {
@@ -485,7 +492,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       if (this.state.stop) {
         this.stop();
         this.setPlaySound(false);
-        this.hideBallOnPause()
+        this.hideBallOnPause();
       }
     }
 
@@ -509,7 +516,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (this.isInCenterY()) {
       if (this.state.stop) {
         this.stop();
-        this.hideBallOnPause()
+        this.hideBallOnPause();
       } else {
         this.changeMovement();
       }
@@ -535,7 +542,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       if (this.state.stop) {
         this.stop();
         this.setPlaySound(false);
-        this.hideBallOnPause()
+        this.hideBallOnPause();
       } else {
         this.changeMovement();
       }
@@ -559,7 +566,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (this.state.stop) {
       this.stop();
       this.setPlaySound(false);
-      this.hideBallOnPause()
+      this.hideBallOnPause();
     } else {
       if (side === "left") {
         this.state.position.x =
@@ -604,7 +611,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (
       this.state.sacadicPosition.x < this.state.circleSize ||
       this.state.sacadicPosition.x >
-      this.state.canvasWidth - this.state.circleSize * 8 + 50
+        this.state.canvasWidth - this.state.circleSize * 8 + 50
     ) {
       this.state.direction.x = -this.state.direction.x;
       this.sacadicAux(this.state.sacadicSide);
@@ -620,7 +627,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       this.setState({ stop: false }, () => (this.state.direction.x = 0));
       this.setDirection(this.state.nextDirection);
       if (this.state.nextDirection !== this.state.directionStatus) {
-        this.setCounter(this.state.maxNumberOfMovements)
+        this.setCounter(this.state.maxNumberOfMovements);
       }
     }
 
@@ -656,10 +663,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     );
     this.setState({ position: { x: centerX, y: centerY } });
     setTimeout(() => {
-      if (user_type === 'psicologo' && this.state.directionStatus === "stop") {
+      if (user_type === "psicologo" && this.state.directionStatus === "stop") {
         this.setState({ visibility: false });
       }
-    }, 5000)
+    }, 5000);
   }
 
   isNotMoving() {
@@ -748,15 +755,13 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       this.sacadicMovement();
     }
   }
-  changeMicState = () =>
-    this.callObject.setLocalAudio(this.state.mic_state)
+  changeMicState = () => this.callObject.setLocalAudio(this.state.mic_state);
 
   endCall = () => {
-    if(user_type === 'psicologo')
-      window.location.href='/home'
-    else if(user_type === 'paciente')
-      window.location.href='/chamada-encerrada'
-  }
+    if (user_type === "psicologo") window.location.href = "/home";
+    else if (user_type === "paciente")
+      window.location.href = "/chamada-encerrada";
+  };
   videoCallListeners() {
     this.callObject.on("participant-updated", async (event) => {
       if (event?.participant.video && event.participant.audio) {
@@ -794,7 +799,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           for (const [id, videoStreamer] of Object.entries(
             videoStreams
           ) as any) {
-            videoStreamer.setAttribute("class", "fixed top-0 z-0 w-full min-h-screen bg-gray-900");
+            videoStreamer.setAttribute(
+              "class",
+              "fixed top-0 z-0 w-full min-h-screen bg-gray-900"
+            );
             videoStreamer.setAttribute("autoplay", "true");
             videoStreamer.setAttribute("id", id);
             const users_containers: any =
@@ -804,10 +812,9 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               const videoStream = new MediaStream();
               videoStream.addTrack(callItems[id].videoTrack);
               videoStreamer.srcObject = videoStream;
-
             } catch (stream_creation_error) {
-              console.log('Erro creating media')
-              console.log(stream_creation_error)
+              console.log("Erro creating media");
+              console.log(stream_creation_error);
             }
           }
 
@@ -821,14 +828,12 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               audioStream.addTrack(callAudioItems[id].audioTrack);
               audioStreamer.srcObject = audioStream;
             } catch (audio_stream_error) {
-              console.log('error audio stream')
+              console.log("error audio stream");
             }
           }
-
         }
       }
     });
-
   }
   render() {
     return (
@@ -842,9 +847,14 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             socket={socket}
           ></EmdrSounds>
 
-          <div className={this.props.ControlsVisibility ? MovementControlsStyle : MovementControlsStylePaciente}>
-
-            {this.props.ControlsVisibility ?
+          <div
+            className={
+              this.props.ControlsVisibility
+                ? MovementControlsStyle
+                : MovementControlsStylePaciente
+            }
+          >
+            {this.props.ControlsVisibility ? (
               <label className="col-span-6 pt-1 m-2 text-sm font-semibold text-black rounded lg:bg-white lg:col-span-1">
                 Velocidade
                 <input
@@ -856,17 +866,19 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                   max={20}
                   onChange={(event) => this.chageVelocity(+event.target.value)}
                 />
-              </label> : null}
+              </label>
+            ) : null}
 
-            {this.props.ControlsVisibility ?
+            {this.props.ControlsVisibility ? (
               <div className="z-50 grid grid-cols-1 col-span-6 text-sm font-semibold text-center text-black lg:col-span-1 lg:grid-cols-1 lg:text-white">
                 <span>
                   Contagem <br />
                   {this.state.maxNumberOfMovements - this.state.countMovements}
                 </span>
-              </div> : null}
+              </div>
+            ) : null}
 
-            {this.props.ControlsVisibility ?
+            {this.props.ControlsVisibility ? (
               <div className="z-50 grid grid-cols-1 col-span-6 text-sm font-semibold text-center lg:col-span-1 lg:grid-cols-1">
                 <label>
                   Movimentos <br />
@@ -878,9 +890,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                     }
                   />
                 </label>
-              </div> : null}
+              </div>
+            ) : null}
 
-            {this.props.ControlsVisibility ?
+            {this.props.ControlsVisibility ? (
               <div className="z-50 grid grid-cols-1 col-span-6 text-sm font-semibold text-center lg:col-span-1 lg:grid-cols-1">
                 <label>
                   Tipos <br />
@@ -892,36 +905,38 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                     }
                   />
                 </label>
-              </div> : null}
+              </div>
+            ) : null}
 
-            {this.props.ControlsVisibility ?
+            {this.props.ControlsVisibility ? (
               <div className="z-50 grid grid-cols-1 col-span-6 ml-10 text-center lg:col-span-1 lg:grid-cols-1">
-                {this.state.visibility ?
+                {this.state.visibility ? (
                   <button className={buttonStyle} onClick={this.hide}>
                     {hide}
                   </button>
-                  :
+                ) : (
                   <button className={buttonStyle} onClick={this.show}>
                     {show}
                   </button>
-                }
-              </div> : null}
+                )}
+              </div>
+            ) : null}
 
-            {this.props.ControlsVisibility ?
+            {this.props.ControlsVisibility ? (
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
-                {this.isNotMoving() ?
-
+                {this.isNotMoving() ? (
                   <button className={buttonStyle} onClick={this.play}>
                     {play}
                   </button>
-                  :
+                ) : (
                   <button className={buttonStyle} onClick={this.pause}>
                     {pause}
                   </button>
-                }
-              </div> : null}
+                )}
+              </div>
+            ) : null}
 
-            {this.props.ControlsVisibility ?
+            {this.props.ControlsVisibility ? (
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
                 <input
                   className="z-50 px-5 py-4 rounded"
@@ -930,55 +945,78 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                   name="circleColor"
                   onChange={(event) => this.setColor(event)}
                 />
-              </div> : null}
-            {this.props.ControlsVisibility ?
+              </div>
+            ) : null}
+            {this.props.ControlsVisibility ? (
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
-                <button className={buttonStyle + " bg-white"} onClick={() => this.setState({
-                  mic_state: !this.state.mic_state
-                }, () => this.changeMicState())}>
+                <button
+                  className={buttonStyle + " bg-white"}
+                  onClick={() =>
+                    this.setState(
+                      {
+                        mic_state: !this.state.mic_state,
+                      },
+                      () => this.changeMicState()
+                    )
+                  }
+                >
                   {this.state.mic_state ? muteMicrofone : unMuteMicrofone}
                 </button>
               </div>
-              : null}
-            {this.props.ControlsVisibility ?
+            ) : null}
+            {this.props.ControlsVisibility ? (
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
                 <Modal openModalComponent={InviteButton}>
-                  <Invite nome={"João"} url_sessao={document.URL.split('psicologo/')[1]}></Invite>
+                  <Invite
+                    nome={"João"}
+                    url_sessao={document.URL.split("psicologo/")[1]}
+                  ></Invite>
                 </Modal>
               </div>
-              : null}
+            ) : null}
 
-            {this.props.ControlsVisibility ?
+            {this.props.ControlsVisibility ? (
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
-                <button className={buttonStyle} onClick={this.toggleFullscreen} >
+                <button className={buttonStyle} onClick={this.toggleFullscreen}>
                   {fullScreenIcon}
                 </button>
               </div>
-              : null}
+            ) : null}
 
-            {this.props.ControlsVisibility ?
+            {this.props.ControlsVisibility ? (
               <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
-                <button className={buttonStyle}  onClick={() => socket.emit('end-call',{code})}>
-                  Encerrar chamada  {this.state.all_users_connected? <Timer /> : null}
+                <button
+                  className={buttonStyle}
+                  onClick={() => socket.emit("end-call", { code })}
+                >
+                  Encerrar chamada{" "}
+                  {this.state.all_users_connected ? <Timer /> : null}
                 </button>
               </div>
-              : null}
+            ) : null}
 
-<div className={`${!this.isNotMoving() && this.props.ControlsVisibility === false ? '' : 'relative z-50 text-center'} truncate`}>
+            <div
+              className={`${
+                !this.isNotMoving() && this.props.ControlsVisibility === false
+                  ? ""
+                  : "relative z-50 text-center"
+              } truncate`}
+            >
               <DragDropModal
                 content={Chat}
                 openModalComponent={buttonCustom}
                 socket={socket}
-              /> {this.props.ControlsVisibility? <span className="text-xs font-semibold break-words">Paciente {this.state.nome_paciente}</span> : null}
+              />{" "}
+              {this.props.ControlsVisibility ? (
+                <span className="text-xs font-semibold break-words">
+                  Paciente {this.state.nome_paciente}
+                </span>
+              ) : null}
             </div>
-
-
-
-
           </div>
 
           {/* // * Pre join */}
-          <div className={'z-10 font-semibold text-sm'} >
+          <div className={"z-10 font-semibold text-sm"}>
             {/* <button id={'video-button'} className={'z-30 p-1 small-video-button bg-gray-900 '} onClick={() => {
                     const video: any = document.getElementById('self-camera')
                     video.classList.toggle('hidden')
@@ -987,26 +1025,27 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                     console.log(button.textContent)
                 }}>hide</button> */}
 
-
-            <div className={`${!this.isNotMoving() && this.props.ControlsVisibility === false ? 'absolute top-0 right-0 z-0 mr-10 text-center' : ''}`}>
+            <div
+              className={`${
+                !this.isNotMoving() && this.props.ControlsVisibility === false
+                  ? "absolute top-0 right-0 z-0 mr-10 text-center"
+                  : ""
+              }`}
+            >
               <DragCamera>
                 <video
-                  className="z-10 small-video" id={'self-camera'} width="100px"
+                  className="z-10 small-video"
+                  id={"self-camera"}
+                  width="100px"
                   autoPlay={true}
                 ></video>
               </DragCamera>
             </div>
 
-
-
-
-
-
             {/* <video
                     className="z-10 small-video" id={'self-camera'} width="100px"
                     autoPlay={true}
                 ></video> */}
-
           </div>
           {/* // * prejoin */}
 
@@ -1015,11 +1054,14 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             id="users-container"
           ></div>
 
-
           {/* <div className="fixed top-0 z-0 w-full min-h-screen bg-pink-400"></div> */}
           <canvas
             ref={this.state.canvas}
-            className={`absolute top-0 z-20 ${!this.isNotMoving() && this.props.ControlsVisibility === false ? 'bg-gray-900' : ''} `}
+            className={`absolute top-0 z-20 ${
+              !this.isNotMoving() && this.props.ControlsVisibility === false
+                ? "bg-gray-900"
+                : ""
+            } `}
             width={this.state.canvasWidth}
             height={this.state.canvasHeight}
           ></canvas>

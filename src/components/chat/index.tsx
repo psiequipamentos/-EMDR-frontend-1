@@ -68,7 +68,7 @@ export default class Chat extends React.Component<ChatProps, IChatState> {
         this.props.socket.emit("new-message", { message: mensagem });
       this.setState({ mensagem: "" });
     });
-    //this.executeScroll();
+    this.executeScroll();
   };
   enviarMensagem(event: any) {
     event.preventDefault();

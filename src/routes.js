@@ -1,40 +1,90 @@
-import React from 'react';
-import { BrowserRouter, Routes , Route, Navigate } from 'react-router-dom';
-import Timer from './components/timer/timer';
-import PsicologoMiddleware from './middleware/psicologo.middleware';
-import Cadastro from './pages/cadastroPsicologo/cadastro';
-import ChamadaEncerrada from './pages/chamadaEncerrada/chamadaEncerrada';
-import Emdr from './pages/emdr/emdr';
-import Prejoin from './pages/emdr/prejoin';
-import HomePage from './pages/home';
-import EditPaciente from './pages/home/forms/editPaciente';
-import Login from './pages/loginPsicologo/login';
+import React from "react";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { GuardedRoute, GuardProvider } from "react-router-guards";
+import Timer from "./components/timer/timer";
+import PsicologoMiddleware from "./middleware/psicologo.middleware";
+import Cadastro from "./pages/cadastroPsicologo/cadastro";
+import ChamadaEncerrada from "./pages/chamadaEncerrada/chamadaEncerrada";
+import Emdr from "./pages/emdr/emdr";
+import Prejoin from "./pages/emdr/prejoin";
+import HomePage from "./pages/home";
+import EditPaciente from "./pages/home/forms/editPaciente";
+import Login from "./pages/loginPsicologo/login";
 
 const PsiMiddleware = new PsicologoMiddleware();
 
-function RouterComponent() {
-  return (
-    <BrowserRouter>
-    <div className="App">
-        <Routes> 
-        {console.log(PsiMiddleware.autenticar())}
-        <Route path='timer' element={<Timer />}> </Route>
-        <Route path='chamada-encerrada' element={<ChamadaEncerrada />}> </Route>
+const Routes = () => (
+  <BrowserRouter>
+    <GuardProvider guards={[PsiMiddleware.autenticar]}>
+      <Switch>
+        <Route path="/login" component={Login} />
 
-          <Route path='home' element={PsiMiddleware.autenticar() ? <HomePage /> : <Navigate to="/login" />}> </Route>
-          <Route path='editar-paciente/:id' element={PsiMiddleware.autenticar() ? <EditPaciente /> : <Navigate to="/login" />}> </Route>
-          <Route path='cadastro' element={PsiMiddleware.autenticar() ? <Cadastro /> : <Navigate to="/login" />}> </Route>
-          <Route path='login' element={<Login />}> </Route>
-          <Route path='prejoin/:meeting_id' element={PsiMiddleware.autenticar() ? <Prejoin /> : <Navigate to="/login" />}> </Route>
-          <Route path="emdr/psicologo/:meeting_code" element={PsiMiddleware.autenticar() ? <Emdr ControlsVisibility={true} /> : <Navigate to="/login" />}></Route>
+        {/* HOME */}
+        <GuardedRoute
+          path="/home"
+          meta={{ auth: true, router_type: "psicologo" }}
+        >
+          <HomePage></HomePage>
+        </GuardedRoute>
 
-          <Route path="emdr/psicologo/" element={<Emdr ControlsVisibility={true} /> }></Route>
-            <Route path="chamada-encerrada" element={<ChamadaEncerrada/> }></Route>
-          <Route path="emdr/paciente/:meeting_code" element={PsiMiddleware.autenticar() ? <Emdr ControlsVisibility={false} /> : <Navigate to="/login" />}></Route>
-        </Routes>
-    </div>
-    </BrowserRouter>
-  );
-}
+        {/* TIMER */}
+        <GuardedRoute
+          path="/timer"
+          meta={{ auth: true, router_type: "psicologo" }}
+        >
+          <Timer></Timer>
+        </GuardedRoute>
 
-export default RouterComponent;
+        {/* CHAMADA ENCERRADA */}
+        <GuardedRoute
+          path="/chamada-encerrada"
+          meta={{ auth: true, router_type: "psicologo" }}
+        >
+          <ChamadaEncerrada></ChamadaEncerrada>
+        </GuardedRoute>
+
+        {/* EDITAR PACIENTE */}
+        <GuardedRoute
+          path="/editar-paciente/:id"
+          meta={{ auth: true, router_type: "psicologo" }}
+        >
+          <EditPaciente></EditPaciente>
+        </GuardedRoute>
+
+        {/* CADASTRO */}
+        <GuardedRoute
+          path="/cadastro"
+          meta={{ auth: true, router_type: "psicologo" }}
+        >
+          <HomePage></HomePage>
+        </GuardedRoute>
+
+        {/* PREJOIN */}
+        <GuardedRoute
+          path="/prejoin/:meeting_id"
+          meta={{ auth: true, router_type: "psicologo" }}
+        >
+          <Prejoin></Prejoin>
+        </GuardedRoute>
+
+        {/* EMDR PSICOLOGO */}
+        <GuardedRoute
+          path="/emdr/psicologo/"
+          meta={{ auth: true, router_type: "psicologo" }}
+        >
+          <Emdr ControlsVisibility={true}></Emdr>
+        </GuardedRoute>
+
+        {/* EMDR PACIENTE */}
+        <GuardedRoute
+          path="/emdr/paciente/:meeting_code"
+          meta={{ auth: true, router_type: "paciente" }}
+        >
+          <Emdr ControlsVisibility={false}></Emdr>
+        </GuardedRoute>
+      </Switch>
+    </GuardProvider>
+  </BrowserRouter>
+);
+
+export default Routes;
