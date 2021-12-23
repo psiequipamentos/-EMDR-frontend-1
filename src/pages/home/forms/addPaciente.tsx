@@ -3,6 +3,7 @@ import InputCustom from "../../../components/inputs/input-custom";
 import SelectCustom from "../../../components/inputs/select-custom";
 import PacienteService from "../../../services/paciente.service";
 import { toast } from "react-toastify";
+import CookiesProvider from "../../../providers/Cookies.provider";
 
 interface PacienteProps {
   closeModal: any;
@@ -39,21 +40,22 @@ export default class AddPaciente extends React.Component<
   async submitForm(event: any) {
     event.preventDefault();
     const paciente_service = new PacienteService();
+    const cookies = new CookiesProvider();
+    const psicologo_cookie = await cookies.getUserData();
+    console.log(psicologo_cookie);
+    const id = psicologo_cookie.user.id;
     const data_to_send = {
-      email:this.state.email,
+      email: this.state.email,
       nome: this.state.nome,
       telefone: this.state.ddi + this.state.telefone,
-    }
+      psicologo: id,
+    };
     try {
       const response = await paciente_service.create(data_to_send);
       toast.success("Paciente cadastrado com sucesso!");
-      setInterval(() => {
-        window.location.reload();
-      }, 1000);
     } catch (error) {
       toast.error("Erro ao cadastrar paciente!");
     }
-    
   }
 
   render() {
@@ -79,7 +81,7 @@ export default class AddPaciente extends React.Component<
           {" "}
           <span className="mr-2 text-sm font-semibold">DDI</span>
           <SelectCustom
-          name={"ddi"}
+            name={"ddi"}
             handleChange
             options={[{ name: "Brasil", option: "+55" }]}
           />
