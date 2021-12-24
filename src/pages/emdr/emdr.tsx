@@ -56,7 +56,7 @@ interface IEmdrState {
 }
 
 const buttonStyle =
-  "z-30 p-5 mx-1 border rounded lg:p-1 text-black lg:text-white hover:bg-white hover:text-black text-xs font-semibold";
+  "z-30 p-5 mx-1 border rounded lg:p-1 text-black lg:text-white hover:bg-white hover:text-black text-xs font-semibold focus:ring";
 
 const buttonPaciente =
   "z-30 p-10 mx-1 border rounded lg:p-1 bg-black hover:bg-white text-white hover:text-black";
@@ -1002,7 +1002,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               />{" "}
               {this.props.ControlsVisibility ? (
                 <span className="text-xs font-semibold break-words">
-                  Paciente {this.state.nome_paciente}
+                  {this.state.nome_paciente? this.state.nome_paciente : "Paciente"}
                 </span>
               ) : null}
             </div>

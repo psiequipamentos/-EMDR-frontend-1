@@ -84,7 +84,7 @@ export default class Chat extends React.Component<ChatProps, IChatState> {
   render() {
     return (
       <section className="">
-        <div className="pb-10 overflow-y-auto text-gray-700 bg-gray-100 h-96">
+        <div className="pb-10 w-96 overflow-y-auto text-gray-700 bg-gray-100 h-96">
           {this.state.conversa.map((mensagem: any) => {
             if (mensagem.nome) {
               return (
@@ -103,6 +103,7 @@ export default class Chat extends React.Component<ChatProps, IChatState> {
               );
             }
           })}
+          {this.state.conversa === conversaDummy ? <p> Chat vazio </p>  : null}
 
           <div ref={this.state.myRef} className="py-10"></div>
 

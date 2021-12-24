@@ -2,6 +2,8 @@ import React from "react";
 import InputCustom from "../../../components/inputs/input-custom";
 import SelectCustom from "../../../components/inputs/select-custom";
 import PsicologoService from "../../../services/psicologo.service";
+import logo from "../../../assets/images/emdrLogo.png"
+import "./bgemdr.css"
 import { toast } from "react-toastify";
 
 interface PsicologoState {
@@ -65,13 +67,14 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
   render() {
     return (
       <form
-        className="grid grid-cols-2 gap-1 p-0 text-black bg-gray-50 rounded lg:p-10"
+        className="bg-logo grid grid-cols-2 gap-1 p-0 text-black rounded lg:p-10"
         onSubmit={(event) => this.submitForm(event)}
         onChange={this.handleChange}
       >
-        <h2 className="col-span-2 mb-5 text-xl font-light text-center">
+        <h2 className="col-span-2 mb-5 text-2xl font-light text-center">
           Cadastro de psicólogo
         </h2>
+        <img className="w-40 mx-auto col-span-2 mb-5" src={logo} alt="Logomarca" />
 
         <InputCustom label="Nome" type="text" name="nome" placeholder="Nome" />
         <InputCustom

@@ -3,6 +3,7 @@ import InputCustom from "../../../components/inputs/input-custom";
 import PsicologoService from "../../../services/psicologo.service";
 import { toast } from "react-toastify";
 import CookiesProvider from "../../../providers/Cookies.provider";
+import logo from "../../../assets/images/emdrLogo.png"
 
 interface PsicologoState {
   email: string;
@@ -61,9 +62,10 @@ export default class LoginPsicologo extends React.Component<
         onSubmit={(event) => this.submitForm(event)}
         onChange={this.handleChange}
       >
-        <h2 className="col-span-2 my-5 text-xl font-light text-center">
+        <h2 className="col-span-2 my-5 text-2xl font-light text-center">
           Entrar no sistema
         </h2>
+        <img className="w-40 mx-auto col-span-2 mb-5" src={logo} alt="Logomarca" />
 
         <div className="col-span-2 lg:col-span-1">
           <InputCustom
