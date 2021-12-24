@@ -303,7 +303,7 @@ export default class EmdrSounds extends React.Component<
     return (
       <div className="relative top-0 left-0 z-50 grid items-center grid-cols-12 gap-4 py-1 lg:bg-gray-900 controls">
         <select
-          className="col-span-6 p-2 text-sm font-semibold text-black rounded outline-none lg:col-span-2"
+          className="col-span-6 bg-gray-100 p-2 text-sm text-blue-900 font-normal text-black rounded outline-none lg:col-span-2"
           name="sound"
           onChange={this.handleType}
         >
@@ -332,7 +332,7 @@ export default class EmdrSounds extends React.Component<
           />
         </div>
 
-        <div className="col-span-6 px-5 mx-5 text-sm font-semibold text-black rounded lg:col-span-3 lg:bg-white">
+        <div className="col-span-6 px-5 mx-5 text-sm font-normal text-black rounded lg:col-span-2 lg:bg-white">
           <label className="pt-1 m-2 ">Volume <br />
             <input type="range"
               min={0} max={100}
@@ -353,14 +353,15 @@ export default class EmdrSounds extends React.Component<
         </button> */}
 
         {/*Importante não apagar isso aqui mans*/}
-        <div className="col-span-6 text-sm font-semibold lg:col-span-2">
-          <label> <span>Silenciar para  </span>
+        <div className="col-span-6 text-sm font-normal lg:col-span-2">
+          <label> <span>Ativar som  </span>
           <SelectCustom
           name={"silenciarMovimentos"}
             options={[
-            {name:'paciente', value:'paciente'},
-            {name:'psicologo', value:'psicologo'},
-            {name:'ambos', value:'ambos'}]}
+            {name:'Apenas psicologo', value:'paciente'},
+            {name:'Apenas paciente', value:'psicologo'},
+            {name:'Ativar para ambos', value:'ativarAmbos'},
+            {name:'Silenciar ambos', value:'ambos'}]}
             handleChange={(event: any) => this.muteOptions(event.target.value)}
           />
           </label>
