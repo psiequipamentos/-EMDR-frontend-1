@@ -57,7 +57,7 @@ const Routes = () => (
           path="/cadastro"
           meta={{ auth: true, router_type: "psicologo" }}
         >
-          <HomePage></HomePage>
+          <Cadastro></Cadastro>
         </GuardedRoute>
 
         {/* PREJOIN */}

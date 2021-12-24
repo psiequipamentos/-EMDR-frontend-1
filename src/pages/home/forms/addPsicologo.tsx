@@ -65,11 +65,11 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
   render() {
     return (
       <form
-        className="grid grid-cols-2 gap-1 p-0 text-black bg-gray-200 rounded lg:p-10"
+        className="grid grid-cols-2 gap-1 p-0 text-black bg-gray-50 rounded lg:p-10"
         onSubmit={(event) => this.submitForm(event)}
         onChange={this.handleChange}
       >
-        <h2 className="col-span-2 my-5 text-lg font-semibold text-center">
+        <h2 className="col-span-2 mb-5 text-xl font-light text-center">
           Cadastro de psicólogo
         </h2>
 
@@ -91,7 +91,7 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
         </div>
 
         <label className="mt-3 mb-1">
-          <span className="mr-2 text-sm font-semibold">DDI</span>
+          <span className="mr-2 text-sm font-light">DDI</span>
           <SelectCustom
             name={"ddi"}
             handleChange
@@ -121,7 +121,7 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
         ></InputCustom>
 
         <div className="flex justify-around col-span-2 gap-2 mt-3">
-          <button className="w-full p-3 bg-gray-100 rounded hover:bg-gray-300">
+          <button className="w-full p-3 bg-blue-500 text-white rounded hover:bg-blue-600">
             Confirmar
           </button>
         </div>
