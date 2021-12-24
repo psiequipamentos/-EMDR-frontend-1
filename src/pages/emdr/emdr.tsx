@@ -1001,8 +1001,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 socket={socket}
               />{" "}
               {this.props.ControlsVisibility ? (
-                <span className="text-xs font-semibold break-words">
-                  {this.state.nome_paciente? this.state.nome_paciente : "Paciente"}
+                <span className={"text-xs font-semibold break-words"  }>
+                  {this.state.nome_paciente? <span className="text-green-500 ">{this.state.nome_paciente}</span>  : <span className="text-red-500"> Aguardando paciente</span> }
                 </span>
               ) : null}
             </div>
