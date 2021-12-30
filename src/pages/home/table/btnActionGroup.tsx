@@ -45,7 +45,7 @@ export default class BtnActionGroup extends React.Component<BtnProps, BtnState>{
     return(
       <div className="flex flex-wrap col-span-1 gap-1">
                 <button className="px-1 text-xs font-light hover:bg-blue-50 text-right rounded" onClick={() => this.state.enabled ? this.createCall() : null}>{this.props.paciente?.pacient_sessions[0]?.session_code && this.state.text !== "Criando ..." ? "nova sessão" : this.state.text}</button>
-                {this.props.paciente?.pacient_sessions[0]?.session_codes ? <button className="px-1 text-xs font-light text-right w-12 rounded bg-blue-500 text-white hover:bg-blue-700" onClick={() => window.location.href = "/emdr/psicologo/" + this.props.paciente?.pacient_sessions[0]?.session_code}>{play}</button> : null }
+                {this.props.paciente?.pacient_sessions[0]?.session_code ? <button className="px-1 text-xs font-light text-right w-12 rounded bg-blue-500 text-white hover:bg-blue-700" onClick={() => window.location.href = "/emdr/psicologo/" + this.props.paciente?.pacient_sessions[0]?.session_code}>{play}</button> : null }
                 <Modal openModalComponent={InviteBtn}>
                   <Invite
                       url_sessao={this.props.paciente?.pacient_sessions[0]?.session_code}
