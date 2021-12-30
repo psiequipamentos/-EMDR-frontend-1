@@ -7,6 +7,7 @@ import Invite from "../invite"
 import axios from "axios";
 import DailyService from "../../../services/daily.service";
 import { play } from "../../emdr/icons"
+import TwilioService from "../../../services/twilio.service";
 
 interface BtnProps{
   paciente: any
@@ -33,6 +34,7 @@ export default class BtnActionGroup extends React.Component<BtnProps, BtnState>{
         this.setState({ text: "Criando ..." , enabled: false});
         const daily_service = new DailyService();
         const daily_create_response: any = await daily_service.create({psicologo: this.psicologo_id, paciente: this.props.paciente.id})
+        console.log(daily_create_response)
         if(daily_create_response.created)
             window.location.reload()
         else

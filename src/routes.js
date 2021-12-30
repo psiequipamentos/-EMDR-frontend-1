@@ -19,7 +19,7 @@ const Routes = () => (
       <Switch>
         <Route exact path="/" component={Login} />
         <Route path="/login" component={Login} />
-
+        <Route path="/cadastro" component={Cadastro} />
         {/* HOME */}
         <GuardedRoute
           path="/home"
@@ -50,14 +50,6 @@ const Routes = () => (
           meta={{ auth: true, router_type: "psicologo" }}
         >
           <EditPaciente></EditPaciente>
-        </GuardedRoute>
-
-        {/* CADASTRO */}
-        <GuardedRoute
-          path="/cadastro"
-          meta={{ auth: true, router_type: "psicologo" }}
-        >
-          <Cadastro></Cadastro>
         </GuardedRoute>
 
         {/* PREJOIN */}

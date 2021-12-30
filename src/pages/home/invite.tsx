@@ -1,6 +1,8 @@
 import React from "react";
 import { InviteProps, InviteState } from "./homeInterfaces";
 import { copyIcon, emailIcon, telegramIcon, whatsappIcon } from "./mocks/icons";
+import TwilioService from "../../services/twilio.service";
+import MailerService from "../../services/mailer.service";
 
 export default class Invite extends React.Component<InviteProps, InviteState> {
   constructor(props: InviteProps) {
@@ -23,7 +25,17 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
       console.log("Oops, unable to copy");
     }
   }
+    async sendWhatsappMessage(to: any, message: any){
+        const twilio_services = new TwilioService()
+        const twilio_response = await twilio_services.sendWhatsappMessage({to, message})
+        console.log(twilio_response)
+    }
 
+    async sendMail(to: any, subject:string, message: any){
+        const mailer_services = new MailerService();
+        const mailer_response = await mailer_services.sendEmail({to, subject, text:message});
+        console.log(mailer_response);
+    }
   render() {
     return (
       <div className="p-5 px-5 bg-gray-200">
@@ -40,14 +52,14 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
         </textarea>
         <div className="flex justify-around gap-4">
         {this.props.whatsapp ? (
-          <a
+          <button
             className="text-sm text-black"
-            href={`mailto:${this.props.email}?&subject=Link para a sessão EMDR Remoto&body=Olá ${this.props.nome}, Seu link de acesso para a sessão com o psicólogo é ${this.state.linkSessao}`}
+            onClick={() => this.sendMail(this.props.email, `${this.props.nome} - EMDR Consulta`, `Seu link de acesso para a sessão com o psicólogo é ${this.state.linkSessao}`)}
           >
             {" "}
             Email
             {emailIcon}
-          </a>) : null}
+          </button>) : null}
           <button
             onClick={this.copyToClipboard}
             className="text-sm font-semibold js-textareacopybtn text-black"
@@ -57,16 +69,14 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
             {copyIcon}
           </button>
           {this.props.whatsapp ? (
-          <a
+          <button
             className="text-sm text-black"
-            target="_blank"
-            rel="noreferrer"
-            href={`https://wa.me/${this.props.whatsapp}?text=Olá ${this.props.nome}, Seu link de acesso para a sessão com o psicólogo é ${this.state.linkSessao}`}
+            onClick={() => this.sendWhatsappMessage(this.props.whatsapp, `Olá ${this.props.nome}, Seu link de acesso para a sessão com o psicólogo é Link`)}
           >
             {" "}
             Whatsapp
             {whatsappIcon}
-          </a>) : null}
+          </button>) : null}
           {this.props.telegram ? (
             <a
               target="_blank"
