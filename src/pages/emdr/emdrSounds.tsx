@@ -19,6 +19,9 @@ import sound14 from "../../assets/tons/218248983.mp3"
 import sound15 from "../../assets/tons/88495192.mp3"
 import sound16 from "../../assets/tons/89096439.mp3"
 import sound17 from "../../assets/tons/90586315.mp3"
+import { volumeIcon } from "../../components/icons/icons";
+
+import Logo from "../../assets/images/emdrLogo.png"
 
 import SelectCustom from "../../components/inputs/select-custom";
 
@@ -332,12 +335,13 @@ export default class EmdrSounds extends React.Component<
           />
         </div>
 
-        <div className="col-span-6 px-5 mx-5 text-sm font-normal text-black rounded lg:col-span-2 lg:bg-white">
-          <label className="pt-1 m-2 ">Volume <br />
+        <div className="col-span-6 px-5 mx-5 text-sm font-normal text-black rounded lg:col-span-2">
+          <label className="text-white flex flex-row">{volumeIcon}
             <input type="range"
               min={0} max={100}
               value={this.state.volume * 100}
               name="volume"
+              className="ml-2"
               onChange={event => this.setVolume(+event.target.value)} />
           </label>
         </div>
@@ -365,6 +369,18 @@ export default class EmdrSounds extends React.Component<
             handleChange={(event: any) => this.muteOptions(event.target.value)}
           />
           </label>
+        </div>
+
+        <div className="col-span-6 text-sm font-normal lg:col-span-2">
+          <label> <span>Ativar som  </span>
+        <select className="p-2 text-sm text-blue-900 bg-gray-100 rounded outline-none" name='{this.props.name}' >
+          <option style={{backgroundImage: `url("/${Logo}")`}} className="p-3 text-gray-900" key={'index'} value='{item.value}'>a</option>
+          <option style={{backgroundImage: `url("${volumeIcon}")`}} className="p-3 text-gray-900" key={'index'} value='{item.value}'>a</option>
+          <option style={{backgroundImage: `url("${volumeIcon}")`}} className="p-3 text-gray-900" key={'index'} value='{item.value}'>a</option>
+          <option style={{backgroundImage: `url("${volumeIcon}")`}} className="p-3 text-gray-900" key={'index'} value='{item.value}'>a</option>
+          
+        </select>
+        </label>
         </div>
 
         <div className="col-span-12 mx-10 audioHandler lg:col-span-4"></div>
