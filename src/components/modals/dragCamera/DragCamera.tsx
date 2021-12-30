@@ -1,4 +1,6 @@
 import React from "react";
+import { show } from "../../../pages/emdr/icons";
+import { cameraIcon } from "../../icons/icons";
 import './dragCamera.css'
 
 interface IModalProps {
@@ -71,8 +73,8 @@ dragElement(elmnt: any) {
 
         return (
             <div>
-                <button className="absolute z-30 px-3 py-1 mx-auto text-white bg-gray-900 rounded top-20 right-20" onClick={this.changeTrigger}>
-                    {this.state.trigger? 'Esconder câmera' : 'Mostrar câmera'}
+                <button className={`absolute z-50 px-3 hover:bg-white py-1 mx-auto text-white bg-gray-900 rounded lg:top-20 top-0 lg:right-20 right-0 ${this.state.trigger? 'text-red-500' : 'text-green-500' }`} onClick={this.changeTrigger}>
+                    {cameraIcon }
                 </button>
                     <section className={this.state.trigger? 'block' : 'hidden'}>
                         <div id="cameraDiv" className="fixed m-auto" ref={this.state.draggableDiv} >
