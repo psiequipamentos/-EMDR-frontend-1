@@ -19,7 +19,7 @@ import sound14 from "../../assets/tons/218248983.mp3"
 import sound15 from "../../assets/tons/88495192.mp3"
 import sound16 from "../../assets/tons/89096439.mp3"
 import sound17 from "../../assets/tons/90586315.mp3"
-import { volumeIcon } from "../../components/icons/icons";
+import { soundIcon, volumeIcon } from "../../components/icons/icons";
 
 import Logo from "../../assets/images/emdrLogo.png"
 
@@ -83,9 +83,9 @@ const allSounds = [
 ];
 
 const soundTypes = [
-  { name: "Tipo de som", value: semSom },
-  { name: "Toques", value: toques },
-  { name: "Músicas", value: musicas },
+  // { name: "Tipo de som", value: semSom },
+  { name: "♩", value: toques },
+  { name: "♬", value: musicas },
 ];
 
 export default class EmdrSounds extends React.Component<
@@ -306,7 +306,7 @@ export default class EmdrSounds extends React.Component<
     return (
       <div className="relative top-0 left-0 z-50 grid items-center grid-cols-12 gap-4 py-1 lg:bg-gray-900 controls">
         <select
-          className="col-span-6 bg-gray-100 p-2 text-sm text-blue-900 font-normal text-black rounded outline-none lg:col-span-2"
+          className="col-span-6 bg-gray-100 p-2 text-sm text-blue-900 font-normal text-black rounded outline-none lg:col-span-1"
           name="sound"
           onChange={this.handleType}
         >
@@ -335,7 +335,7 @@ export default class EmdrSounds extends React.Component<
           />
         </div>
 
-        <div className="col-span-6 px-5 mx-5 text-sm font-normal text-black rounded lg:col-span-2">
+        <div className="col-span-6 text-sm font-normal text-black rounded lg:col-span-2">
           <label className="text-white flex flex-row">{volumeIcon}
             <input type="range"
               min={0} max={100}
@@ -358,29 +358,17 @@ export default class EmdrSounds extends React.Component<
 
         {/*Importante não apagar isso aqui mans*/}
         <div className="col-span-6 text-sm font-normal lg:col-span-2">
-          <label> <span>Ativar som  </span>
+          <label className="flex"> <span>{soundIcon}  </span>
           <SelectCustom
           name={"silenciarMovimentos"}
             options={[
-            {name:'Apenas psicologo', value:'paciente'},
-            {name:'Apenas paciente', value:'psicologo'},
-            {name:'Ativar para ambos', value:'ativarAmbos'},
-            {name:'Silenciar ambos', value:'ambos'}]}
+            {name:'🔊 🩺', value:'paciente'},
+            {name:'🔊 🧑‍💼', value:'psicologo'},
+            {name:'🔊 🧑‍💼🧑‍💼', value:'ativarAmbos'},
+            {name:'🔇', value:'ambos'}]}
             handleChange={(event: any) => this.muteOptions(event.target.value)}
           />
           </label>
-        </div>
-
-        <div className="col-span-6 text-sm font-normal lg:col-span-2">
-          <label> <span>Ativar som  </span>
-        <select className="p-2 text-sm text-blue-900 bg-gray-100 rounded outline-none" name='{this.props.name}' >
-          <option style={{backgroundImage: `url("/${Logo}")`}} className="p-3 text-gray-900" key={'index'} value='{item.value}'>a</option>
-          <option style={{backgroundImage: `url("${volumeIcon}")`}} className="p-3 text-gray-900" key={'index'} value='{item.value}'>a</option>
-          <option style={{backgroundImage: `url("${volumeIcon}")`}} className="p-3 text-gray-900" key={'index'} value='{item.value}'>a</option>
-          <option style={{backgroundImage: `url("${volumeIcon}")`}} className="p-3 text-gray-900" key={'index'} value='{item.value}'>a</option>
-          
-        </select>
-        </label>
         </div>
 
         <div className="col-span-12 mx-10 audioHandler lg:col-span-4"></div>
