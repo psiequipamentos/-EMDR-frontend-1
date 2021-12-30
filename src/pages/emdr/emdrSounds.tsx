@@ -46,6 +46,8 @@ interface ISoundState {
 }
 
 const musicas = [
+  { name: "🎶", value: "Selecione um som" },
+
   { name: "dripping faucet no 3 drop", value: sound1 },
   { name: "gently rippling stream in the", value: sound2 },
   { name: "ocean waves light surf on", value: sound3 },
@@ -57,6 +59,8 @@ const musicas = [
 ];
 
 const toques = [
+  { name: "🎶", value: "Selecione um som" },
+
   { name: "som 1", value: sound9 },
   { name: "som 2", value: sound10 },
   { name: "som 3", value: sound11 },
@@ -71,7 +75,7 @@ const toques = [
 const semSom = [{ name: "Selecione um som", value: "Selecione um som" }];
 
 const allSounds = [
-  { name: "Selecione um som", value: "Selecione um som" },
+  { name: "🎶", value: "Selecione um som" },
   { name: "dripping faucet no 3 drop", value: sound1 },
   { name: "gently rippling stream in the", value: sound2 },
   { name: "ocean waves light surf on", value: sound3 },
