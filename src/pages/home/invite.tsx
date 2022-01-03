@@ -3,6 +3,7 @@ import { InviteProps, InviteState } from "./homeInterfaces";
 import { copyIcon, emailIcon, telegramIcon, whatsappIcon } from "./mocks/icons";
 import TwilioService from "../../services/twilio.service";
 import MailerService from "../../services/mailer.service";
+import { toast } from "react-toastify";
 
 export default class Invite extends React.Component<InviteProps, InviteState> {
   constructor(props: InviteProps) {
@@ -27,14 +28,24 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
   }
     async sendWhatsappMessage(to: any, message: any){
         const twilio_services = new TwilioService()
-        const twilio_response = await twilio_services.sendWhatsappMessage({to, message})
-        console.log(twilio_response)
+        try {
+          const twilio_response = await twilio_services.sendWhatsappMessage({to, message})
+          toast.success(`Link de sessão enviado para ${this.props.nome} (${this.props.whatsapp})`)
+        } catch (error) {
+          toast.error(`Erro ao enviar mensagem com link para ${this.props.nome} (${this.props.whatsapp} `)
+        }
+        
     }
 
     async sendMail(to: any, subject:string, message: any){
         const mailer_services = new MailerService();
         const mailer_response = await mailer_services.sendEmail({to, subject, text:message});
-        console.log(mailer_response);
+        try {
+          const mailer_response = await mailer_services.sendEmail({to, subject, text:message});
+          toast.success(`Link de sessão enviado para ${this.props.nome} (${this.props.email})`)
+        } catch (error) {
+          toast.error(`Erro ao enviar mensagem com link para ${this.props.nome} (${this.props.email}) `)
+        }
     }
   render() {
     return (
