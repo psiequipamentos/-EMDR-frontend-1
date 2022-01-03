@@ -91,7 +91,7 @@ export default class LoginPsicologo extends React.Component<
             Entrar
           </button>
         </div>
-          <Link to="/recuperar-senha" className="font-light text-right col-span-2" >Recuperar Senha</Link>
+          <Link to="/recuperar-senha/digitar-email" className="font-light text-right col-span-2" >Recuperar Senha</Link>
       </form>
     );
   }
