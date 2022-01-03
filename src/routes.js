@@ -9,6 +9,7 @@ import Emdr from "./pages/emdr/emdr";
 import Prejoin from "./pages/emdr/prejoin";
 import HomePage from "./pages/home";
 import EditPaciente from "./pages/home/forms/editPaciente";
+import RecuperarSenha from "./pages/home/forms/recuperarSenha";
 import Login from "./pages/loginPsicologo/login";
 
 const PsiMiddleware = new PsicologoMiddleware();
@@ -19,6 +20,7 @@ const Routes = () => (
       <Switch>
         <Route exact path="/" component={Login} />
         <Route path="/login" component={Login} />
+        <Route path="/recuperar-senha" component={RecuperarSenha} />
         <Route path="/cadastro" component={Cadastro} />
         {/* HOME */}
         <GuardedRoute

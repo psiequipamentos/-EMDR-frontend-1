@@ -4,6 +4,7 @@ import PsicologoService from "../../../services/psicologo.service";
 import { toast } from "react-toastify";
 import CookiesProvider from "../../../providers/Cookies.provider";
 import logo from "../../../assets/images/emdrLogo.png"
+import { Link } from "react-router-dom";
 
 interface PsicologoState {
   email: string;
@@ -90,6 +91,7 @@ export default class LoginPsicologo extends React.Component<
             Entrar
           </button>
         </div>
+          <Link to="/recuperar-senha" className="font-light text-right col-span-2" >Recuperar Senha</Link>
       </form>
     );
   }
