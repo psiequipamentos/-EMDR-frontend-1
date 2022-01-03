@@ -11,6 +11,7 @@ import HomePage from "./pages/home";
 import EditPaciente from "./pages/home/forms/editPaciente";
 import EmailRecuperarSenha from "./pages/home/forms/EmailRecuperarSenha";
 import RecuperarSenha from "./pages/home/forms/recuperarSenha";
+import TrocarSenha from "./pages/home/forms/trocarsenha";
 import Login from "./pages/loginPsicologo/login";
 
 const PsiMiddleware = new PsicologoMiddleware();
@@ -23,6 +24,8 @@ const Routes = () => (
         <Route path="/login" component={Login} />
         <Route path="/recuperar-senha/digitar-codigo" component={RecuperarSenha} />
         <Route path="/recuperar-senha/digitar-email" component={EmailRecuperarSenha} />
+        <Route path="/recuperar-senha/nova-senha" component={TrocarSenha} />
+
         <Route path="/cadastro" component={Cadastro} />
         {/* HOME */}
         <GuardedRoute
