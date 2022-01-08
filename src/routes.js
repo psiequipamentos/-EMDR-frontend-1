@@ -25,6 +25,9 @@ const Routes = () => (
         <Route path="/recuperar-senha/digitar-codigo" component={RecuperarSenha} />
         <Route path="/recuperar-senha/digitar-email" component={EmailRecuperarSenha} />
         <Route path="/recuperar-senha/nova-senha" component={TrocarSenha} />
+        <Route path="/emdr/paciente/:meeting_code">
+          <Emdr ControlsVisibility={false}></Emdr>
+        </Route>
 
         <Route path="/cadastro" component={Cadastro} />
         {/* HOME */}
@@ -75,13 +78,7 @@ const Routes = () => (
           <Emdr ControlsVisibility={true}></Emdr>
         </GuardedRoute>
 
-        {/* EMDR PACIENTE */}
-        <GuardedRoute
-          path="/emdr/paciente/:meeting_code"
-          meta={{ auth: true, router_type: "paciente" }}
-        >
-          <Emdr ControlsVisibility={false}></Emdr>
-        </GuardedRoute>
+        
       </Switch>
     </GuardProvider>
   </BrowserRouter>
