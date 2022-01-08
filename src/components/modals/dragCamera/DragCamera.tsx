@@ -78,7 +78,7 @@ dragElement(elmnt: any) {
                 </button>
                     <section className={this.state.trigger? 'block' : 'hidden'}>
                         <div id="cameraDiv" className="fixed m-auto" ref={this.state.draggableDiv} >
-                            <div className="relative w-full mx-auto my-6">
+                            <div className="relative lg:w-80 md:w-60 w-40 mx-auto my-6">
                                 <div className="relative flex flex-col w-full border-0 rounded-lg outline-none focus:outline-none">
                                     <article className="relative w-full mx-auto overflow-auto bg-gray-100 rounded">
                                     <div className="text-black" id="cameraDivheader">Clique aqui para mover A câmera</div>
