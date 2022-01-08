@@ -17,6 +17,7 @@ import Invite from "../home/invite";
 import InviteButton from "./InviteButton";
 import Timer from "../../components/timer/timer";
 import { powerIcon, speedIcon, userIcon } from "../../components/icons/icons";
+import "./canvas.css"
 interface IEmdrProps {
   ControlsVisibility: boolean;
 }
@@ -57,7 +58,7 @@ interface IEmdrState {
 }
 
 const buttonStyle =
-  "z-30 mx-auto bg-gray-800 h-12 w-12 rounded lg:p-1 text-black text-white hover:bg-white hover:text-black text-xs font-semibold focus:ring";
+  "z-30 mx-auto bg-gray-800 h-12 w-12 rounded lg:p-1 text-white hover:bg-white hover:text-black text-xs font-semibold focus:ring";
 
 const buttonPaciente =
   "z-30 p-10 mx-1  rounded lg:p-1 bg-black hover:bg-white text-white hover:text-black";
@@ -863,10 +864,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             ) : null}
 
             {this.props.ControlsVisibility ? (
-              <div className="z-50 grid grid-cols-1 col-span-4 text-sm font-semibold text-center text-black lg:col-span-1 lg:grid-cols-1 lg:text-white">
-                <span>
-                  {this.state.maxNumberOfMovements - this.state.countMovements}
-                </span>
+              <div className="z-50 grid grid-cols-1 col-span-4 text-sm font-emibold  lg:col-span-1 lg:grid-cols-1">
+              <div className="z-30 grid items-center mx-auto align-text-bottom bg-gray-800 h-12 w-12 rounded lg:p-1 text-white text-xs font-semibold focus:ring">
+                  <span className="text-center"> {this.state.maxNumberOfMovements - this.state.countMovements} </span>
+                </div>
               </div>
             ) : null}
 
@@ -943,9 +944,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                   className={buttonStyle + " bg-white"}
                   onClick={() =>
                     this.setState(
-                      {
-                        mic_state: !this.state.mic_state,
-                      },
+                      { mic_state: !this.state.mic_state, },
                       () => this.changeMicState()
                     )
                   }
@@ -965,13 +964,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </div>
             ) : null}
 
-            {this.props.ControlsVisibility ? (
               <div className="z-50 grid grid-cols-1 col-span-4 text-center lg:col-span-1 lg:grid-cols-1">
                 <button className={buttonStyle} onClick={this.toggleFullscreen}>
                   {fullScreenIcon}
                 </button>
               </div>
-            ) : null}
 
             {this.props.ControlsVisibility ? (
               <div className="z-50 grid grid-cols-1 col-span-4 text-center lg:col-span-1 lg:grid-cols-1">
@@ -985,13 +982,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </div>
             ) : null}
 
-            <div
-              className={`${!this.isNotMoving() && this.props.ControlsVisibility === false
-                  ? ""
-                  : "z-50 grid grid-cols-1 relative col-span-4 text-center lg:col-span-1 lg:grid-cols-1relative z-50 text-center"
-                } truncate`}
-            >
-
+            <div className="z-50 grid grid-cols-1 relative col-span-4 text-center lg:col-span-1 lg:grid-cols-1relative z-50 text-center">
                 <DragDropModal
                   content={Chat}
                   openModalComponent={buttonCustom}
@@ -1002,25 +993,19 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                     {this.state.nome_paciente ? <span className="text-green-500 ">{this.state.nome_paciente}</span> : <span className="text-red-500"> {userIcon}</span>}
                   </span>
                 ) : null}
+                
+                {this.props.ControlsVisibility === false ? (
+                  <span className={"text-xs font-semibold break-words"}>
+                    {this.state.nome_paciente ? <span className="text-green-500 ">{userIcon}</span> : <span className="text-red-500"> {userIcon}</span>}
+                  </span>
+                ) : null}
                 </div>
             </div>
 
             {/* // * Pre join */}
             <div className={"z-10 font-semibold text-sm"}>
-              {/* <button id={'video-button'} className={'z-30 p-1 small-video-button bg-gray-900 '} onClick={() => {
-                    const video: any = document.getElementById('self-camera')
-                    video.classList.toggle('hidden')
-                    const button: any = document.getElementById('video-button')
-                    button.textContent = video.classList.contains('hidden') ? 'show' : 'hide'
-                    console.log(button.textContent)
-                }}>hide</button> */}
-
-              <div
-                className={`${!this.isNotMoving() && this.props.ControlsVisibility === false
-                    ? "absolute top-0 right-0 z-0 mr-10 text-center"
-                    : ""
-                  }`}
-              >
+             
+              <div>
                 <DragCamera>
                   <video
                     className="z-10 small-video"
@@ -1030,11 +1015,6 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                   ></video>
                 </DragCamera>
               </div>
-
-              {/* <video
-                    className="z-10 small-video" id={'self-camera'} width="100px"
-                    autoPlay={true}
-                ></video> */}
             </div>
             {/* // * prejoin */}
 
@@ -1043,12 +1023,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               id="users-container"
             ></div>
 
-            {/* <div className="fixed top-0 z-0 w-full min-h-screen bg-pink-400"></div> */}
             <canvas
               ref={this.state.canvas}
-              className={`absolute top-0 z-20 w-full min-h-screen ${!this.isNotMoving() && this.props.ControlsVisibility === false
-                  ? "bg-gray-900"
-                  : ""
+              className={`absolute overflow-none top-0 w-full min-h-screen ${!this.isNotMoving() && this.props.ControlsVisibility === false
+                  ? "bg-gray-900 z-100"
+                  : "z-20"
                 } `}
               width={this.state.canvasWidth}
               height={this.state.canvasHeight}
