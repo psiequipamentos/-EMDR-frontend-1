@@ -1046,7 +1046,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             {/* <div className="fixed top-0 z-0 w-full min-h-screen bg-pink-400"></div> */}
             <canvas
               ref={this.state.canvas}
-              className={`absolute top-0 z-20 ${!this.isNotMoving() && this.props.ControlsVisibility === false
+              className={`absolute top-0 z-20 w-full min-h-screen ${!this.isNotMoving() && this.props.ControlsVisibility === false
                   ? "bg-gray-900"
                   : ""
                 } `}
