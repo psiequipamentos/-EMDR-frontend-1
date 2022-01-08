@@ -795,7 +795,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           ) as any) {
             videoStreamer.setAttribute(
               "class",
-              "fixed top-0 z-0 w-full min-h-screen bg-gray-900"
+              "fixed top-0 z-0 w-full h-full lg:mx-auto my-auto bg-gray-900"
             );
             videoStreamer.setAttribute("autoplay", "true");
             videoStreamer.setAttribute("id", id);
@@ -852,7 +852,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               <label className="col-span-4 pt-1 m-2 mx-auto text-sm font-semibold text-black rounded lg:block flex lg:text-white lg:col-span-1">
                 {speedIcon}
                 <input
-                  className="z-50 mb-3 bg-red-500 my-auto"
+                  className="z-50 mb-3 my-auto"
                   type="range"
                   name="velocity"
                   min={1}
@@ -1018,7 +1018,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             {/* // * prejoin */}
 
             <div
-              className="fixed top-0 z-0 w-full min-h-screen"
+              className="fixed top-0 z-0 w-full mx-auto min-h-screen"
               id="users-container"
             ></div>
 
