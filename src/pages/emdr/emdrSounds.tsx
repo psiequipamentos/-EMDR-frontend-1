@@ -366,9 +366,13 @@ export default class EmdrSounds extends React.Component<
           <SelectCustom
           name={"silenciarMovimentos"}
             options={[
-            {name:'🔊 🩺', value:'paciente'},
-            {name:'🔊 🧑‍💼', value:'psicologo'},
-            {name:'🔊 🧑‍💼🧑‍💼', value:'ativarAmbos'},
+            // {name:'🔊 🩺', value:'paciente'},
+            {name:'🔊 👤', value:'psicologo'},
+            {name:'🔊 👥', value:'psicologo'},
+
+            
+            // {name:'🔊 🧑‍💼', value:'psicologo'},
+            // {name:'🔊 🧑‍💼🧑‍💼', value:'ativarAmbos'},
             {name:'🔇', value:'ambos'}]}
             handleChange={(event: any) => this.muteOptions(event.target.value)}
           />
