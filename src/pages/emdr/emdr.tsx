@@ -84,7 +84,7 @@ const SelectMovement = [
 const MovementControlsStyle =
   "absolute bottom-0 w-full left-0 z-50 grid items-center grid-cols-12 lg:bg-gray-900";
 const MovementControlsStylePaciente =
-  "absolute bottom-0 left-0 z-50 grid items-center grid-cols-12 gap-4";
+  "absolute w-full bottom-0 items-center left-0 z-50 flex flex-row-reverse gap-6";
 
 let centerX = (document.documentElement.clientWidth - 5) / 2 - 45;
 let centerY = (document.documentElement.clientHeight - 5) / 2;
@@ -993,13 +993,12 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                     {this.state.nome_paciente ? <span className="text-green-500 ">{this.state.nome_paciente}</span> : <span className="text-red-500"> {userIcon}</span>}
                   </span>
                 ) : null}
-                
+                </div>
                 {this.props.ControlsVisibility === false ? (
                   <span className={"text-xs font-semibold break-words"}>
                     {this.state.nome_paciente ? <span className="text-green-500 ">{userIcon}</span> : <span className="text-red-500"> {userIcon}</span>}
                   </span>
                 ) : null}
-                </div>
             </div>
 
             {/* // * Pre join */}
