@@ -82,7 +82,7 @@ const SelectMovement = [
 ];
 
 const MovementControlsStyle =
-  "absolute bottom-0 w-full left-0 z-50 grid items-center grid-cols-12 bg-opacity-25 lg:bg-gray-900";
+  "absolute bottom-0 w-full left-0 z-50 grid items-center grid-cols-12 bg-opacity-50 lg:bg-gray-900";
 const MovementControlsStylePaciente =
   "absolute w-full bottom-0 items-center left-0 z-50 flex flex-row-reverse gap-6";
 
