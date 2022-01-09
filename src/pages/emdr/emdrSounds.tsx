@@ -310,13 +310,13 @@ export default class EmdrSounds extends React.Component<
     return (
       <div className="absolute top-0 left-0 z-50 flex flex-col gap-10 p-3 controls">
         <select
-          className="bg-gray-100 p-2 w-12 h-12 text-sm text-blue-900 font-normal text-black rounded outline-none lg:col-span-1"
+          className="bg-gray-800 p-2 w-12 h-12 text-sm font-normal text-white rounded outline-none lg:col-span-1"
           name="sound"
           onChange={this.handleType}
         >
           {soundTypes.map((item: any, index: any) => (
             <option
-              className="p-3 text-gray-900"
+              className="p-3 text-white"
               key={index + "sound"}
               value={JSON.stringify(item.value)}
             >
@@ -340,7 +340,10 @@ export default class EmdrSounds extends React.Component<
         </div>
 
         <div className="text-sm font-normal py-3 volume-icon text-black rounded">
-          <label className="text-white flex flex-row">{volumeIcon}
+          <label className="text-white flex flex-row bg-gray-800 pr-5 rounded"> 
+          <div className="w-12 h-12 bg-gray-800 rounded grid items-center text-align-middle"> 
+          <span className="text-center mx-auto">{volumeIcon}</span>
+          </div>
             <input type="range"
               min={0} max={100}
               value={this.state.volume * 100}
