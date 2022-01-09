@@ -21,7 +21,7 @@ import sound16 from "../../assets/tons/89096439.mp3"
 import sound17 from "../../assets/tons/90586315.mp3"
 import { soundIcon, volumeIcon } from "../../components/icons/icons";
 
-import Logo from "../../assets/images/emdrLogo.png"
+import "./sounds.css"
 
 import SelectCustom from "../../components/inputs/select-custom";
 
@@ -308,9 +308,9 @@ export default class EmdrSounds extends React.Component<
 
   render() {
     return (
-      <div className="relative top-0 left-0 z-50 grid items-center grid-cols-12 gap-4 py-1 lg:bg-gray-900 controls">
+      <div className="absolute top-0 left-0 z-50 flex flex-col gap-10 p-3 controls">
         <select
-          className="col-span-6 bg-gray-100 p-2 text-sm text-blue-900 font-normal text-black rounded outline-none lg:col-span-1"
+          className="bg-gray-100 p-2 w-12 h-12 text-sm text-blue-900 font-normal text-black rounded outline-none lg:col-span-1"
           name="sound"
           onChange={this.handleType}
         >
@@ -339,13 +339,13 @@ export default class EmdrSounds extends React.Component<
           />
         </div>
 
-        <div className="col-span-6 text-sm font-normal text-black rounded lg:col-span-2">
+        <div className="text-sm font-normal py-3 volume-icon text-black rounded">
           <label className="text-white flex flex-row">{volumeIcon}
             <input type="range"
               min={0} max={100}
               value={this.state.volume * 100}
               name="volume"
-              className="ml-2"
+              className=""
               onChange={event => this.setVolume(+event.target.value)} />
           </label>
         </div>
@@ -356,13 +356,10 @@ export default class EmdrSounds extends React.Component<
           {/* {this.setPlayback()} */}
         </div>
 
-        {/* <button className="py-1 border rounded" onClick={() => this.setVolume(0)}>
-          {!this.state.play? soundOn : soundOff}
-        </button> */}
-
         {/*Importante não apagar isso aqui mans*/}
         <div className="col-span-6 text-sm font-normal lg:col-span-2">
-          <label className="flex"> <span>{soundIcon}  </span>
+          <label className="flex"> 
+          {/* <span>{soundIcon}  </span> */}
           <SelectCustom
           name={"silenciarMovimentos"}
             options={[
