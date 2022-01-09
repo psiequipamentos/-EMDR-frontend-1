@@ -73,7 +73,7 @@ dragElement(elmnt: any) {
 
         return (
             <div>
-                <button className={`absolute z-50 px-3 hover:bg-white py-1 mx-auto text-white bg-gray-900 rounded lg:top-20 top-0 lg:right-20 right-0 ${this.state.trigger? 'text-red-500' : 'text-green-500' }`} onClick={this.changeTrigger}>
+                <button className={`absolute z-50 px-3 hover:bg-white py-1 mx-auto text-white bg-gray-900 rounded top-0 right-0 ${this.state.trigger? 'text-red-500' : 'text-green-500' }`} onClick={this.changeTrigger}>
                     {cameraIcon }
                 </button>
                     <section className={this.state.trigger? 'block' : 'hidden'}>
