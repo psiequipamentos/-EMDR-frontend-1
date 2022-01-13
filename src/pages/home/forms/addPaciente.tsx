@@ -4,7 +4,7 @@ import SelectCustom from "../../../components/inputs/select-custom";
 import PacienteService from "../../../services/paciente.service";
 import { toast } from "react-toastify";
 import CookiesProvider from "../../../providers/Cookies.provider";
-
+import ddis from '../../../utils/ddi'
 interface PacienteProps {
   closeModal: any;
 }
@@ -84,7 +84,7 @@ export default class AddPaciente extends React.Component<
           <SelectCustom
             name={"ddi"}
             handleChange
-            options={[{ name: "Brasil", option: "+55" }]}
+            options={ddis}
           />
         </label>
 
