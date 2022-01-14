@@ -5,7 +5,7 @@ export default class MailerService extends MasterService {
         super('mailer');
     }
     public sendEmail = async (data:any) => {
-        const response = await this.api_service.RequestData('POST', `${this.endpoint}/send-email`, data, '');
+        const response = await this.api_service.RequestData('POST', `${this.endpoint}/send-link-email`, data, '');
         return response;
     }
     public sendCode = async (data:any) => {
