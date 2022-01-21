@@ -1,6 +1,6 @@
 export const conversaDummy = [
-    {texto: "Texto mockado para testes", horario: "14:56"},
-    {texto: "Texto mockado ", horario: "14:56"},
+    // {texto: "Texto mockado para testes", horario: "14:56"},
+    // {texto: "Texto mockado ", horario: "14:56"},
     // {nome: "Queiroz", texto: "Si", horario: "14:56"},
     // {nome: "Queiroz", texto: "Amidor tem gluter 😥", horario: "14:56"},
     // {texto: "😫", horario: "14:56"},

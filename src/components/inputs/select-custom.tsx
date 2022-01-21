@@ -13,9 +13,9 @@ export default class SelectCustom extends React.Component<ISelectProps, any>{
 
   render(){
     return(
-      <select className="p-2 text-sm font-semibold text-black bg-gray-100 rounded outline-none" name={this.props.name} onChange={this.props.handleChange}>
+      <select className="p-2 w-20 h-12 text-sm text-white bg-gray-800 rounded outline-none" name={this.props.name} onChange={this.props.handleChange}>
           {this.props.options.map(
-            (item: any, index: any) => <option className="p-3 text-gray-900" key={index + 'sound'} value={item.value}>{item.name}</option>
+            (item: any, index: any) => <option className="p-3 text-white" key={index + 'sound'} value={item.value}>{item.name}</option>
           )}
         </select>
     )

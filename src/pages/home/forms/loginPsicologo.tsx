@@ -3,6 +3,8 @@ import InputCustom from "../../../components/inputs/input-custom";
 import PsicologoService from "../../../services/psicologo.service";
 import { toast } from "react-toastify";
 import CookiesProvider from "../../../providers/Cookies.provider";
+import logo from "../../../assets/images/emdrLogo.png"
+import { Link } from "react-router-dom";
 
 interface PsicologoState {
   email: string;
@@ -57,13 +59,14 @@ export default class LoginPsicologo extends React.Component<
   render() {
     return (
       <form
-        className="grid grid-cols-1 gap-1 p-0 text-black bg-gray-200 rounded lg:grid-cols-2 lg:p-10"
+        className="grid grid-cols-1 gap-1 p-0 text-black rounded lg:grid-cols-2 lg:p-10"
         onSubmit={(event) => this.submitForm(event)}
         onChange={this.handleChange}
       >
-        <h2 className="col-span-2 my-5 text-lg font-semibold text-center">
+        <h2 className="col-span-2 my-5 text-2xl font-light text-center">
           Entrar no sistema
         </h2>
+        <img className="w-40 mx-auto col-span-2 mb-5" src={logo} alt="Logomarca" />
 
         <div className="col-span-2 lg:col-span-1">
           <InputCustom
@@ -84,10 +87,11 @@ export default class LoginPsicologo extends React.Component<
         </div>
 
         <div className="flex justify-around col-span-2 gap-2 mt-3">
-          <button className="w-full p-3 bg-gray-100 rounded hover:bg-gray-300">
+          <button className="w-full text-white font-light text-xl p-3 bg-blue-500 rounded hover:bg-blue-600 hover:shadow-xl">
             Entrar
           </button>
         </div>
+          <Link to="/recuperar-senha/digitar-email" className="font-light text-right col-span-2" >Recuperar Senha</Link>
       </form>
     );
   }

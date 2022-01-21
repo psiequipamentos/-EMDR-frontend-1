@@ -16,6 +16,8 @@ import Modal from "../../components/modals/modal";
 import Invite from "../home/invite";
 import InviteButton from "./InviteButton";
 import Timer from "../../components/timer/timer";
+import { powerIcon, speedIcon, userIcon } from "../../components/icons/icons";
+import "./canvas.css"
 interface IEmdrProps {
   ControlsVisibility: boolean;
 }
@@ -56,14 +58,14 @@ interface IEmdrState {
 }
 
 const buttonStyle =
-  "z-30 p-5 mx-1 border rounded lg:p-1 text-black lg:text-white hover:bg-white hover:text-black text-xs font-semibold";
+  "z-30 mx-auto bg-gray-800 h-12 w-12 rounded lg:p-1 text-white hover:bg-white hover:text-black text-xs font-semibold focus:ring";
 
 const buttonPaciente =
-  "z-30 p-10 mx-1 border rounded lg:p-1 bg-black hover:bg-white text-white hover:text-black";
+  "z-30 p-10 mx-1  rounded lg:p-1 bg-black hover:bg-white text-white hover:text-black";
 let playInterval: any;
 
 const SelectNumber = [
-  { name: "infinito", value: 1000000000 },
+  { name: "∞", value: 1000000000 },
   { name: "8", value: 8 },
   { name: "16", value: 16 },
   { name: "30", value: 30 },
@@ -72,17 +74,17 @@ const SelectNumber = [
 ];
 
 const SelectMovement = [
-  { name: "horizontal", value: "horizontal" },
-  { name: "vertical", value: "vertical" },
-  { name: "diagonal1", value: "diagonal1" },
-  { name: "diagonal2", value: "diagonal2" },
-  { name: "sacadico", value: "sacadico" },
+  { name: "↔", value: "horizontal" },
+  { name: "↕", value: "vertical" },
+  { name: "⤡", value: "diagonal1" },
+  { name: "⤢", value: "diagonal2" },
+  { name: "o o", value: "sacadico" },
 ];
 
 const MovementControlsStyle =
-  "absolute bottom-0 w-full left-0 z-50 grid items-center grid-cols-12 lg:bg-gray-900";
+  "absolute bottom-0 w-full left-0 z-50 grid items-center grid-cols-12 bg-opacity-50 lg:bg-gray-900";
 const MovementControlsStylePaciente =
-  "absolute bottom-0 left-0 z-50 grid items-center grid-cols-12 gap-4";
+  "absolute w-full bottom-0 items-center left-0 z-50 flex flex-row-reverse gap-6";
 
 let centerX = (document.documentElement.clientWidth - 5) / 2 - 45;
 let centerY = (document.documentElement.clientHeight - 5) / 2;
@@ -131,9 +133,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       maxNumberOfMovements: SelectNumber[0].value,
 
       balanceSound: 0,
-      url: `${this.serverConfig.daily_co_api}/${
-        window.location.href.split("/").reverse()[0]
-      }`,
+      url: `${this.serverConfig.daily_co_api}/${window.location.href.split("/").reverse()[0]
+        }`,
       mic_state: true,
     };
 
@@ -604,7 +605,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (
       this.state.sacadicPosition.x < this.state.circleSize ||
       this.state.sacadicPosition.x >
-        this.state.canvasWidth - this.state.circleSize * 8 + 50
+      this.state.canvasWidth - this.state.circleSize * 8 + 50
     ) {
       this.state.direction.x = -this.state.direction.x;
       this.sacadicAux(this.state.sacadicSide);
@@ -794,7 +795,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
           ) as any) {
             videoStreamer.setAttribute(
               "class",
-              "fixed top-0 z-0 w-full min-h-screen bg-gray-900"
+              "fixed top-0 z-0 w-full h-full lg:mx-auto my-auto bg-gray-900"
             );
             videoStreamer.setAttribute("autoplay", "true");
             videoStreamer.setAttribute("id", id);
@@ -848,10 +849,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             }
           >
             {this.props.ControlsVisibility ? (
-              <label className="col-span-6 pt-1 m-2 text-sm font-semibold text-black rounded lg:bg-white lg:col-span-1">
-                Velocidade
+              <label className="col-span-4 pt-1 m-2 mx-auto text-sm font-semibold text-black rounded lg:block flex lg:text-white lg:col-span-1">
+                {speedIcon}
                 <input
-                  className="z-50 mb-3 bg-red-500"
+                  className="z-50 mb-3 my-auto"
                   type="range"
                   name="velocity"
                   min={1}
@@ -863,18 +864,16 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             ) : null}
 
             {this.props.ControlsVisibility ? (
-              <div className="z-50 grid grid-cols-1 col-span-6 text-sm font-semibold text-center text-black lg:col-span-1 lg:grid-cols-1 lg:text-white">
-                <span>
-                  Contagem <br />
-                  {this.state.maxNumberOfMovements - this.state.countMovements}
-                </span>
+              <div className="z-50 grid grid-cols-1 col-span-4 text-sm font-emibold  lg:col-span-1 lg:grid-cols-1">
+              <div className="z-30 grid items-center mx-auto align-text-bottom bg-gray-800 h-12 w-12 rounded lg:p-1 text-white text-xs font-semibold focus:ring">
+                  <span className="text-center"> {this.state.maxNumberOfMovements - this.state.countMovements} </span>
+                </div>
               </div>
             ) : null}
 
             {this.props.ControlsVisibility ? (
-              <div className="z-50 grid grid-cols-1 col-span-6 text-sm font-semibold text-center lg:col-span-1 lg:grid-cols-1">
-                <label>
-                  Movimentos <br />
+              <div className="z-50 grid grid-cols-1 col-span-4 text-sm font-semibold text-center lg:col-span-1 lg:grid-cols-1">
+                <label className="text-center">
                   <SelectCustom
                     name={"movimentos"}
                     options={SelectNumber}
@@ -887,9 +886,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             ) : null}
 
             {this.props.ControlsVisibility ? (
-              <div className="z-50 grid grid-cols-1 col-span-6 text-sm font-semibold text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-4 text-sm font-semibold text-center lg:col-span-1 lg:grid-cols-1">
                 <label>
-                  Tipos <br />
                   <SelectCustom
                     name={"tipos"}
                     options={SelectMovement}
@@ -902,7 +900,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             ) : null}
 
             {this.props.ControlsVisibility ? (
-              <div className="z-50 grid grid-cols-1 col-span-6 ml-10 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-4 text-sm font-emibold text-center lg:col-span-1 lg:grid-cols-1">
                 {this.state.visibility ? (
                   <button className={buttonStyle} onClick={this.hide}>
                     {hide}
@@ -916,7 +914,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             ) : null}
 
             {this.props.ControlsVisibility ? (
-              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-4 text-center lg:col-span-1 lg:grid-cols-1">
                 {this.isNotMoving() ? (
                   <button className={buttonStyle} onClick={this.play}>
                     {play}
@@ -930,9 +928,9 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             ) : null}
 
             {this.props.ControlsVisibility ? (
-              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-4 text-center lg:col-span-1 lg:grid-cols-1">
                 <input
-                  className="z-50 px-5 py-4 rounded"
+                  className="z-50 px-5 py-5 rounded mx-auto h-12 w-12"
                   style={{ backgroundColor: this.state.circleColor }}
                   type="color"
                   name="circleColor"
@@ -941,14 +939,12 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </div>
             ) : null}
             {this.props.ControlsVisibility ? (
-              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-4 text-center lg:col-span-1 lg:grid-cols-1">
                 <button
                   className={buttonStyle + " bg-white"}
                   onClick={() =>
                     this.setState(
-                      {
-                        mic_state: !this.state.mic_state,
-                      },
+                      { mic_state: !this.state.mic_state, },
                       () => this.changeMicState()
                     )
                   }
@@ -958,7 +954,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </div>
             ) : null}
             {this.props.ControlsVisibility ? (
-              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-4 text-center lg:col-span-1 lg:grid-cols-1">
                 <Modal openModalComponent={InviteButton}>
                   <Invite
                     nome={"João"}
@@ -968,98 +964,75 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </div>
             ) : null}
 
-            {this.props.ControlsVisibility ? (
-              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-4 text-center lg:col-span-1 lg:grid-cols-1">
                 <button className={buttonStyle} onClick={this.toggleFullscreen}>
                   {fullScreenIcon}
                 </button>
               </div>
-            ) : null}
 
             {this.props.ControlsVisibility ? (
-              <div className="z-50 grid grid-cols-1 col-span-6 mr-10 text-center lg:col-span-1 lg:grid-cols-1">
+              <div className="z-50 grid grid-cols-1 col-span-4 text-center lg:col-span-1 lg:grid-cols-1">
                 <button
                   className={buttonStyle}
                   onClick={() => socket.emit("end-call", { code })}
                 >
-                  Encerrar chamada{" "}
+                  {powerIcon}{" "}
                   {this.state.all_users_connected ? <Timer /> : null}
                 </button>
               </div>
             ) : null}
 
-            <div
-              className={`${
-                !this.isNotMoving() && this.props.ControlsVisibility === false
-                  ? ""
-                  : "relative z-50 text-center"
-              } truncate`}
-            >
-              <DragDropModal
-                content={Chat}
-                openModalComponent={buttonCustom}
-                socket={socket}
-              />{" "}
-              {this.props.ControlsVisibility ? (
-                <span className="text-xs font-semibold break-words">
-                  Paciente {this.state.nome_paciente}
-                </span>
-              ) : null}
-            </div>
-          </div>
-
-          {/* // * Pre join */}
-          <div className={"z-10 font-semibold text-sm"}>
-            {/* <button id={'video-button'} className={'z-30 p-1 small-video-button bg-gray-900 '} onClick={() => {
-                    const video: any = document.getElementById('self-camera')
-                    video.classList.toggle('hidden')
-                    const button: any = document.getElementById('video-button')
-                    button.textContent = video.classList.contains('hidden') ? 'show' : 'hide'
-                    console.log(button.textContent)
-                }}>hide</button> */}
-
-            <div
-              className={`${
-                !this.isNotMoving() && this.props.ControlsVisibility === false
-                  ? "absolute top-0 right-0 z-0 mr-10 text-center"
-                  : ""
-              }`}
-            >
-              <DragCamera>
-                <video
-                  className="z-10 small-video"
-                  id={"self-camera"}
-                  width="100px"
-                  autoPlay={true}
-                ></video>
-              </DragCamera>
+            <div className="z-50 grid grid-cols-1 relative col-span-4 text-center lg:col-span-1 lg:grid-cols-1relative z-50 text-center">
+                <DragDropModal
+                  content={Chat}
+                  openModalComponent={buttonCustom}
+                  socket={socket}
+                />{" "}
+                {this.props.ControlsVisibility ? (
+                  <span className={"text-xs font-semibold break-words"}>
+                    {this.state.nome_paciente ? <span className="text-green-500 ">{this.state.nome_paciente}</span> : <span className="text-red-500"> {userIcon}</span>}
+                  </span>
+                ) : null}
+                </div>
+                {this.props.ControlsVisibility === false ? (
+                  <span className={"text-xs font-semibold break-words"}>
+                    {this.state.nome_paciente ? <span className="text-green-500 ">{userIcon}</span> : <span className="text-red-500"> {userIcon}</span>}
+                  </span>
+                ) : null}
             </div>
 
-            {/* <video
-                    className="z-10 small-video" id={'self-camera'} width="100px"
+            {/* // * Pre join */}
+            <div className={"z-10 font-semibold text-sm"}>
+             
+              <div>
+                <DragCamera>
+                  <video
+                    className="z-10 small-video"
+                    id={"self-camera"}
+                    width="100px"
                     autoPlay={true}
-                ></video> */}
+                  ></video>
+                </DragCamera>
+              </div>
+            </div>
+            {/* // * prejoin */}
+
+            <div
+              className="fixed top-0 z-0 w-full mx-auto min-h-screen"
+              id="users-container"
+            ></div>
+
+            <canvas
+              ref={this.state.canvas}
+              className={`absolute overflow-none top-0 w-full min-h-screen ${!this.isNotMoving() && this.props.ControlsVisibility === false
+                  ? "bg-gray-900 z-100"
+                  : "z-20"
+                } `}
+              width={this.state.canvasWidth}
+              height={this.state.canvasHeight}
+            ></canvas>
           </div>
-          {/* // * prejoin */}
-
-          <div
-            className="fixed top-0 z-0 w-full min-h-screen"
-            id="users-container"
-          ></div>
-
-          {/* <div className="fixed top-0 z-0 w-full min-h-screen bg-pink-400"></div> */}
-          <canvas
-            ref={this.state.canvas}
-            className={`absolute top-0 z-20 ${
-              !this.isNotMoving() && this.props.ControlsVisibility === false
-                ? "bg-gray-900"
-                : ""
-            } `}
-            width={this.state.canvasWidth}
-            height={this.state.canvasHeight}
-          ></canvas>
         </div>
-      </div>
-    );
+        );
   }
 }

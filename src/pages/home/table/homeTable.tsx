@@ -46,7 +46,7 @@ export default class TableMenu extends React.Component<any, tableState> {
 
   render() {
     return (
-      <section className="font-semibold md:px-10">
+      <section className="font-light md:px-10">
         <form
           className="md:w-1/2 w-full md:p-10 p-3"
           onChange={(event) => this.search(event)}
@@ -58,7 +58,7 @@ export default class TableMenu extends React.Component<any, tableState> {
           />
         </form>
 
-        <article className="grid grid-cols-1 py-3 pl-5 mx-0 text-white bg-gray-900 rounded-t md:mx-10 md:grid-cols-2 lg:grid-cols-4">
+        <article className="grid grid-cols-1 py-3 pl-5 mx-0 text-white bg-blue-900 rounded-t md:mx-10 md:grid-cols-2 lg:grid-cols-4">
           {" "}
           {/* paciente */}
           <h3 className="col-span-1">Nome</h3>

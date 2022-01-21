@@ -19,6 +19,9 @@ import sound14 from "../../assets/tons/218248983.mp3"
 import sound15 from "../../assets/tons/88495192.mp3"
 import sound16 from "../../assets/tons/89096439.mp3"
 import sound17 from "../../assets/tons/90586315.mp3"
+import { soundIcon, volumeIcon } from "../../components/icons/icons";
+
+import "./sounds.css"
 
 import SelectCustom from "../../components/inputs/select-custom";
 
@@ -43,6 +46,8 @@ interface ISoundState {
 }
 
 const musicas = [
+  { name: "🎶", value: "Selecione um som" },
+
   { name: "dripping faucet no 3 drop", value: sound1 },
   { name: "gently rippling stream in the", value: sound2 },
   { name: "ocean waves light surf on", value: sound3 },
@@ -54,6 +59,8 @@ const musicas = [
 ];
 
 const toques = [
+  { name: "🎶", value: "Selecione um som" },
+
   { name: "som 1", value: sound9 },
   { name: "som 2", value: sound10 },
   { name: "som 3", value: sound11 },
@@ -68,7 +75,7 @@ const toques = [
 const semSom = [{ name: "Selecione um som", value: "Selecione um som" }];
 
 const allSounds = [
-  { name: "Selecione um som", value: "Selecione um som" },
+  { name: "🎶", value: "Selecione um som" },
   { name: "dripping faucet no 3 drop", value: sound1 },
   { name: "gently rippling stream in the", value: sound2 },
   { name: "ocean waves light surf on", value: sound3 },
@@ -80,9 +87,9 @@ const allSounds = [
 ];
 
 const soundTypes = [
-  { name: "Tipo de som", value: semSom },
-  { name: "Toques", value: toques },
-  { name: "Músicas", value: musicas },
+  // { name: "Tipo de som", value: semSom },
+  { name: "♩", value: toques },
+  { name: "♬", value: musicas },
 ];
 
 export default class EmdrSounds extends React.Component<
@@ -301,15 +308,15 @@ export default class EmdrSounds extends React.Component<
 
   render() {
     return (
-      <div className="relative top-0 left-0 z-50 grid items-center grid-cols-12 gap-4 py-1 lg:bg-gray-900 controls">
+      <div className="absolute top-0 left-0 z-50 flex flex-col gap-10 p-3 controls">
         <select
-          className="col-span-6 p-2 text-sm font-semibold text-black rounded outline-none lg:col-span-2"
+          className="bg-gray-800 p-2 w-12 h-12 text-sm font-normal text-white rounded outline-none lg:col-span-1"
           name="sound"
           onChange={this.handleType}
         >
           {soundTypes.map((item: any, index: any) => (
             <option
-              className="p-3 text-gray-900"
+              className="p-3 text-white"
               key={index + "sound"}
               value={JSON.stringify(item.value)}
             >
@@ -332,12 +339,16 @@ export default class EmdrSounds extends React.Component<
           />
         </div>
 
-        <div className="col-span-6 px-5 mx-5 text-sm font-semibold text-black rounded lg:col-span-3 lg:bg-white">
-          <label className="pt-1 m-2 ">Volume <br />
+        <div className="text-sm font-normal py-3 volume-icon text-black rounded">
+          <label className="text-white flex flex-row bg-gray-800 pr-5 rounded"> 
+          <div className="w-12 h-12 bg-gray-800 rounded grid items-center text-align-middle"> 
+          <span className="text-center mx-auto">{volumeIcon}</span>
+          </div>
             <input type="range"
               min={0} max={100}
               value={this.state.volume * 100}
               name="volume"
+              className=""
               onChange={event => this.setVolume(+event.target.value)} />
           </label>
         </div>
@@ -348,19 +359,21 @@ export default class EmdrSounds extends React.Component<
           {/* {this.setPlayback()} */}
         </div>
 
-        {/* <button className="py-1 border rounded" onClick={() => this.setVolume(0)}>
-          {!this.state.play? soundOn : soundOff}
-        </button> */}
-
         {/*Importante não apagar isso aqui mans*/}
-        <div className="col-span-6 text-sm font-semibold lg:col-span-2">
-          <label> <span>Silenciar para  </span>
+        <div className="col-span-6 text-sm font-normal lg:col-span-2">
+          <label className="flex"> 
+          {/* <span>{soundIcon}  </span> */}
           <SelectCustom
           name={"silenciarMovimentos"}
             options={[
-            {name:'paciente', value:'paciente'},
-            {name:'psicologo', value:'psicologo'},
-            {name:'ambos', value:'ambos'}]}
+            // {name:'🔊 🩺', value:'paciente'},
+            {name:'🔊 👤', value:'psicologo'},
+            {name:'🔊 👥', value:'psicologo'},
+
+            
+            // {name:'🔊 🧑‍💼', value:'psicologo'},
+            // {name:'🔊 🧑‍💼🧑‍💼', value:'ativarAmbos'},
+            {name:'🔇', value:'ambos'}]}
             handleChange={(event: any) => this.muteOptions(event.target.value)}
           />
           </label>

@@ -9,6 +9,9 @@ import Emdr from "./pages/emdr/emdr";
 import Prejoin from "./pages/emdr/prejoin";
 import HomePage from "./pages/home";
 import EditPaciente from "./pages/home/forms/editPaciente";
+import EmailRecuperarSenha from "./pages/home/forms/EmailRecuperarSenha";
+import RecuperarSenha from "./pages/home/forms/recuperarSenha";
+import TrocarSenha from "./pages/home/forms/trocarsenha";
 import Login from "./pages/loginPsicologo/login";
 
 const PsiMiddleware = new PsicologoMiddleware();
@@ -17,8 +20,16 @@ const Routes = () => (
   <BrowserRouter>
     <GuardProvider guards={[PsiMiddleware.autenticar]}>
       <Switch>
+        <Route exact path="/" component={Login} />
         <Route path="/login" component={Login} />
+        <Route path="/recuperar-senha/digitar-codigo" component={RecuperarSenha} />
+        <Route path="/recuperar-senha/digitar-email" component={EmailRecuperarSenha} />
+        <Route path="/recuperar-senha/nova-senha" component={TrocarSenha} />
+        <Route path="/emdr/paciente/:meeting_code">
+          <Emdr ControlsVisibility={false}></Emdr>
+        </Route>
 
+        <Route path="/cadastro" component={Cadastro} />
         {/* HOME */}
         <GuardedRoute
           path="/home"
@@ -51,14 +62,6 @@ const Routes = () => (
           <EditPaciente></EditPaciente>
         </GuardedRoute>
 
-        {/* CADASTRO */}
-        <GuardedRoute
-          path="/cadastro"
-          meta={{ auth: true, router_type: "psicologo" }}
-        >
-          <HomePage></HomePage>
-        </GuardedRoute>
-
         {/* PREJOIN */}
         <GuardedRoute
           path="/prejoin/:meeting_id"
@@ -75,13 +78,7 @@ const Routes = () => (
           <Emdr ControlsVisibility={true}></Emdr>
         </GuardedRoute>
 
-        {/* EMDR PACIENTE */}
-        <GuardedRoute
-          path="/emdr/paciente/:meeting_code"
-          meta={{ auth: true, router_type: "paciente" }}
-        >
-          <Emdr ControlsVisibility={false}></Emdr>
-        </GuardedRoute>
+        
       </Switch>
     </GuardProvider>
   </BrowserRouter>
