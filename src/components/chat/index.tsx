@@ -1,5 +1,6 @@
 import React from "react";
 import { conversaDummy } from "./dummy/conversa";
+import addNotification from 'react-push-notification';
 import MensagemRecebida from "./mensagem/MensagemRecebida";
 import MensagemEnviada from "./mensagem/mensagemEnviada";
 import Cookies from "universal-cookie";
@@ -40,6 +41,19 @@ export default class Chat extends React.Component<ChatProps, IChatState> {
       })}
     );
     this.props.socket.on("new-message", ({ message }: any) => {
+      let texto = message.texto
+      if(texto.length > 25){
+        texto = `${texto.slice(0, 25)}...`
+      }
+      addNotification({
+        title: 'Nova mensagem',
+        colorTop: 'green',
+        subtitle: 'Você tem uma nova mensagem',
+        message: `'${texto}'`,
+        closeButton: 'OK',
+        duration: 5000,
+        theme:'light',
+    });
       this.newMessage(message);
     });
   }

@@ -11,6 +11,8 @@ interface IModalProps {
 interface IModalState {
     trigger: boolean
     draggableDiv: any
+    newMessage:boolean
+    newMessageClass:any
 }
 
 export default class DragDropModal extends React.Component<IModalProps, IModalState>{
@@ -18,18 +20,33 @@ export default class DragDropModal extends React.Component<IModalProps, IModalSt
         super(props)
         this.state = {
             trigger: false,
-            draggableDiv: React.createRef()
+            draggableDiv: React.createRef(),
+            newMessage:false,
+            newMessageClass:{
+                new:'z-30 p-5 mx-1 border rounded lg:p-3 text-white lg:text-white hover:bg-white bg-green-600 hover:text-black text-xs font-semibold',
+                notNew:'z-30 p-5 mx-1 border rounded lg:p-3 text-black lg:text-white hover:bg-white hover:text-black text-xs font-semibold',
+            },
         }
         this.changeTrigger = this.changeTrigger.bind(this)
         this.dragElement = this.dragElement.bind(this)
+        this.changeColor = this.changeColor.bind(this)
     }
 
     changeTrigger = () => this.setState({ trigger: !this.state.trigger })
 
     componentDidUpdate(){
         this.dragElement(this.state.draggableDiv.current)
+        
+    }
+    componentDidMount(){
+        this.props.socket.on("new-message", ({ message }: any) => {
+            this.setState({newMessage:true})
+          });
     }
 
+changeColor(){
+    this.setState({newMessage:false})
+}
 
 dragElement(elmnt: any) {
     // console.log('entrou na função dragElement')
@@ -82,7 +99,7 @@ dragElement(elmnt: any) {
         return (
             <div>
                 <button onClick={this.changeTrigger}>
-                    <this.props.openModalComponent />
+                    <this.props.openModalComponent newMessageClass={this.state.newMessage ? this.state.newMessageClass.new : this.state.newMessageClass.notNew} changeColor={this.changeColor}/>
                 </button>
                 
                     <section className={this.state.trigger? 'block' : 'hidden'}>
