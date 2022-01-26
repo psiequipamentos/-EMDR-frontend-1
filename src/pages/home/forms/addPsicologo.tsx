@@ -5,7 +5,7 @@ import PsicologoService from "../../../services/psicologo.service";
 import logo from "../../../assets/images/emdrLogo.png"
 import "./bgemdr.css"
 import { toast } from "react-toastify";
-
+import options from '../../../utils/ddi'
 interface PsicologoState {
   nome: string;
   sobrenome: string;
@@ -98,7 +98,7 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
           <SelectCustom
             name={"ddi"}
             handleChange
-            options={[{ name: "Brasil", option: "+55" }]}
+            options={options}
           />
         </label>
 
