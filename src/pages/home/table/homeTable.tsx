@@ -23,12 +23,14 @@ export default class TableMenu extends React.Component<any, tableState> {
   }
 
   async componentDidMount() {
-    const get_pacientes_service = new PacienteService();
-    const lista = await get_pacientes_service.readAll();
     const cookie_service = new CookiesProvider();
-    const cookie = cookie_service.getUserData();
+    const {user} = cookie_service.getUserData();
+    const psicologo_id = user.id;
 
-    this.setState({ todosPacientes: lista }, () =>
+    const psicologo_service = new PsicologoService();
+    const {pacientes}: any = await psicologo_service.buscarPacientes(psicologo_id)
+
+    this.setState({ todosPacientes: pacientes }, () =>
       this.setState({ pacientes: this.state.todosPacientes })
     );
   }

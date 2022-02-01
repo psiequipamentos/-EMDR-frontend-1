@@ -27,17 +27,18 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
     }
   }
     async sendWhatsappMessage(to: any, message: any){
-        const twilio_services = new TwilioService()
+        /*const twilio_services = new TwilioService()
         try {
           const twilio_response = await twilio_services.sendWhatsappMessage({to, message})
           toast.success(`Link de sessão enviado para ${this.props.nome} (${this.props.whatsapp})`)
         } catch (error) {
           toast.error(`Erro ao enviar mensagem com link para ${this.props.nome} (${this.props.whatsapp} `)
-        }
-        
+        }*/
+        toast.info('Em Breve.')
     }
 
     async sendMail(to: any, subject:string, message: any){
+        toast.info('Enviando e-mail...')
         const mailer_services = new MailerService();
         try {
           const mailer_response = await mailer_services.sendEmail({to, subject, nome_paciente: this.props.nome, link:this.state.linkSessao });

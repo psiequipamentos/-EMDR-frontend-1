@@ -13,4 +13,9 @@ export default class PsicologoService extends AuthService {
         const response = await this.api_service.RequestData('POST', `${this.endpoint}/recuperar-senha`, data, '');
         return response;
     }
+
+    public buscarPacientes = async (id: any) => {
+        const response = await this.api_service.RequestData('GET', `${this.endpoint}/${id}`)
+        return response;
+    }
 }
