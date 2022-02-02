@@ -13,6 +13,7 @@ import EmailRecuperarSenha from "./pages/home/forms/EmailRecuperarSenha";
 import RecuperarSenha from "./pages/home/forms/recuperarSenha";
 import TrocarSenha from "./pages/home/forms/trocarsenha";
 import Login from "./pages/loginPsicologo/login";
+import ValidarPsicologo from "./pages/ValidarPsicologo";
 
 const PsiMiddleware = new PsicologoMiddleware();
 
@@ -28,8 +29,7 @@ const Routes = () => (
         <Route path="/emdr/paciente/:meeting_code">
           <Emdr ControlsVisibility={false}></Emdr>
         </Route>
-
-        <Route path="/cadastro" component={Cadastro} />
+        <Route path="/verificar-email/:id" component={ValidarPsicologo}/>
         {/* HOME */}
         <GuardedRoute
           path="/home"

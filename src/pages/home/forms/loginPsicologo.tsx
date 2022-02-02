@@ -49,7 +49,7 @@ export default class LoginPsicologo extends React.Component<
           window.location.href = `${path}/home`;
         }, 1000);
       } else {
-        toast.error("Usuário ou/e senha incorretos!");
+        toast.error(response.message);
       }
     } catch (error) {
       toast.error("Erro no login, tente mais tarde!");
