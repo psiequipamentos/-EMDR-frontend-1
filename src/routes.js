@@ -30,6 +30,7 @@ const Routes = () => (
           <Emdr ControlsVisibility={false}></Emdr>
         </Route>
         <Route path="/verificar-email/:id" component={ValidarPsicologo}/>
+        <Route path="/cadastro" component={Cadastro}/>
         {/* HOME */}
         <GuardedRoute
           path="/home"
