@@ -8,6 +8,7 @@ import axios from "axios";
 import DailyService from "../../../services/daily.service";
 import { play } from "../../emdr/icons"
 import TwilioService from "../../../services/twilio.service";
+import CookiesProvider from "../../../providers/Cookies.provider"
 
 interface BtnProps{
   paciente: any
@@ -19,11 +20,10 @@ interface BtnState {
 }
 
 export default class BtnActionGroup extends React.Component<BtnProps, BtnState>{
-    private psicologo_id: number;
+
   constructor(props:BtnProps){
     super(props)
 
-      this.psicologo_id = 1 //TODO pegar o ID do paciente pelo cookie
       this.createCall = this.createCall.bind(this);
     this.state  = {
         text: 'Criar Sessão',
@@ -31,9 +31,11 @@ export default class BtnActionGroup extends React.Component<BtnProps, BtnState>{
       }
   }
     async createCall() {
+      const cookies: any = new CookiesProvider()
+      const psicolog_id: any = cookies.getUserData().user.id
         this.setState({ text: "Criando ..." , enabled: false});
         const daily_service = new DailyService();
-        const daily_create_response: any = await daily_service.create({psicologo: this.psicologo_id, paciente: this.props.paciente.id})
+        const daily_create_response: any = await daily_service.create({psicologo: psicolog_id, paciente: this.props.paciente.id})
         console.log(daily_create_response)
         if(daily_create_response.created)
             window.location.reload()
