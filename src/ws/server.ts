@@ -4,7 +4,7 @@ import {serverConnectionConfigProduction} from "../config/server-connection.conf
 
 
 export default class WebsocketServer {
-  private ws_url: string;
+  private ws_url: any;
   public socket: Socket;
 
   constructor() {

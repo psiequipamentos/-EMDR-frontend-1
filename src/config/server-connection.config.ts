@@ -1,15 +1,19 @@
-const daily_co_api = "https://sistemas3xp.daily.co"
-/*const serverConnectionConfig ={
-    api_url: "http://localhost:3002",
-    create_room_url: "http://localhost:3002/daily/new-room",
-    websocket_url:"http://localhost:3001",
-    daily_co_api
-};*/
-const serverConnectionConfigProduction = {
-    api_url: "https://www.emdrremoto.com.br:3002",
-    create_room_url: "https://www.emdrremoto.com.br:3002/daily/new-room",
-    websocket_url:"https://www.emdrremoto.com.br:3001",
-    daily_co_api
-}
+const dotenv = require("dotenv");
+dotenv.config();
 
-export  { serverConnectionConfigProduction};
+const {
+  REACT_APP_API_URL,
+  REACT_APP_CREATE_ROOM_URL,
+  REACT_APP_WEBSOCKET_URL,
+  REACT_APP_DAILY_CO_API,
+} = process.env;
+
+const serverConnectionConfigProduction = {
+  api_url: REACT_APP_API_URL,
+  create_room_url: REACT_APP_CREATE_ROOM_URL,
+  websocket_url: REACT_APP_WEBSOCKET_URL,
+  daily_co_api: REACT_APP_DAILY_CO_API,
+};
+
+console.log(serverConnectionConfigProduction);
+export { serverConnectionConfigProduction };

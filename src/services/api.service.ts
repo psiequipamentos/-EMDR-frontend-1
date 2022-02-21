@@ -3,7 +3,7 @@ import {Method} from 'axios'
 import {serverConnectionConfigProduction} from '../config/server-connection.config'
 
 export default class ApiService {
-    private emdr_api_url:string
+    private emdr_api_url:any
     constructor() {
         this.emdr_api_url = serverConnectionConfigProduction.api_url
     }
