@@ -2,10 +2,10 @@ import React from "react";
 import InputCustom from "../../../components/inputs/input-custom";
 import SelectCustom from "../../../components/inputs/select-custom";
 import PsicologoService from "../../../services/psicologo.service";
-import logo from "../../../assets/images/emdrLogo.png"
-import "./bgemdr.css"
+import logo from "../../../assets/images/emdrLogo.png";
+import "./bgemdr.css";
 import { toast } from "react-toastify";
-import options from '../../../utils/ddi'
+import options from "../../../utils/ddi";
 import MailerService from "../../../services/mailer.service";
 interface PsicologoState {
   nome: string;
@@ -51,23 +51,25 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
     try {
       if (data_to_send.senha === data_to_send.confsenha) {
         const create_psicologo = await psicologo_service.create(data_to_send);
-      console.log(create_psicologo)
-        const email_service = new MailerService()
-        const link_verificar = `https://${window.location.host}/verificar-email/${create_psicologo.new_data.id}`
-       const send_mail =  await email_service.sendVerificationEmail({
+        console.log(create_psicologo);
+        const email_service = new MailerService();
+        const link_verificar = `https://${window.location.host}/app/verificar-email/${create_psicologo.new_data.id}`;
+        const send_mail = await email_service.sendVerificationEmail({
           to: this.state.email,
-          subject: 'EMDR REMOTO PSI | Verificar e-mail',
+          subject: "EMDR REMOTO PSI | Verificar e-mail",
           nome_psicologo: this.state.nome,
-          link: link_verificar
-        })
-        console.log(send_mail)
+          link: link_verificar,
+        });
+        console.log(send_mail);
         const url = window.location.href;
         const path = url.split("/")[0];
-        toast.success("Psicólogo cadastrado com sucesso! Um link de verificação foi enviado para o seu e-mail.");
+        toast.success(
+          "Psicólogo cadastrado com sucesso! Um link de verificação foi enviado para o seu e-mail."
+        );
         setInterval(() => {
-          window.location.href = `${path}/home`;
+          window.location.href = `${path}/app/home`;
         }, 1000);
-      }else{
+      } else {
         toast.error("Senhas com caracteres diferentes");
       }
     } catch (error) {
@@ -85,7 +87,11 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
         <h2 className="col-span-2 mb-5 text-2xl font-light text-center">
           Cadastro de psicólogo
         </h2>
-        <img className="w-40 mx-auto col-span-2 mb-5" src={logo} alt="Logomarca" />
+        <img
+          className="w-40 mx-auto col-span-2 mb-5"
+          src={logo}
+          alt="Logomarca"
+        />
 
         <InputCustom label="Nome" type="text" name="nome" placeholder="Nome" />
         <InputCustom
@@ -106,11 +112,7 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
 
         <label className="mt-3 mb-1">
           <span className="mr-2 text-sm font-light">DDI</span>
-          <SelectCustom
-            name={"ddi"}
-            handleChange
-            options={options}
-          />
+          <SelectCustom name={"ddi"} handleChange options={options} />
         </label>
 
         <InputCustom

@@ -9,7 +9,14 @@ import DailyIframe, { DailyParticipantsObject } from "@daily-co/daily-js";
 import axios from "axios";
 import "../../styles/VideoSmall.css";
 import { serverConnectionConfigProduction } from "../../config/server-connection.config";
-import { hide, muteMicrofone, pause, play, show, unMuteMicrofone } from "./icons";
+import {
+  hide,
+  muteMicrofone,
+  pause,
+  play,
+  show,
+  unMuteMicrofone,
+} from "./icons";
 import DragCamera from "../../components/modals/dragCamera/DragCamera";
 import { closeIcon, fullScreenIcon, sendIcon } from "../home/mocks/icons";
 import Modal from "../../components/modals/modal";
@@ -17,7 +24,7 @@ import Invite from "../home/invite";
 import InviteButton from "./InviteButton";
 import Timer from "../../components/timer/timer";
 import { powerIcon, speedIcon, userIcon } from "../../components/icons/icons";
-import "./canvas.css"
+import "./canvas.css";
 interface IEmdrProps {
   ControlsVisibility: boolean;
 }
@@ -102,7 +109,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   private serverConfig;
   constructor(props: IEmdrProps) {
     super(props);
-    this.serverConfig = serverConnectionConfigProduction
+    this.serverConfig = serverConnectionConfigProduction;
     this.callObject = DailyIframe.createCallObject();
     this.state = {
       nome_paciente: "",
@@ -133,8 +140,9 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       maxNumberOfMovements: SelectNumber[0].value,
 
       balanceSound: 0,
-      url: `${this.serverConfig.daily_co_api}/${window.location.href.split("/").reverse()[0]
-        }`,
+      url: `${this.serverConfig.daily_co_api}/${
+        window.location.href.split("/").reverse()[0]
+      }`,
       mic_state: true,
     };
 
@@ -605,7 +613,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     if (
       this.state.sacadicPosition.x < this.state.circleSize ||
       this.state.sacadicPosition.x >
-      this.state.canvasWidth - this.state.circleSize * 8 + 50
+        this.state.canvasWidth - this.state.circleSize * 8 + 50
     ) {
       this.state.direction.x = -this.state.direction.x;
       this.sacadicAux(this.state.sacadicSide);
@@ -752,9 +760,9 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   changeMicState = () => this.callObject.setLocalAudio(this.state.mic_state);
 
   endCall = () => {
-    if (user_type === "psicologo") window.location.href = "/home";
+    if (user_type === "psicologo") window.location.href = "/app/home";
     else if (user_type === "paciente")
-      window.location.href = "/chamada-encerrada";
+      window.location.href = "/app/chamada-encerrada";
   };
   videoCallListeners() {
     this.callObject.on("participant-updated", async (event) => {
@@ -865,8 +873,12 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
 
             {this.props.ControlsVisibility ? (
               <div className="z-50 grid grid-cols-1 col-span-4 text-sm font-emibold  lg:col-span-1 lg:grid-cols-1">
-              <div className="z-30 grid items-center mx-auto align-text-bottom bg-gray-800 h-12 w-12 rounded lg:p-1 text-white text-xs font-semibold focus:ring">
-                  <span className="text-center"> {this.state.maxNumberOfMovements - this.state.countMovements} </span>
+                <div className="z-30 grid items-center mx-auto align-text-bottom bg-gray-800 h-12 w-12 rounded lg:p-1 text-white text-xs font-semibold focus:ring">
+                  <span className="text-center">
+                    {" "}
+                    {this.state.maxNumberOfMovements -
+                      this.state.countMovements}{" "}
+                  </span>
                 </div>
               </div>
             ) : null}
@@ -943,9 +955,8 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 <button
                   className={buttonStyle + " bg-white"}
                   onClick={() =>
-                    this.setState(
-                      { mic_state: !this.state.mic_state, },
-                      () => this.changeMicState()
+                    this.setState({ mic_state: !this.state.mic_state }, () =>
+                      this.changeMicState()
                     )
                   }
                 >
@@ -964,11 +975,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
               </div>
             ) : null}
 
-              <div className="z-50 grid grid-cols-1 col-span-4 text-center lg:col-span-1 lg:grid-cols-1">
-                <button className={buttonStyle} onClick={this.toggleFullscreen}>
-                  {fullScreenIcon}
-                </button>
-              </div>
+            <div className="z-50 grid grid-cols-1 col-span-4 text-center lg:col-span-1 lg:grid-cols-1">
+              <button className={buttonStyle} onClick={this.toggleFullscreen}>
+                {fullScreenIcon}
+              </button>
+            </div>
 
             {this.props.ControlsVisibility ? (
               <div className="z-50 grid grid-cols-1 col-span-4 text-center lg:col-span-1 lg:grid-cols-1">
@@ -983,56 +994,66 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             ) : null}
 
             <div className="z-50 grid grid-cols-1 relative col-span-4 text-center lg:col-span-1 lg:grid-cols-1relative z-50 text-center">
-                <DragDropModal
-                  content={Chat}
-                  openModalComponent={buttonCustom}
-                  socket={socket}
-                />{" "}
-                {this.props.ControlsVisibility ? (
-                  <span className={"text-xs font-semibold break-words"}>
-                    {this.state.nome_paciente ? <span className="text-green-500 ">{this.state.nome_paciente}</span> : <span className="text-red-500"> {userIcon}</span>}
-                  </span>
-                ) : null}
-                </div>
-                {this.props.ControlsVisibility === false ? (
-                  <span className={"text-xs font-semibold break-words"}>
-                    {this.state.nome_paciente ? <span className="text-green-500 ">{userIcon}</span> : <span className="text-red-500"> {userIcon}</span>}
-                  </span>
-                ) : null}
+              <DragDropModal
+                content={Chat}
+                openModalComponent={buttonCustom}
+                socket={socket}
+              />{" "}
+              {this.props.ControlsVisibility ? (
+                <span className={"text-xs font-semibold break-words"}>
+                  {this.state.nome_paciente ? (
+                    <span className="text-green-500 ">
+                      {this.state.nome_paciente}
+                    </span>
+                  ) : (
+                    <span className="text-red-500"> {userIcon}</span>
+                  )}
+                </span>
+              ) : null}
             </div>
-
-            {/* // * Pre join */}
-            <div className={"z-10 font-semibold text-sm"}>
-             
-              <div>
-                <DragCamera>
-                  <video
-                    className="z-10 small-video"
-                    id={"self-camera"}
-                    width="100px"
-                    autoPlay={true}
-                  ></video>
-                </DragCamera>
-              </div>
-            </div>
-            {/* // * prejoin */}
-
-            <div
-              className="fixed top-0 z-0 w-full mx-auto min-h-screen"
-              id="users-container"
-            ></div>
-
-            <canvas
-              ref={this.state.canvas}
-              className={`absolute overflow-none top-0 w-full min-h-screen ${!this.isNotMoving() && this.props.ControlsVisibility === false
-                  ? "bg-gray-900 z-100"
-                  : "z-20"
-                } `}
-              width={this.state.canvasWidth}
-              height={this.state.canvasHeight}
-            ></canvas>
+            {this.props.ControlsVisibility === false ? (
+              <span className={"text-xs font-semibold break-words"}>
+                {this.state.nome_paciente ? (
+                  <span className="text-green-500 ">{userIcon}</span>
+                ) : (
+                  <span className="text-red-500"> {userIcon}</span>
+                )}
+              </span>
+            ) : null}
           </div>
+
+          {/* // * Pre join */}
+          <div className={"z-10 font-semibold text-sm"}>
+            <div>
+              <DragCamera>
+                <video
+                  className="z-10 small-video"
+                  id={"self-camera"}
+                  width="100px"
+                  autoPlay={true}
+                ></video>
+              </DragCamera>
+            </div>
+          </div>
+          {/* // * prejoin */}
+
+          <div
+            className="fixed top-0 z-0 w-full mx-auto min-h-screen"
+            id="users-container"
+          ></div>
+
+          <canvas
+            ref={this.state.canvas}
+            className={`absolute overflow-none top-0 w-full min-h-screen ${
+              !this.isNotMoving() && this.props.ControlsVisibility === false
+                ? "bg-gray-900 z-100"
+                : "z-20"
+            } `}
+            width={this.state.canvasWidth}
+            height={this.state.canvasHeight}
+          ></canvas>
         </div>
-        );
+      </div>
+    );
   }
 }

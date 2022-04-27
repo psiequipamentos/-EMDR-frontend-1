@@ -3,7 +3,7 @@ import InputCustom from "../../../components/inputs/input-custom";
 import PsicologoService from "../../../services/psicologo.service";
 import { toast } from "react-toastify";
 import CookiesProvider from "../../../providers/Cookies.provider";
-import logo from "../../../assets/images/emdrLogo.png"
+import logo from "../../../assets/images/emdrLogo.png";
 import { Link } from "react-router-dom";
 
 interface PsicologoState {
@@ -45,8 +45,8 @@ export default class LoginPsicologo extends React.Component<
         const path = url.split("/")[0];
         const cookies_provider = new CookiesProvider();
         cookies_provider.saveUserData(response);
-       setInterval(() => {
-          window.location.href = `${path}/home`;
+        setInterval(() => {
+          window.location.href = `${path}/app/home`;
         }, 1000);
       } else {
         toast.error(response.message);
@@ -66,7 +66,11 @@ export default class LoginPsicologo extends React.Component<
         <h2 className="col-span-2 my-5 text-2xl font-light text-center">
           Entrar no sistema
         </h2>
-        <img className="w-40 mx-auto col-span-2 mb-5" src={logo} alt="Logomarca" />
+        <img
+          className="w-40 mx-auto col-span-2 mb-5"
+          src={logo}
+          alt="Logomarca"
+        />
 
         <div className="col-span-2 lg:col-span-1">
           <InputCustom
@@ -91,7 +95,12 @@ export default class LoginPsicologo extends React.Component<
             Entrar
           </button>
         </div>
-          <Link to="/recuperar-senha/digitar-email" className="font-light text-right col-span-2" >Recuperar Senha</Link>
+        <Link
+          to="/recuperar-senha/digitar-email"
+          className="font-light text-right col-span-2"
+        >
+          Recuperar Senha
+        </Link>
       </form>
     );
   }

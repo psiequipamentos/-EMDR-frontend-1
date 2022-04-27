@@ -21,19 +21,25 @@ const Routes = () => (
   <BrowserRouter>
     <GuardProvider guards={[PsiMiddleware.autenticar]}>
       <Switch>
-        <Route exact path="/" component={Login} />
-        <Route path="/login" component={Login} />
-        <Route path="/recuperar-senha/digitar-codigo" component={RecuperarSenha} />
-        <Route path="/recuperar-senha/digitar-email" component={EmailRecuperarSenha} />
-        <Route path="/recuperar-senha/nova-senha" component={TrocarSenha} />
-        <Route path="/emdr/paciente/:meeting_code">
+        <Route exact path="/app/" component={Login} />
+        <Route path="/app/login" component={Login} />
+        <Route
+          path="/app/recuperar-senha/digitar-codigo"
+          component={RecuperarSenha}
+        />
+        <Route
+          path="/app/recuperar-senha/digitar-email"
+          component={EmailRecuperarSenha}
+        />
+        <Route path="/app/recuperar-senha/nova-senha" component={TrocarSenha} />
+        <Route path="/app/emdr/paciente/:meeting_code">
           <Emdr ControlsVisibility={false}></Emdr>
         </Route>
-        <Route path="/verificar-email/:id" component={ValidarPsicologo}/>
-        <Route path="/cadastro" component={Cadastro}/>
+        <Route path="/app/verificar-email/:id" component={ValidarPsicologo} />
+        <Route path="/app/cadastro" component={Cadastro} />
         {/* HOME */}
         <GuardedRoute
-          path="/home"
+          path="/app/home"
           meta={{ auth: true, router_type: "psicologo" }}
         >
           <HomePage></HomePage>
@@ -41,7 +47,7 @@ const Routes = () => (
 
         {/* TIMER */}
         <GuardedRoute
-          path="/timer"
+          path="/app/timer"
           meta={{ auth: true, router_type: "psicologo" }}
         >
           <Timer></Timer>
@@ -49,7 +55,7 @@ const Routes = () => (
 
         {/* CHAMADA ENCERRADA */}
         <GuardedRoute
-          path="/chamada-encerrada"
+          path="/app/chamada-encerrada"
           meta={{ auth: true, router_type: "psicologo" }}
         >
           <ChamadaEncerrada></ChamadaEncerrada>
@@ -57,7 +63,7 @@ const Routes = () => (
 
         {/* EDITAR PACIENTE */}
         <GuardedRoute
-          path="/editar-paciente/:id"
+          path="/app/editar-paciente/:id"
           meta={{ auth: true, router_type: "psicologo" }}
         >
           <EditPaciente></EditPaciente>
@@ -65,7 +71,7 @@ const Routes = () => (
 
         {/* PREJOIN */}
         <GuardedRoute
-          path="/prejoin/:meeting_id"
+          path="/app/prejoin/:meeting_id"
           meta={{ auth: true, router_type: "psicologo" }}
         >
           <Prejoin></Prejoin>
@@ -73,13 +79,11 @@ const Routes = () => (
 
         {/* EMDR PSICOLOGO */}
         <GuardedRoute
-          path="/emdr/psicologo/"
+          path="/app/emdr/psicologo/"
           meta={{ auth: true, router_type: "psicologo" }}
         >
           <Emdr ControlsVisibility={true}></Emdr>
         </GuardedRoute>
-
-        
       </Switch>
     </GuardProvider>
   </BrowserRouter>

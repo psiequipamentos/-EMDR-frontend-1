@@ -29,11 +29,13 @@ export default class TrocarSenha extends React.Component<
       senha: this.state.senha,
     });
 
-    if(!password_changing.updated)
-        toast.error('Erro ao mudar a senha. Entre em contato com os desenvolvedores.')
+    if (!password_changing.updated)
+      toast.error(
+        "Erro ao mudar a senha. Entre em contato com os desenvolvedores."
+      );
     else {
-        toast.success('Senha atualizada. Aguarde o redirecionamento...')
-        setTimeout(() =>  window.location.href='/', 5000)
+      toast.success("Senha atualizada. Aguarde o redirecionamento...");
+      setTimeout(() => (window.location.href = "/app"), 5000);
     }
   };
   handleChange = (event: any) =>

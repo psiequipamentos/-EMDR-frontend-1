@@ -4,7 +4,7 @@ import SelectCustom from "../../../components/inputs/select-custom";
 import PacienteService from "../../../services/paciente.service";
 import { toast } from "react-toastify";
 import CookiesProvider from "../../../providers/Cookies.provider";
-import ddis from '../../../utils/ddi'
+import ddis from "../../../utils/ddi";
 interface PacienteProps {
   closeModal: any;
 }
@@ -53,7 +53,7 @@ export default class AddPaciente extends React.Component<
     try {
       const response = await paciente_service.create(data_to_send);
       toast.success("Paciente cadastrado com sucesso!");
-      window.location.href="/home";
+      window.location.href = "/app/home";
     } catch (error) {
       toast.error("Erro ao cadastrar paciente!");
     }
@@ -81,11 +81,7 @@ export default class AddPaciente extends React.Component<
         <label className="w-full mt-3 mb-1">
           {" "}
           <span className="mr-2 text-sm font-light">DDI</span>
-          <SelectCustom
-            name={"ddi"}
-            handleChange
-            options={ddis}
-          />
+          <SelectCustom name={"ddi"} handleChange options={ddis} />
         </label>
 
         <InputCustom
