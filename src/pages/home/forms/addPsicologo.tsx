@@ -53,7 +53,7 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
         const create_psicologo = await psicologo_service.create(data_to_send);
         console.log(create_psicologo);
         const email_service = new MailerService();
-        const link_verificar = `https://${window.location.host}/app/verificar-email/${create_psicologo.new_data.id}`;
+        const link_verificar = `https://${window.location.host}/verificar-email/${create_psicologo.new_data.id}`;
         const send_mail = await email_service.sendVerificationEmail({
           to: this.state.email,
           subject: "EMDR REMOTO PSI | Verificar e-mail",
@@ -67,7 +67,7 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
           "Psicólogo cadastrado com sucesso! Um link de verificação foi enviado para o seu e-mail."
         );
         setInterval(() => {
-          window.location.href = `${path}/app/home`;
+          window.location.href = `${path}/home`;
         }, 1000);
       } else {
         toast.error("Senhas com caracteres diferentes");

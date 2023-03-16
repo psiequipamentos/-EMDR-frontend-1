@@ -35,7 +35,7 @@ export default class EmailRecuperarSenha extends React.Component<
         "Código enviado para e-mail. Verifique na sua caixa de entrada. Aguarde o redirecionamento..."
       );
       setTimeout(
-        () => (window.location.href = "/app/recuperar-senha/digitar-codigo"),
+        () => (window.location.href = "/recuperar-senha/digitar-codigo"),
         5000
       );
     }

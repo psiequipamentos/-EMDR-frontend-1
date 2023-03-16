@@ -53,7 +53,7 @@ export default class AddPaciente extends React.Component<
     try {
       const response = await paciente_service.create(data_to_send);
       toast.success("Paciente cadastrado com sucesso!");
-      window.location.href = "/app/home";
+      window.location.href = "/home";
     } catch (error) {
       toast.error("Erro ao cadastrar paciente!");
     }

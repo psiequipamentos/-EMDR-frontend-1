@@ -46,7 +46,7 @@ export default class LoginPsicologo extends React.Component<
         const cookies_provider = new CookiesProvider();
         cookies_provider.saveUserData(response);
         setInterval(() => {
-          window.location.href = `${path}/app/home`;
+          window.location.href = `${path}/home`;
         }, 1000);
       } else {
         toast.error(response.message);

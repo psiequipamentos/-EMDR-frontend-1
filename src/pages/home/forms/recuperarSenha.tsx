@@ -31,7 +31,7 @@ export default class RecuperarSenha extends React.Component<
       await cookies.set("rec-psicologo-id", code_verify.psicologo.id);
       toast.success("Código correto. Aguarde o redirecionamento...");
       setTimeout(
-        () => (window.location.href = "/app/recuperar-senha/nova-senha"),
+        () => (window.location.href = "/recuperar-senha/nova-senha"),
         5000
       );
     }

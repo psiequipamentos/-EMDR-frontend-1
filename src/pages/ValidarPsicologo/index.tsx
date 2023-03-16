@@ -28,7 +28,7 @@ export default class ValidarPsicologo extends React.Component<any, any> {
     });
     const path = url.split("/")[0];
     setInterval(() => {
-      window.location.href = `${path}/app/login`;
+      window.location.href = `${path}/login`;
     }, 2000);
   };
 

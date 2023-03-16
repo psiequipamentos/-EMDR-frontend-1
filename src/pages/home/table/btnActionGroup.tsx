@@ -63,7 +63,7 @@ export default class BtnActionGroup extends React.Component<
             className="px-1 text-xs font-light text-right w-12 rounded bg-blue-500 text-white hover:bg-blue-700"
             onClick={() =>
               (window.location.href =
-                "/app/emdr/psicologo/" +
+                "/emdr/psicologo/" +
                 this.props.paciente?.pacient_sessions[0]?.session_code)
             }
           >

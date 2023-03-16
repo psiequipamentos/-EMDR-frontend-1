@@ -760,9 +760,9 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
   changeMicState = () => this.callObject.setLocalAudio(this.state.mic_state);
 
   endCall = () => {
-    if (user_type === "psicologo") window.location.href = "/app/home";
+    if (user_type === "psicologo") window.location.href = "/home";
     else if (user_type === "paciente")
-      window.location.href = "/app/chamada-encerrada";
+      window.location.href = "/chamada-encerrada";
   };
   videoCallListeners() {
     this.callObject.on("participant-updated", async (event) => {
