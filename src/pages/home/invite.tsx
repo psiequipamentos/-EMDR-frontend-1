@@ -9,7 +9,7 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
   constructor(props: InviteProps) {
     super(props);
     this.state = {
-      linkSessao: `https://${window.location.host}/emdr/paciente/${this.props.url_sessao}`,
+      linkSessao: `http://${window.location.host}/emdr/paciente/${this.props.url_sessao}`,
     };
     this.copyToClipboard = this.copyToClipboard.bind(this);
   }

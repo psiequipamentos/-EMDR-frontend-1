@@ -48,14 +48,14 @@ interface ISoundState {
 const musicas = [
   { name: "🎶", value: "Selecione um som" },
 
-  { name: "dripping faucet no 3 drop", value: sound1 },
-  { name: "gently rippling stream in the", value: sound2 },
-  { name: "ocean waves light surf on", value: sound3 },
-  { name: "shower in filled bathtub", value: sound4 },
-  { name: "sparkling stream in the quiet", value: sound5 },
-  { name: "sparrow chirps 3 times-in a", value: sound6 },
-  { name: "stone throwing in water", value: sound7 },
-  { name: "underwater image of a river", value: sound8 },
+  { name: "Gotas", value: sound1 },
+  { name: "Bica de Água", value: sound2 },
+  { name: "Ondas", value: sound3 },
+  { name: "Chuveiro", value: sound4 },
+  { name: "Córrego", value: sound5 },
+  { name: "Pardal", value: sound6 },
+  { name: "Pedra na Água", value: sound7 },
+  { name: "Água Corrente", value: sound8 },
 ];
 
 const toques = [
@@ -340,8 +340,8 @@ export default class EmdrSounds extends React.Component<
         </div>
 
         <div className="text-sm font-normal py-3 volume-icon text-black rounded">
-          <label className="text-white flex flex-row bg-gray-800 pr-5 rounded"> 
-          <div className="w-12 h-12 bg-gray-800 rounded grid items-center text-align-middle"> 
+          <label className="text-white flex flex-row bg-gray-800 pr-5 rounded">
+          <div className="w-12 h-12 bg-gray-800 rounded grid items-center text-align-middle">
           <span className="text-center mx-auto">{volumeIcon}</span>
           </div>
             <input type="range"
@@ -361,7 +361,7 @@ export default class EmdrSounds extends React.Component<
 
         {/*Importante não apagar isso aqui mans*/}
         <div className="col-span-6 text-sm font-normal lg:col-span-2">
-          <label className="flex"> 
+          <label className="flex">
           {/* <span>{soundIcon}  </span> */}
           <SelectCustom
           name={"silenciarMovimentos"}
@@ -370,7 +370,7 @@ export default class EmdrSounds extends React.Component<
             {name:'🔊 👤', value:'psicologo'},
             {name:'🔊 👥', value:'psicologo'},
 
-            
+
             // {name:'🔊 🧑‍💼', value:'psicologo'},
             // {name:'🔊 🧑‍💼🧑‍💼', value:'ativarAmbos'},
             {name:'🔇', value:'ambos'}]}

@@ -23,23 +23,30 @@ export default class EmailRecuperarSenha extends React.Component<
   sendCode = async (event: any) => {
     event.preventDefault();
     const mailer_services = new MailerService();
-    const send_mail: any = await mailer_services.sendCode({
-      email: this.state.email,
-    });
-    if (send_mail.error)
-      toast.error(
-        `Erro ao enviar código de recuperação de senha: ${send_mail.error_message}`
-      );
-    else {
-      toast.success(
-        "Código enviado para e-mail. Verifique na sua caixa de entrada. Aguarde o redirecionamento..."
-      );
-      setTimeout(
-        () => (window.location.href = "/recuperar-senha/digitar-codigo"),
-        5000
-      );
+    try{
+      const send_mail = await mailer_services.sendCode({
+        email: this.state.email,
+      }) as {error: boolean; error_message?: string};
+
+        if (send_mail.error){
+        toast.error(
+          `Erro ao enviar código de recuperação de senha: ${send_mail.error_message}`
+        );
+        }
+        else {
+          toast.success(
+            "Código enviado para e-mail. Verifique na sua caixa de entrada. Aguarde o redirecionamento..."
+          );
+          setTimeout(() => {
+            window.location.href = "/recuperar-senha/digitar-codigo"
+            },
+            5000);
+        }
+    }catch(error){
+      console.log(error);
     }
-  };
+    }
+
   handleChange = (event: any) =>
     this.setState({ [event.target.name]: event.target.value } as any);
   render(): React.ReactNode {
