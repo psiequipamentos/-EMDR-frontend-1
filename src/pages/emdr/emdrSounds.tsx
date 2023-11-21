@@ -76,14 +76,14 @@ const semSom = [{ name: "Selecione um som", value: "Selecione um som" }];
 
 const allSounds = [
   { name: "🎶", value: "Selecione um som" },
-  { name: "dripping faucet no 3 drop", value: sound1 },
-  { name: "gently rippling stream in the", value: sound2 },
-  { name: "ocean waves light surf on", value: sound3 },
-  { name: "shower in filled bathtub", value: sound4 },
-  { name: "sparkling stream in the quiet", value: sound5 },
-  { name: "sparrow chirps 3 times-in a", value: sound6 },
-  { name: "stone throwing in water", value: sound7 },
-  { name: "underwater image of a river", value: sound8 },
+  { name: "Gotas", value: sound1 },
+  { name: "Bica de Água", value: sound2 },
+  { name: "Ondas", value: sound3 },
+  { name: "Chuveiro", value: sound4 },
+  { name: "Córrego", value: sound5 },
+  { name: "Pardal", value: sound6 },
+  { name: "Pedra na Água", value: sound7 },
+  { name: "Água Corrente", value: sound8 },
 ];
 
 const soundTypes = [
