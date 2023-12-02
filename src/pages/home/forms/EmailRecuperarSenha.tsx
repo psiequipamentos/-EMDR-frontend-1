@@ -27,7 +27,7 @@ export default class EmailRecuperarSenha extends React.Component<
       const send_mail = await mailer_services.sendCode({
         email: this.state.email,
       }) as {error: boolean; error_message?: string};
-
+        console.log(this.state.email);
         if (send_mail.error){
         toast.error(
           `Erro ao enviar código de recuperação de senha: ${send_mail.error_message}`

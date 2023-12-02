@@ -39,6 +39,7 @@ export default class LoginPsicologo extends React.Component<
     };
     try {
       const response: any = await auth_service.login(data_to_send);
+      console.log(response);
       if (response.auth) {
         toast.success("Usuário logado com sucesso!");
         const url = window.location.href;
