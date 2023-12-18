@@ -95,7 +95,7 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
             Copiar
             {copyIcon}
           </button>
-          {this.props.whatsapp ? (
+          {/* {this.props.whatsapp ? (
             <button
               className="text-sm text-black"
               onClick={() =>
@@ -109,7 +109,7 @@ export default class Invite extends React.Component<InviteProps, InviteState> {
               Whatsapp
               {whatsappIcon}
             </button>
-          ) : null}
+          ) : null} */}
           {this.props.telegram ? (
             <a
               target="_blank"

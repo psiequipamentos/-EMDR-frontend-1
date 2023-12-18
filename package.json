@@ -15,7 +15,6 @@
     "@types/react-dom": "^17.0.0",
     "@types/universal-cookie": "^3.0.0",
     "axios": "^0.24.0",
-    "crypto": "^1.0.1",
     "dotenv": "^16.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -31,7 +30,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "craco --openssl-legacy-provider start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"

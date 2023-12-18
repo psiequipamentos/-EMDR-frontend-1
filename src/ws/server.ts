@@ -1,5 +1,4 @@
 import io, { Socket } from "socket.io-client";
-import crypto from "crypto";
 import {serverConnectionConfigProduction} from "../config/server-connection.config";
 
 
@@ -14,7 +13,6 @@ export default class WebsocketServer {
 
   run = (user_type: string, code:string) => {
     this.socket.on("connect", () => console.log(`[IO] `+`${user_type}`+` conectado`));
-    const id = crypto.randomBytes(16).toString("hex");
     const data_to_send = {
       session_code: code,
       user: {

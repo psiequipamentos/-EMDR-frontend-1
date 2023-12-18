@@ -90,18 +90,26 @@ export default class LoginPsicologo extends React.Component<
             placeholder="Senha"
           ></InputCustom>
         </div>
-
         <div className="flex justify-around col-span-2 gap-2 mt-3">
           <button className="w-full text-white font-light text-xl p-3 bg-blue-500 rounded hover:bg-blue-600 hover:shadow-xl">
             Entrar
           </button>
         </div>
-        <Link
-          to="/recuperar-senha/digitar-email"
-          className="font-light text-right col-span-2"
-        >
-          Recuperar Senha
-        </Link>
+        <div className="flex justify-around col-span-2 gap-2 mt-3">
+            <Link
+              to="/cadastro"
+              className="font-light text-right col-span-2"
+            >
+              Cadastrar
+            </Link>
+          
+          <Link
+            to="/recuperar-senha/digitar-email"
+            className="font-light text-right col-span-2"
+          >
+            Recuperar Senha
+          </Link>
+        </div>
       </form>
     );
   }
