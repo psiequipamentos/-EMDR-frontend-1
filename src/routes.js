@@ -15,20 +15,19 @@ import TrocarSenha from "./pages/home/forms/trocarsenha";
 import Login from "./pages/loginPsicologo/login";
 import ValidarPsicologo from "./pages/ValidarPsicologo";
 import {AgentContext} from "./contexts/AgentContext";
+import mascoteSurpresa from './assets/images/mascote-surpresa.png';
 
 const PsiMiddleware = new PsicologoMiddleware();
 
 const UnsupportedAgent = () => {
-    return <div className={'h-screen relative'}>
-        <img
-            src={'https://images.unsplash.com/photo-1590698933947-a202b069a861?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
-            className={'top-0 left-0 fixed h-screen'} alt={"Robot"}/>
-        <div className={'bg-yellow-700 bg-opacity-60 absolute top-0 left-0 z-0 flex justify-center p-5'}>
-            <h1 className={'text-center text-3xl font-bold text-white z-10'}>
-                Estamos animados em informar que em breve teremos nosso sistema disponível em dispositivos móveis!
-                Enquanto isso, pedimos que continue acessando pelo computador. Agradecemos pela compreensão.
-            </h1>
-        </div>
+    return <div className={'h-screen'}>
+        <img src={mascoteSurpresa} alt={"Robot"} style={{
+            filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5))',
+        }}/>
+        <p className={'absolute z-0 flex justify-center h-auto text-black text-2xl text-center p-3 font-bold'}>
+            Estamos animados em informar que em breve teremos nosso sistema disponível em dispositivos móveis!
+            Enquanto isso, pedimos que continue acessando pelo computador. Agradecemos pela compreensão.
+        </p>
     </div>
 }
 
