@@ -98,7 +98,7 @@ export default class LoginPsicologo extends React.Component<
         <div className="flex justify-around col-span-2 gap-2 mt-3">
             <Link
               to="/cadastro"
-              className="font-light text-right col-span-2"
+              className="bg-blue-500 text-white hover:bg-blue-600 hover:shadow-xl w-28 h-8 rounded  font-light text-center pt-1"
             >
               Cadastrar
             </Link>
