@@ -53,7 +53,7 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
         const create_psicologo = await psicologo_service.create(data_to_send);
         console.log(create_psicologo);
         const email_service = new MailerService();
-        const link_verificar = `http://${window.location.host}/verificar-email/${create_psicologo.new_data.id}`;
+        const link_verificar = `https://${window.location.host}/verificar-email/${create_psicologo.new_data.id}`;
         const send_mail = await email_service.sendVerificationEmail({
           to: this.state.email,
           subject: "EMDR REMOTO PSI | Verificar e-mail",

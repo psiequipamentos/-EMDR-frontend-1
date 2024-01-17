@@ -2,8 +2,10 @@ import React from "react";
 
 interface IModalProps {
     openModalComponent: any
+    /* exitButton: any */
     content?: any
 }
+
 
 interface IModalState {
     trigger: boolean

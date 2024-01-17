@@ -35,7 +35,7 @@ export default class TrocarSenha extends React.Component<
       );
     else {
       toast.success("Senha atualizada. Aguarde o redirecionamento...");
-      setTimeout(() => (window.location.href = "/app"), 5000);
+      setTimeout(() => (window.location.href = "/"), 5000);
     }
   };
   handleChange = (event: any) =>

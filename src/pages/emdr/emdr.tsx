@@ -239,6 +239,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
         this.setState({ nome_paciente: data.paciente });
       }
       this.setState({ all_users_connected: true });
+      
     });
 
     socket.on("end-call", () => this.endCall());
