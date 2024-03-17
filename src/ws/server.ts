@@ -5,6 +5,7 @@ import {serverConnectionConfigProduction} from "../config/server-connection.conf
 export default class WebsocketServer {
   private ws_url: any;
   public socket: Socket;
+  public current_user_type: null | string = null;
 
   constructor() {
     this.ws_url = serverConnectionConfigProduction.websocket_url;
@@ -12,7 +13,8 @@ export default class WebsocketServer {
   }
 
   run = (user_type: string, code:string) => {
-    this.socket.on("connect", () => console.log(`[IO] `+`${user_type}`+` conectado`));
+    this.socket.on("connect", () => console.log(`[IO] ${user_type}  conectado`));
+    this.current_user_type = user_type;
     const data_to_send = {
       session_code: code,
       user: {

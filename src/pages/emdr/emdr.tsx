@@ -60,6 +60,7 @@ interface IEmdrState {
   url: any;
   mic_state: boolean;
 
+  pacient_connected: boolean;
   all_users_connected: boolean;
   nome_paciente: string;
 }
@@ -114,6 +115,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
     this.state = {
       nome_paciente: "",
       all_users_connected: false,
+      pacient_connected: false,
       messages: [],
       canvas: React.createRef(),
       canvasWidth: document.documentElement.clientWidth - 5,
@@ -235,11 +237,11 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
       this.setState({ [data.property]: data.value } as any)
     );
     socket.on("start-cron", (data: any) => {
-      if (user_type === "psicologo") {
+      if (user_type === "paciente") {
         this.setState({ nome_paciente: data.paciente });
+        this.setState({ pacient_connected: true });
       }
       this.setState({ all_users_connected: true });
-      
     });
 
     socket.on("end-call", () => this.endCall());
@@ -999,10 +1001,10 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
                 content={Chat}
                 openModalComponent={buttonCustom}
                 socket={socket}
-              />{" "}
+              />{/*""*/}
               {this.props.ControlsVisibility ? (
                 <span className={"text-xs font-semibold break-words"}>
-                  {this.state.nome_paciente ? (
+                  {this.state.pacient_connected ? (
                     <span className="text-green-500 ">
                       {this.state.nome_paciente}
                     </span>
@@ -1014,7 +1016,7 @@ export default class Emdr extends React.Component<IEmdrProps, IEmdrState> {
             </div>
             {this.props.ControlsVisibility === false ? (
               <span className={"text-xs font-semibold break-words"}>
-                {this.state.nome_paciente ? (
+                {this.state.pacient_connected ? (
                   <span className="text-green-500 ">{userIcon}</span>
                 ) : (
                   <span className="text-red-500"> {userIcon}</span>
