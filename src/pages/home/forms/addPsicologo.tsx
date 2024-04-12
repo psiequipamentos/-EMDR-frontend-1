@@ -7,6 +7,7 @@ import "./bgemdr.css";
 import { toast } from "react-toastify";
 import options from "../../../utils/ddi";
 import MailerService from "../../../services/mailer.service";
+import { create } from "domain";
 interface PsicologoState {
   nome: string;
   sobrenome: string;
@@ -51,24 +52,25 @@ export default class AddPsicologo extends React.Component<any, PsicologoState> {
     try {
       if (data_to_send.senha === data_to_send.confsenha) {
         const create_psicologo = await psicologo_service.create(data_to_send);
-        console.log(create_psicologo);
-        const email_service = new MailerService();
-        const link_verificar = `http://${window.location.host}/verificar-email/${create_psicologo.new_data.id}`;
-        const send_mail = await email_service.sendVerificationEmail({
-          to: this.state.email,
-          subject: "EMDR REMOTO PSI | Verificar e-mail",
-          nome_psicologo: this.state.nome,
-          link: link_verificar,
-        });
-        console.log(send_mail);
-        const url = window.location.href;
-        const path = url.split("/")[0];
-        toast.success(
-          "Psicólogo cadastrado com sucesso! Um link de verificação foi enviado para o seu e-mail."
-        );
-        setInterval(() => {
-          window.location.href = `${path}/home`;
-        }, 1000);
+        if (!create_psicologo.error) {
+          const email_service = new MailerService();
+          const link_verificar = `http://${window.location.host}/verificar-email/${create_psicologo.new_data.id}`;
+          const send_mail = await email_service.sendVerificationEmail({
+            to: this.state.email,
+            subject: "EMDR REMOTO PSI | Verificar e-mail",
+            nome_psicologo: this.state.nome,
+            link: link_verificar,
+          });
+          console.log(send_mail);
+          const url = window.location.href;
+          const path = url.split("/")[0];
+          toast.success(
+            "Psicólogo cadastrado com sucesso! Um link de verificação foi enviado para o seu e-mail."
+          );
+          setInterval(() => {
+            window.location.href = `${path}/home`;
+          }, 1000);
+        }
       } else {
         toast.error("Senhas com caracteres diferentes");
       }
